@@ -9,7 +9,6 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    final textStyles = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -102,7 +101,7 @@ class _RegisterForm extends StatelessWidget {
               height: 60,
               child: CustomFilledButton(
                 text: 'Crear',
-                buttonColor: Color.fromARGB(255, 97, 189, 215),
+                buttonColor: const Color.fromARGB(255, 97, 189, 215),
                 onPressed: () {},
               )),
           const Spacer(flex: 2),
