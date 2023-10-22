@@ -1,0 +1,83 @@
+import 'package:cyclescape/infrastructure/infrastructure.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../domain/domain.dart';
+
+//! 1 - Inicializamos el state
+//Creas una clase para representar el estado de tu aplicación.
+
+enum AuthStatus { checking, authenticated, notAunthenticated }
+
+class AuthState {
+  final AuthStatus authStatus;
+  final UserResponse? user;
+  final String errorMessage;
+
+  AuthState(
+      {this.authStatus = AuthStatus.checking,
+      this.user,
+      this.errorMessage = ''});
+
+  AuthState copyWith({
+    AuthStatus? authStatus,
+    UserResponse? user,
+    String? errorMessage,
+  }) =>
+      AuthState(
+        authStatus: authStatus ?? this.authStatus,
+        user: user ?? this.user,
+        errorMessage: errorMessage ?? this.errorMessage,
+      );
+}
+
+//! 2 - Crear un Notificador de Estado
+//Creas una clase que extiende StateNotifier y toma tu estado como parámetro
+//Esta clase contiene la lógica para cambiar el estado y notificar a los oyentes sobre los cambios.
+
+class AuthNotifier extends StateNotifier<AuthState> {
+  final AuthRepository authRepository;
+
+  AuthNotifier({required this.authRepository}) : super(AuthState()) {
+    checkAuthStatus();
+  }
+
+  Future<void> loginUser(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 5600));
+
+    try {
+      final user = await authRepository.login(email, password);
+      _setLoggedUsers(user);
+    } on WrongCredentials {
+      logOut('Credenciales no son correctas');
+    } catch (e) {
+      logOut('Error no controlado');
+    }
+  }
+
+  void registerUser(String email, String password) async {}
+
+  void checkAuthStatus() async {}
+
+  void logOut([String? errorMessage]) async {
+    state = state.copyWith(
+      authStatus: AuthStatus.notAunthenticated,
+      user: null,
+      errorMessage: errorMessage,
+    );
+  }
+
+  void _setLoggedUsers(UserResponse user) {
+    state = state.copyWith(
+      user: user,
+      authStatus: AuthStatus.authenticated,
+    );
+  }
+}
+
+//! Proporcionar el Notificador de Estado
+//Usas un StateNotifierProvider para proporcionar tu notificador de estado a tu árbol de widgets
+
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  final authRepository = AuthRepositoryImpl();
+  return AuthNotifier(authRepository: authRepository);
+});
