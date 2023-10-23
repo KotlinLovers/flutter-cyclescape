@@ -75,49 +75,51 @@ class _LoginForm extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: Column(
-        children: [
-          const SizedBox(height: 50),
-          Text('Iniciar Sesión', style: textStyles.titleMedium),
-          const SizedBox(height: 90),
-          CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-            onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
-            errorMessage:
-                loginForm.isFormPosted ? loginForm.email.errorMessage : null,
-          ),
-          const SizedBox(height: 20),
-          CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-            onChanged: ref.read(loginFormProvider.notifier).onPasswordChanged,
-            errorMessage:
-                loginForm.isFormPosted ? loginForm.password.errorMessage : null,
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Ingresar',
-                buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                onPressed: () {
-                  ref.read(loginFormProvider.notifier).onFormSubmit();
-                },
-              )),
-          const Spacer(flex: 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('¿No tienes cuenta?'),
-              TextButton(
-                  onPressed: () => context.push('/register'),
-                  child: const Text('Crea una aquí'))
-            ],
-          ),
-          const Spacer(flex: 1),
-        ],
+      child: Expanded(
+        child: Column(
+          children: [
+            const SizedBox(height: 50),
+            Text('Iniciar Sesión', style: textStyles.titleMedium),
+            const SizedBox(height: 90),
+            CustomTextFormField(
+              label: 'Correo',
+              keyboardType: TextInputType.emailAddress,
+              onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
+              errorMessage:
+                  loginForm.isFormPosted ? loginForm.email.errorMessage : null,
+            ),
+            const SizedBox(height: 20),
+            CustomTextFormField(
+              label: 'Contraseña',
+              obscureText: true,
+              onChanged: ref.read(loginFormProvider.notifier).onPasswordChanged,
+              errorMessage:
+                  loginForm.isFormPosted ? loginForm.password.errorMessage : null,
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+                width: double.infinity,
+                height: 60,
+                child: CustomFilledButton(
+                  text: 'Ingresar',
+                  buttonColor: const Color.fromARGB(255, 97, 189, 215),
+                  onPressed: () {
+                    ref.read(loginFormProvider.notifier).onFormSubmit();
+                  },
+                )),
+            const Spacer(flex: 2),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('¿No tienes cuenta?'),
+                TextButton(
+                    onPressed: () => context.push('/register'),
+                    child: const Text('Crea una aquí'))
+              ],
+            ),
+            const Spacer(flex: 1),
+          ],
+        ),
       ),
     );
   }

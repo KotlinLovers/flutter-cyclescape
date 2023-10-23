@@ -1,4 +1,6 @@
 import 'package:cyclescape/infrastructure/infrastructure.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/domain.dart';
@@ -36,8 +38,11 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
+  final KeyValueStorage keyValueStorageService;
 
-  AuthNotifier({required this.authRepository}) : super(AuthState()) {
+  AuthNotifier(
+      {required this.keyValueStorageService, required this.authRepository})
+      : super(AuthState()) {
     checkAuthStatus();
   }
 
@@ -56,11 +61,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password) async {}
+  void registerUser(String email, String password, String fullName) async {
 
-  void checkAuthStatus() async {}
+  }
+
+  void checkAuthStatus() async {
+
+  }
 
   void logOut([String? errorMessage]) async {
+    await keyValueStorageService.removeKey('token');
     state = state.copyWith(
       authStatus: AuthStatus.notAunthenticated,
       user: null,
@@ -68,10 +78,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void _setLoggedUsers(UserResponse user) {
+  void _setLoggedUsers(UserResponse user) async {
+    await keyValueStorageService.setKeyValue('token', user.token);
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,
+      errorMessage: '',
     );
   }
 }
@@ -81,5 +93,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
-  return AuthNotifier(authRepository: authRepository);
+  final keyValueStorageService = KeyValueStorageImpl();
+  return AuthNotifier(
+      authRepository: authRepository,
+      keyValueStorageService: keyValueStorageService);
 });
