@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
           body: CustomBackground(
               child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -87,7 +87,7 @@ class _LoginForm extends ConsumerWidget {
             errorMessage:
                 loginForm.isFormPosted ? loginForm.email.errorMessage : null,
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
