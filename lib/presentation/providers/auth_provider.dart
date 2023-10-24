@@ -60,14 +60,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       logOut('Error no controlado');
     }
   }
-
-  void registerUser(String email, String password, String fullName) async {
-
-  }
-
-  void checkAuthStatus() async {
-
-  }
+  void registerUser(String email, String password, String fullName) async {}
+  void checkAuthStatus() async {}
 
   void logOut([String? errorMessage]) async {
     await keyValueStorageService.removeKey('token');
