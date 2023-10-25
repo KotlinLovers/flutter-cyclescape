@@ -1,4 +1,6 @@
 import 'package:cyclescape/infrastructure/infrastructure.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/domain.dart';
@@ -36,10 +38,11 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
+  final KeyValueStorage keyValueStorageService;
 
-  AuthNotifier({required this.authRepository}) : super(AuthState()) {
-    checkAuthStatus();
-  }
+  AuthNotifier(
+      {required this.keyValueStorageService, required this.authRepository})
+      : super(AuthState());
 
   Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 5600));
@@ -56,11 +59,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password) async {}
+  void registerUser(String email, String password, String fullName) async {}
 
-  void checkAuthStatus() async {}
-
-  void logOut([String? errorMessage]) async {
+  Future<void> logOut([String? errorMessage]) async {
+    await keyValueStorageService.removeKey('token');
     state = state.copyWith(
       authStatus: AuthStatus.notAunthenticated,
       user: null,
@@ -68,10 +70,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void _setLoggedUsers(UserResponse user) {
+  void checkToken() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    if (token == null) {
+      return logOut();
+    } else {
+      state = state.copyWith(
+        authStatus: AuthStatus.authenticated,
+      );
+    }
+  }
+
+  void _setLoggedUsers(UserResponse user) async {
+    await keyValueStorageService.setKeyValue('token', user.token);
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,
+      errorMessage: '',
     );
   }
 }
@@ -81,5 +96,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
-  return AuthNotifier(authRepository: authRepository);
+  final keyValueStorageService = KeyValueStorageImpl();
+  return AuthNotifier(
+      authRepository: authRepository,
+      keyValueStorageService: keyValueStorageService);
 });
