@@ -42,9 +42,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   AuthNotifier(
       {required this.keyValueStorageService, required this.authRepository})
-      : super(AuthState()) {
-    checkAuthStatus();
-  }
+      : super(AuthState());
 
   Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 5600));
@@ -60,16 +58,27 @@ class AuthNotifier extends StateNotifier<AuthState> {
       logOut('Error no controlado');
     }
   }
-  void registerUser(String email, String password, String fullName) async {}
-  void checkAuthStatus() async {}
 
-  void logOut([String? errorMessage]) async {
+  void registerUser(String email, String password, String fullName) async {}
+
+  Future<void> logOut([String? errorMessage]) async {
     await keyValueStorageService.removeKey('token');
     state = state.copyWith(
       authStatus: AuthStatus.notAunthenticated,
       user: null,
       errorMessage: errorMessage,
     );
+  }
+
+  void checkToken() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    if (token == null) {
+      return logOut();
+    } else {
+      state = state.copyWith(
+        authStatus: AuthStatus.authenticated,
+      );
+    }
   }
 
   void _setLoggedUsers(UserResponse user) async {

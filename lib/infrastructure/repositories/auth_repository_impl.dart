@@ -7,10 +7,6 @@ class AuthRepositoryImpl extends AuthRepository {
   AuthRepositoryImpl({AuthDataSource? dataSource})
       : dataSource = dataSource ?? AuthDataSourceImpl();
 
-  @override
-  Future<UserResponse> checkAuthStatus(String token) {
-    return dataSource.checkAuthStatus(token);
-  }
 
   @override
   Future<UserResponse> login(String email, String password) {

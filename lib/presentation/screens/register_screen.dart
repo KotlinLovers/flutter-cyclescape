@@ -37,7 +37,10 @@ class RegisterScreen extends StatelessWidget {
                   //  image: AssetImage('assets/images/logo.png'),
                   //  height: 80,
                   //),
-                  Text('Cyclescape', style: textStyle.titleLarge,),
+                  Text(
+                    'Cyclescape',
+                    style: textStyle.titleLarge,
+                  ),
                   const Spacer(flex: 2),
                 ],
               ),
@@ -69,58 +72,56 @@ class _RegisterForm extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: Flexible(
-        child: Column(
-          children: [
-            const SizedBox(height: 5),
-            Text('Regístrate', style: textStyles.titleMedium),
-            const SizedBox(height: 40),
-            const CustomTextFormField(
-              label: 'Nombre completo',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 15),
-            const CustomTextFormField(
-              label: 'Correo',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 15),
-            const CustomTextFormField(
-              label: 'Contraseña',
-              obscureText: true,
-            ),
-            const SizedBox(height: 15),
-            const CustomTextFormField(
-              label: 'Repita la contraseña',
-              obscureText: true,
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-                width: double.infinity,
-                height: 60,
-                child: CustomFilledButton(
-                  text: 'Crear',
-                  buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                  onPressed: () {},
-                )),
-            const Spacer(flex: 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('¿Ya tienes cuenta?'),
-                TextButton(
-                    onPressed: () {
-                      if (context.canPop()) {
-                        return context.pop();
-                      }
-                      context.go('/login');
-                    },
-                    child: const Text('Ingresa aquí'))
-              ],
-            ),
-            const Spacer(flex: 1),
-          ],
-        ),
+      child: Column(
+        children: [
+          const SizedBox(height: 5),
+          Text('Regístrate', style: textStyles.titleMedium),
+          const SizedBox(height: 40),
+          const CustomTextFormField(
+            label: 'Nombre completo',
+            keyboardType: TextInputType.emailAddress,
+          ),
+          const SizedBox(height: 15),
+          const CustomTextFormField(
+            label: 'Correo',
+            keyboardType: TextInputType.emailAddress,
+          ),
+          const SizedBox(height: 15),
+          const CustomTextFormField(
+            label: 'Contraseña',
+            obscureText: true,
+          ),
+          const SizedBox(height: 15),
+          const CustomTextFormField(
+            label: 'Repita la contraseña',
+            obscureText: true,
+          ),
+          const SizedBox(height: 15),
+          SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: CustomFilledButton(
+                text: 'Crear',
+                buttonColor: const Color.fromARGB(255, 97, 189, 215),
+                onPressed: () {},
+              )),
+          const Spacer(flex: 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('¿Ya tienes cuenta?'),
+              TextButton(
+                  onPressed: () {
+                    if (context.canPop()) {
+                      return context.pop();
+                    }
+                    context.go('/login');
+                  },
+                  child: const Text('Ingresa aquí'))
+            ],
+          ),
+          const Spacer(flex: 1),
+        ],
       ),
     );
   }
