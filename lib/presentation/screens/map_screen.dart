@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapSample extends StatefulWidget {
@@ -13,7 +12,7 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
-  final _kGooglePlex = CameraPosition(
+  final _kGooglePlex = const CameraPosition(
     target: LatLng(0, 0),
   );
 
@@ -25,10 +24,10 @@ class MapSampleState extends State<MapSample> {
   );
 
   static final Marker bikeMarker = Marker(
-    markerId: MarkerId('bikeMarker'),
-    infoWindow: InfoWindow(title: 'Bike'),
+    markerId: const MarkerId('bikeMarker'),
+    infoWindow: const InfoWindow(title: 'Bike'),
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    position: LatLng(37.43296265331129, -122.08832357078792),
+    position:const LatLng(37.43296265331129, -122.08832357078792),
   );
 
   static const CameraPosition defaultPosition = CameraPosition(
@@ -41,7 +40,7 @@ class MapSampleState extends State<MapSample> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Map"),
+        title: const Text("Map"),
       ),
       body: GoogleMap(
         mapType: MapType.normal,
