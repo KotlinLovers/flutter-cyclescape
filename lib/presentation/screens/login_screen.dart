@@ -34,6 +34,15 @@ class LoginScreen extends StatelessWidget {
               height: 80,
             ),
             const SizedBox(height: 20),
+            //this is temporal for map
+            TextButton(
+                onPressed: () {
+                  if (context.canPop()) {
+                    return context.pop();
+                  }
+                  context.go('/map');
+                },
+                child: const Text('Go to the map placeholder')),
 
             Container(
               height: size.height - 260, // 80 los dos sizebox y 100 el ícono

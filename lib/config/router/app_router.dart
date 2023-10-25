@@ -14,6 +14,10 @@ final appRouter = GoRouter(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
+    GoRoute(
+      path: '/map',
+      builder: (context, state) => const MapSample(),
+    ),
 
     ///* Product Routes
     //GoRoute(
