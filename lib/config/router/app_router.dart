@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,6 +33,17 @@ final goRouterProvider = Provider((ref) {
           path: '/map',
           builder: (context, state) => const MapSample(),
         ),
+
+        GoRoute(
+          path: '/profile',
+          builder: (context,state) => const ProfileScreen(),
+        ),
+
+        GoRoute(
+          path: '/profile-edit',
+          builder: (context,state) => const UpgradeProfileScreen(),
+        ),
+
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;

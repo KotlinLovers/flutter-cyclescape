@@ -2,6 +2,9 @@ import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cyclescape/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../config/router/app_router.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -20,6 +23,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     final textStyles = Theme.of(context).textTheme;
 
+
     return NavigationDrawer(
         elevation: 1,
         selectedIndex: navDrawerIndex,
@@ -27,6 +31,14 @@ class SideMenuState extends ConsumerState<SideMenu> {
           setState(() {
             navDrawerIndex = value;
           });
+          final router = GoRouter.of(context);
+          if(value == 0){
+            router.go('/');
+          }else if(value ==1 ){
+            router.go('/profile');
+          }else if(value == 2){
+            router.go('/map');
+          }
 
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );
@@ -48,6 +60,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
           const NavigationDrawerDestination(
             icon: Icon(Icons.person_outline),
             label: Text('Mi cuenta'),
+
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
