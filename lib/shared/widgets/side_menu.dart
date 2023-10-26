@@ -2,6 +2,7 @@ import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cyclescape/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -27,11 +28,18 @@ class SideMenuState extends ConsumerState<SideMenu> {
           setState(() {
             navDrawerIndex = value;
           });
-
+          final router = GoRouter.of(context);
+          if (value == 0) {
+            router.go('/');
+          } else if (value == 1) {
+            router.go('/profile');
+          } else if (value == 2) {
+            router.go('/map');
+          }
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );
           widget.scaffoldKey.currentState?.closeDrawer();
-        },
+        },  
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(20, hasNotch ? 0 : 20, 16, 0),
@@ -43,11 +51,15 @@ class SideMenuState extends ConsumerState<SideMenu> {
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.home_outlined),
-            label: Text('Productos'),
+            label: Text('Inicio'),
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.person_outline),
             label: Text('Mi cuenta'),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.location_on_outlined),
+            label: Text('Maps'),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
