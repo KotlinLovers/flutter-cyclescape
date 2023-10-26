@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'presentation/screens/onboarding_screen.dart';
 
 import 'config/config.dart';
 
@@ -18,6 +19,7 @@ class MainApp extends ConsumerWidget {
       routerConfig: appRouter,
       theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
+      //home: OnBoardingScreen(),
     );
   }
 }

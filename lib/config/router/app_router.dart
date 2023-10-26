@@ -8,7 +8,7 @@ import '../../presentation/screens/screens.dart';
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/onboarding',
       refreshListenable: goRouterNotifier,
       routes: [
         ///* Auth Routes
@@ -31,6 +31,10 @@ final goRouterProvider = Provider((ref) {
           path: '/map',
           builder: (context, state) => const MapSample(),
         ),
+        GoRoute(
+          path: '/onboarding',
+          builder: (context, state) => const OnBoardingScreen(),
+          )
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
