@@ -34,7 +34,7 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
-          )
+        )
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
