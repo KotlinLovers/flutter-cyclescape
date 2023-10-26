@@ -45,12 +45,12 @@ final goRouterProvider = Provider((ref) {
         final authStatus = goRouterNotifier.authStatus;
 
         if (authStatus == AuthStatus.notAunthenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') return null;
           return '/login';
         }
 
         if (authStatus == AuthStatus.authenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') {
+          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') {
             return '/';
           }
         }
