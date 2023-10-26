@@ -7,7 +7,10 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
+  animate_do: ^3.1.2
+  card_swiper: ^3.0.1
   dio: ^5.3.3
+  equatable: ^2.0.0
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
@@ -18,7 +21,6 @@ dependencies:
   google_maps_flutter: ^2.5.0
   shared_preferences: ^2.2.2
   sizer: ^2.0.15
-  equatable: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -32,4 +34,5 @@ flutter:
     - .env
     - assets/loaders/
     - assets/images/
+    - assets/images/advertisement/
     - google_fonts/montserrat_alternates/

@@ -31,6 +31,10 @@ final goRouterProvider = Provider((ref) {
           path: '/map',
           builder: (context, state) => const MapSample(),
         ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
