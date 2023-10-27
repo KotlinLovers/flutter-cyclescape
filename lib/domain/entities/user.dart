@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class User extends Equatable {
+class User {
   final String id;
   final String email;
   final String firstName;
@@ -26,7 +24,4 @@ class User extends Equatable {
       required this.longitude,
       required this.imageData});
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
 }

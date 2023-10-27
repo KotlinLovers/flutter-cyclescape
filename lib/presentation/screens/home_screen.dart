@@ -1,3 +1,4 @@
+import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:cyclescape/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,14 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: AdvertisementCards(),
+      body: 
+      Column(
+        children: [
+          //AdvertisementCards(),
+          BicyclesScreen(),
+        ],
+      )
+      
       /*floatingActionButton: FloatingActionButton.extended(
         label: const Text('Nuevo producto'),
         icon: const Icon( Icons.add ),
