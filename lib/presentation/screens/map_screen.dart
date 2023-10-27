@@ -41,8 +41,10 @@ class MapSampleState extends State<MapSample> {
         title: const Text("Map"),
         leading: IconButton(
             onPressed: () {
-              if (!context.canPop()) return;
-              context.pop();
+              if (context.canPop()) {
+                return context.pop();
+              }
+              context.go('/');
             },
             icon: const Icon(Icons.arrow_back_rounded,
                 size: 30, color: Colors.black)),
