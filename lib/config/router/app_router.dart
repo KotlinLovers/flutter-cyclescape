@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +8,7 @@ import '../../presentation/screens/screens.dart';
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/onboarding',
       refreshListenable: goRouterNotifier,
       routes: [
         ///* Auth Routes
@@ -44,18 +42,22 @@ final goRouterProvider = Provider((ref) {
           builder: (context,state) => const UpgradeProfileScreen(),
         ),
 
+        GoRoute(
+          path: '/onboarding',
+          builder: (context, state) => const OnBoardingScreen(),
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
         final authStatus = goRouterNotifier.authStatus;
 
         if (authStatus == AuthStatus.notAunthenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') return null;
           return '/login';
         }
 
         if (authStatus == AuthStatus.authenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') {
+          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') {
             return '/';
           }
         }

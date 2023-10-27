@@ -1,3 +1,5 @@
+import 'package:cyclescape/presentation/screens/screens.dart';
+import 'package:cyclescape/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/widgets/widgets.dart';
@@ -13,7 +15,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: SideMenu( scaffoldKey: scaffoldKey ),
       appBar: AppBar(
-        title: const Text('Products'),
         actions: [
           IconButton(
             onPressed: (){}, 
@@ -21,22 +22,19 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const _ProductsView(),
-      floatingActionButton: FloatingActionButton.extended(
+      body: 
+      Column(
+        children: [
+          //AdvertisementCards(),
+          BicyclesScreen(),
+        ],
+      )
+      
+      /*floatingActionButton: FloatingActionButton.extended(
         label: const Text('Nuevo producto'),
         icon: const Icon( Icons.add ),
         onPressed: () {},
-      ),
+      ),*/
     );
-  }
-}
-
-
-class _ProductsView extends StatelessWidget {
-  const _ProductsView();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('no quiero vivir'));
   }
 }

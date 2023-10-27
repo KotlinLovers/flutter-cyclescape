@@ -1,5 +1,6 @@
 export 'datasources/auth_datasource.dart';
 export 'datasources/user_datasource.dart';
+export 'datasources/bicycle_datasource.dart';
 export 'entities/user.dart';
 export 'entities/user_response.dart';
 export 'entities/UserDto.dart';
@@ -7,3 +8,4 @@ export 'entities/bicycle.dart';
 export 'entities/card.dart';
 export 'repositories/auth_repository.dart';
 export 'repositories/user_repository.dart';
+export 'repositories/bicycle_repository.dart';

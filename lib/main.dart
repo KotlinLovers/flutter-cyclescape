@@ -18,6 +18,7 @@ class MainApp extends ConsumerWidget {
       routerConfig: appRouter,
       theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
+      //home: OnBoardingScreen(),
     );
   }
 }

@@ -53,7 +53,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 
   LoginFormNotifier({
     required this.loginUserCallback,
-}) : super(LoginFormState());
+  }) : super(LoginFormState());
 
   onEmailChange(String value) {
     final newEmail = Email.dirty(value);
@@ -72,7 +72,13 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onFormSubmit() {
     _touchEveryField();
     if (!state.isValid) return;
+    state = state.copyWith(
+      isPosting: true,
+    );
     loginUserCallback(state.email.value, state.password.value);
+    state = state.copyWith(
+      isPosting: false,
+    );
   }
 
   _touchEveryField() {
@@ -88,8 +94,8 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 
 //! 3 - StateNotifierProvider - Consume afuera
 
-
-final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
+final loginFormProvider =
+    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
   final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
   return LoginFormNotifier(loginUserCallback: loginUserCallback);
 });
