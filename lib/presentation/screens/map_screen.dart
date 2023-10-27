@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapSample extends StatefulWidget {
@@ -12,11 +13,8 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
-  final _kGooglePlex = const CameraPosition(
-    target: LatLng(0, 0),
-  );
 
-  static final Marker userMarker = Marker(
+  static const Marker userMarker = Marker(
     markerId: MarkerId('userMaker'),
     infoWindow: InfoWindow(title: 'Plex'),
     icon: BitmapDescriptor.defaultMarker,
@@ -27,7 +25,7 @@ class MapSampleState extends State<MapSample> {
     markerId: const MarkerId('bikeMarker'),
     infoWindow: const InfoWindow(title: 'Bike'),
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    position:const LatLng(37.43296265331129, -122.08832357078792),
+    position: const LatLng(37.43296265331129, -122.08832357078792),
   );
 
   static const CameraPosition defaultPosition = CameraPosition(
@@ -41,6 +39,13 @@ class MapSampleState extends State<MapSample> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Map"),
+        leading: IconButton(
+            onPressed: () {
+              if (!context.canPop()) return;
+              context.pop();
+            },
+            icon: const Icon(Icons.arrow_back_rounded,
+                size: 30, color: Colors.black)),
       ),
       body: GoogleMap(
         mapType: MapType.normal,
@@ -50,18 +55,6 @@ class MapSampleState extends State<MapSample> {
           _controller.complete(controller);
         },
       ),
-      /*floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.go('/login');
-        },
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
-      ),*/
     );
   }
-
-  /*Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }*/
 }
