@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import '../../domain/domain.dart';
 import '../datasources/user_datasource_impl.dart';
 import '../infrastructure.dart';

@@ -5,8 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/UserDto.dart';
-import '../../shared/widgets/widgets.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget{
   const ProfileScreen({super.key});

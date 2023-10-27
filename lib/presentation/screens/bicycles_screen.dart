@@ -1,9 +1,6 @@
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import '../widgets/widgets.dart';
 
 class BicyclesScreen extends ConsumerStatefulWidget {
   const BicyclesScreen({super.key});
