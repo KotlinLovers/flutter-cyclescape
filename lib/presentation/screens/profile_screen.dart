@@ -1,16 +1,33 @@
 
+import 'package:cyclescape/presentation/providers/user_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/UserDto.dart';
 import '../../shared/widgets/widgets.dart';
 
-class ProfileScreen extends StatelessWidget{
+class ProfileScreen extends ConsumerStatefulWidget{
   const ProfileScreen({super.key});
 
   @override
+  ProfileScreenState createState() =>ProfileScreenState();
+}
+
+class ProfileScreenState extends ConsumerState{
+
+  @override
+  void initState(){
+    super.initState();
+    ref.read(userProvider.notifier).getUserById();
+  }
+
+  @override
   Widget build(BuildContext context){
-    //final scaffoldKey = GlobalKey<ScaffoldState>();
+
+    final userState = ref.watch(userProvider);
+    final user = userState.user;
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     var iconColor = isDark ? Colors.deepOrange: Colors.blueAccent;
 
@@ -36,7 +53,7 @@ class ProfileScreen extends StatelessWidget{
                     width: 120,
                     height: 120,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),child: const Image(image: AssetImage('assets/images/logo.png'),)),
+                        borderRadius: BorderRadius.circular(100),child:  Image(image: AssetImage('assets/images/imagenfoto.png'),)),
                   ),
                   Positioned(
                     bottom: 0,
@@ -56,8 +73,8 @@ class ProfileScreen extends StatelessWidget{
                 ],
               ),
               const SizedBox(height: 10),
-              Text("Fabrizzio Castro",style: Theme.of(context).textTheme.bodyLarge),
-              Text("fabrizziocastro2612@gmail.com",style: Theme.of(context).textTheme.bodyMedium),
+              Text('${user?.userFirstName} ${user?.userLastName}',style: Theme.of(context).textTheme.bodyLarge),
+              Text('${user?.userEmail}',style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height:20),
               SizedBox(
                   width: 200,

@@ -2,15 +2,35 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class UpgradeProfileScreen extends StatelessWidget{
-  const UpgradeProfileScreen({super.key});
+import '../../domain/entities/UserDto.dart';
+import '../providers/user_provider.dart';
+
+
+class UpgradeProfileScreen extends ConsumerStatefulWidget{
+  const UpgradeProfileScreen({ super.key});
+
+  @override
+  UpgradeProfileState createState() => UpgradeProfileState();
+
+}
+
+class UpgradeProfileState extends ConsumerState{
+  @override
+  void initState(){
+    super.initState();
+    ref.read(userProvider.notifier).getUserById();
+  }
 
   @override
   Widget build(BuildContext context){
+
+    final userState = ref.watch(userProvider);
+    final user = userState.user;
 
     return Scaffold(
         appBar: AppBar(
@@ -32,7 +52,7 @@ class UpgradeProfileScreen extends StatelessWidget{
                       width: 120,
                         height: 120,
                         child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),child: const Image(image: AssetImage('assets/images/logo.png'),)),
+                            borderRadius: BorderRadius.circular(100),child: Image(image: AssetImage('assets/images/imagenfoto.png'),)),
                       ),
                     Positioned(
                       bottom: 0,

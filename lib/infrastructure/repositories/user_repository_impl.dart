@@ -1,13 +1,14 @@
+import 'package:dio/dio.dart';
+
 import '../../domain/domain.dart';
 import '../datasources/user_datasource_impl.dart';
 import '../infrastructure.dart';
 
 class UserRepositoryImpl extends UserRepository {
-
   final UserDataSource dataSource;
 
-  UserRepositoryImpl({UserDataSource? dataSource})
-      : dataSource = dataSource ?? UserDataSourceImpl();
+  UserRepositoryImpl({UserDataSource? dataSource, required String token})
+      : dataSource = dataSource ?? UserDataSourceImpl(accessToken: token);
 
   @override
   Future<UserDto> getUserById(int userId) {

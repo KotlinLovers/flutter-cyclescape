@@ -2,34 +2,29 @@
 import 'package:dio/dio.dart';
 import '../../config/config.dart';
 import '../../domain/domain.dart';
+import '../../shared/services/key_value_storage_service.dart';
 import '../infrastructure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserDataSourceImpl extends UserDataSource{
+class UserDataSourceImpl extends UserDataSource {
+  late final Dio dio;
+  final String accessToken;
 
-  final dio = Dio(BaseOptions(
-    baseUrl: Environment.apiUrl,
+  UserDataSourceImpl({required this.accessToken})
+      : dio = Dio(BaseOptions(
+        baseUrl: Environment.apiUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
   ));
 
-  Future<void> setBearerToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final authToken = prefs.getString('token');
-
-    if (authToken != null) {
-      dio.options.headers['Authorization'] = 'Bearer $authToken';
-    }
-  }
-
   @override
-  Future<UserDto> getUserById(int userId) async{
+  Future<UserDto> getUserById(int userId) async {
     try {
-      final response = await dio.get('/auth/users/$userId',
-          );
+      final response = await dio.get('/users/$userId');
       final userDtoResponse = UserMapper.userDtoJsonToEntity(response.data);
       return userDtoResponse;
     } on DioException catch (e) {
-      if ((e.response?.statusCode == 500)) throw WrongCredentials();
-      if ((e.type == DioExceptionType.connectionTimeout)) throw ConnectioTimeOut();
+      if (e.response?.statusCode == 500) throw WrongCredentials();
+      if (e.type == DioExceptionType.connectionTimeout) throw ConnectioTimeOut();
 
       throw CustomError(message: 'Cant get the user', errorCode: 500);
     } catch (e) {
@@ -42,5 +37,9 @@ class UserDataSourceImpl extends UserDataSource{
     // TODO: implement UpdateUser
     throw UnimplementedError();
   }
-  
 }
+
+
+
+
+
