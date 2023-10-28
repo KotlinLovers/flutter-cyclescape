@@ -2,9 +2,7 @@
 import 'package:dio/dio.dart';
 import '../../config/config.dart';
 import '../../domain/domain.dart';
-import '../../shared/services/key_value_storage_service.dart';
 import '../infrastructure.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDataSourceImpl extends UserDataSource {
   late final Dio dio;

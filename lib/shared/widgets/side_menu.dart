@@ -61,11 +61,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.location_on_outlined),
-            label: Text('Maps'),
-          ),
-          const NavigationDrawerDestination(
-            icon: Icon(Icons.location_on_outlined),
-            label: Text('Maps'),
+            label: Text('Mapas'),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),

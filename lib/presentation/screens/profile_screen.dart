@@ -51,7 +51,7 @@ class ProfileScreenState extends ConsumerState{
                     width: 120,
                     height: 120,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),child:  Image(image: AssetImage('assets/images/imagenfoto.png'),)),
+                        borderRadius: BorderRadius.circular(100),child:  Image(image: AssetImage('assets/images/imagenfoto.PNG'),)),
                   ),
                   Positioned(
                     bottom: 0,
