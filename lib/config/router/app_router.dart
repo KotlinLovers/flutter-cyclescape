@@ -26,7 +26,7 @@ final goRouterProvider = Provider((ref) {
           path: '/',
           builder: (context, state) => const HomeScreen(),
         ),
-        
+
         GoRoute(
           path: '/map',
           builder: (context, state) => const MapSample(),
@@ -34,12 +34,12 @@ final goRouterProvider = Provider((ref) {
 
         GoRoute(
           path: '/profile',
-          builder: (context,state) => const ProfileScreen(),
+          builder: (context, state) => const ProfileScreen(),
         ),
 
         GoRoute(
           path: '/profile-edit',
-          builder: (context,state) => const UpgradeProfileScreen(),
+          builder: (context, state) => const UpgradeProfileScreen(),
         ),
 
         GoRoute(
@@ -52,12 +52,16 @@ final goRouterProvider = Provider((ref) {
         final authStatus = goRouterNotifier.authStatus;
 
         if (authStatus == AuthStatus.notAunthenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') return null;
+          if (isGoingTo == '/login' ||
+              isGoingTo == '/register' ||
+              isGoingTo == '/onboarding') return null;
           return '/login';
         }
 
         if (authStatus == AuthStatus.authenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/onboarding') {
+          if (isGoingTo == '/login' ||
+              isGoingTo == '/register' ||
+              isGoingTo == '/onboarding') {
             return '/';
           }
         }
