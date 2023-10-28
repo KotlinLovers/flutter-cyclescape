@@ -8,8 +8,8 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final textStyle = Theme.of(context).textTheme;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    final textStyles = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -20,8 +20,7 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 80),
-              // Icon Banner
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,21 +31,22 @@ class RegisterScreen extends StatelessWidget {
                         context.pop();
                       },
                       icon: const Icon(Icons.arrow_back_rounded,
-                          size: 40, color: Colors.black)),
+                          size: 30, color: Colors.black)),
                   const Spacer(flex: 1),
-                  //Text('Crear cuenta', style: textStyles.titleLarge?.copyWith(color: Colors.black )),
-                  const Image(
-                    image: AssetImage('assets/images/logo.png'),
-                    height: 80,
+                  //const Image(
+                  //  image: AssetImage('assets/images/logo.png'),
+                  //  height: 80,
+                  //),
+                  Text(
+                    'Cyclescape',
+                    style: textStyle.titleLarge,
                   ),
                   const Spacer(flex: 2),
                 ],
               ),
-
-              const SizedBox(height: 50),
-
+              const SizedBox(height: 30),
               Container(
-                height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                height: size.height - 200, // 80 los dos sizebox y 100 el ícono
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: scaffoldBackgroundColor,
@@ -74,35 +74,35 @@ class _RegisterForm extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Text('Regístrate', style: textStyles.titleMedium),
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           const CustomTextFormField(
             label: 'Nombre completo',
             keyboardType: TextInputType.emailAddress,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const CustomTextFormField(
             label: 'Repita la contraseña',
             obscureText: true,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           SizedBox(
               width: double.infinity,
               height: 60,
               child: CustomFilledButton(
                 text: 'Crear',
-                buttonColor: Color.fromARGB(255, 97, 189, 215),
+                buttonColor: const Color.fromARGB(255, 97, 189, 215),
                 onPressed: () {},
               )),
           const Spacer(flex: 2),

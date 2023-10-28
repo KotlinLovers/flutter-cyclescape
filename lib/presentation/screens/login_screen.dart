@@ -1,9 +1,9 @@
+import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
           body: CustomBackground(
               child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -34,7 +34,6 @@ class LoginScreen extends StatelessWidget {
               height: 80,
             ),
             const SizedBox(height: 20),
-
             Container(
               height: size.height - 260, // 80 los dos sizebox y 100 el ícono
               width: double.infinity,
@@ -55,16 +54,28 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends ConsumerWidget {
   const _LoginForm();
 
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginForm = ref.watch(loginFormProvider);
+    ref.listen(authProvider, (previous, next) {
+      if (next.errorMessage.isEmpty) {
+        return;
+      }
+      showSnackBar(context, next.errorMessage);
+    });
 
     final textStyles = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
-        children: [
+        children: [ 
           const SizedBox(height: 50),
           Text('Iniciar Sesión', style: textStyles.titleMedium),
           const SizedBox(height: 90),
@@ -72,14 +83,16 @@ class _LoginForm extends ConsumerWidget {
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
             onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
-            errorMessage: loginForm.isFormPosted ? loginForm.email.errorMessage : null,
+            errorMessage:
+                loginForm.isFormPosted ? loginForm.email.errorMessage : null,
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
             onChanged: ref.read(loginFormProvider.notifier).onPasswordChanged,
-            errorMessage: loginForm.isFormPosted ? loginForm.password.errorMessage : null,
+            errorMessage:
+                loginForm.isFormPosted ? loginForm.password.errorMessage : null,
           ),
           const SizedBox(height: 30),
           SizedBox(
@@ -88,7 +101,8 @@ class _LoginForm extends ConsumerWidget {
               child: CustomFilledButton(
                 text: 'Ingresar',
                 buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                onPressed: () {
+                onPressed: loginForm.isPosting ? null
+                :() {
                   ref.read(loginFormProvider.notifier).onFormSubmit();
                 },
               )),

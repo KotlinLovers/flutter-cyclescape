@@ -37,7 +37,7 @@ class CustomTextFormField extends StatelessWidget {
     return Container(
       // padding: const EdgeInsets.only(bottom: 0, top: 15),
       decoration: BoxDecoration(
-        color: Color(0xFFF8F7F7),
+        color: const Color(0xFFF8F7F7),
         borderRadius: const BorderRadius.only(topLeft: borderRadius, bottomLeft: borderRadius, bottomRight: borderRadius ),
         boxShadow: [
           BoxShadow(
@@ -52,7 +52,7 @@ class CustomTextFormField extends StatelessWidget {
         validator: validator,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: const TextStyle( fontSize: 20, color: Colors.black54 ),
+        style: const TextStyle( fontSize: 18, color: Colors.black54 ),
         decoration: InputDecoration(
           floatingLabelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           enabledBorder: border,

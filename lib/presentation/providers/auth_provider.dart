@@ -1,4 +1,6 @@
 import 'package:cyclescape/infrastructure/infrastructure.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service.dart';
+import 'package:cyclescape/shared/services/key_value_storage_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/domain.dart';
@@ -11,21 +13,25 @@ enum AuthStatus { checking, authenticated, notAunthenticated }
 class AuthState {
   final AuthStatus authStatus;
   final UserResponse? user;
+  final String token;
   final String errorMessage;
 
   AuthState(
       {this.authStatus = AuthStatus.checking,
       this.user,
+      this.token = '',
       this.errorMessage = ''});
 
   AuthState copyWith({
     AuthStatus? authStatus,
     UserResponse? user,
     String? errorMessage,
+    String? token,
   }) =>
       AuthState(
         authStatus: authStatus ?? this.authStatus,
         user: user ?? this.user,
+        token: token ?? this.token,
         errorMessage: errorMessage ?? this.errorMessage,
       );
 }
@@ -36,9 +42,12 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
+  final KeyValueStorage keyValueStorageService;
 
-  AuthNotifier({required this.authRepository}) : super(AuthState()) {
-    checkAuthStatus();
+  AuthNotifier(
+      {required this.keyValueStorageService, required this.authRepository})
+      : super(AuthState()) {
+    checkToken();
   }
 
   Future<void> loginUser(String email, String password) async {
@@ -49,16 +58,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       _setLoggedUsers(user);
     } on WrongCredentials {
       logOut('Credenciales no son correctas');
+    } on ConnectioTimeOut {
+      logOut('TimeOut');
     } catch (e) {
       logOut('Error no controlado');
     }
   }
 
-  void registerUser(String email, String password) async {}
+  void registerUser(String email, String password, String fullName) async {}
 
-  void checkAuthStatus() async {}
-
-  void logOut([String? errorMessage]) async {
+  Future<void> logOut([String? errorMessage]) async {
+    await keyValueStorageService.removeKey('token');
+    await keyValueStorageService.removeKey('userId');
     state = state.copyWith(
       authStatus: AuthStatus.notAunthenticated,
       user: null,
@@ -66,10 +77,27 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void _setLoggedUsers(UserResponse user) {
+  void checkToken() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+
+    if (token == null) {
+      return logOut();
+    } else {
+      state = state.copyWith(
+        authStatus: AuthStatus.authenticated,
+        token: token,
+      );
+    }
+  }
+
+  void _setLoggedUsers(UserResponse user) async {
+    await keyValueStorageService.setKeyValue('token', user.token);
+    await keyValueStorageService.setKeyValue('userId',user.userId);
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,
+      errorMessage: '',
+      token: user.token,
     );
   }
 }
@@ -79,5 +107,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
-  return AuthNotifier(authRepository: authRepository);
+  final keyValueStorageService = KeyValueStorageImpl();
+  return AuthNotifier(
+      authRepository: authRepository,
+      keyValueStorageService: keyValueStorageService);
 });
