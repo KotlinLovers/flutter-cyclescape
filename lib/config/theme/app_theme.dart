@@ -19,7 +19,7 @@ class AppTheme {
       titleMedium: GoogleFonts.openSans()
         .copyWith( fontSize: 25, fontWeight: FontWeight.normal ),
       titleSmall: GoogleFonts.montserratAlternates()
-        .copyWith( fontSize: 20 )
+        .copyWith( fontSize: 20, fontWeight: FontWeight.bold )
     ),
 
     ///* Scaffold Background Color

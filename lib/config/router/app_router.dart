@@ -31,10 +31,21 @@ final goRouterProvider = Provider((ref) {
           path: '/map',
           builder: (context, state) => const MapSample(),
         ),
+
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
+
+        GoRoute(
+          path: '/profile-edit',
+          builder: (context, state) => const UpgradeProfileScreen(),
+        ),
+
         GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
-        )
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
@@ -48,7 +59,9 @@ final goRouterProvider = Provider((ref) {
         }
 
         if (authStatus == AuthStatus.authenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') {
+          if (isGoingTo == '/login' ||
+              isGoingTo == '/register' ||
+              isGoingTo == '/onboarding') {
             return '/';
           }
         }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'presentation/screens/onboarding_screen.dart';
-
 import 'config/config.dart';
 
 void main() async {
@@ -14,7 +12,7 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appRouter = ref.watch( goRouterProvider );
+    final appRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: appRouter,
       theme: AppTheme().getTheme(),
