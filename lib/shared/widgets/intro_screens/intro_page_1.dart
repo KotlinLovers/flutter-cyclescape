@@ -30,7 +30,7 @@ class IntroPage1 extends StatelessWidget {
           Text(
             'Estas a un paso de encontrar la bicicleta que buscas',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 15,
               color: Colors.white,
             ),
           ),
