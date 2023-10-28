@@ -26,7 +26,7 @@ final goRouterProvider = Provider((ref) {
           path: '/',
           builder: (context, state) => const HomeScreen(),
         ),
-        
+
         GoRoute(
           path: '/map',
           builder: (context, state) => const MapSample(),
@@ -34,14 +34,16 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
-          )
+        )
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
         final authStatus = goRouterNotifier.authStatus;
 
         if (authStatus == AuthStatus.notAunthenticated) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+          if (isGoingTo == '/login' ||
+              isGoingTo == '/register' ||
+              isGoingTo == '/onboarding') return null;
           return '/login';
         }
 
