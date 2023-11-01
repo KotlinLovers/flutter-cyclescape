@@ -24,9 +24,6 @@ class HomeScreen extends StatelessWidget {
       ),
       body: CustomScrollView(
         slivers: [
-          // Aquí tendrías que convertir AdvertisementCards() a su versión Sliver también,
-          // si es una lista puedes usar SliverList, si es un widget único puedes usar SliverToBoxAdapter
-          // Ejemplo con SliverToBoxAdapter:
           SliverToBoxAdapter(
             child: AdvertisementCards(),
           ),

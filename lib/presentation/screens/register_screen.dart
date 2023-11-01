@@ -131,7 +131,7 @@ class _RegisterForm extends ConsumerWidget {
                 text: 'Crear',
                 buttonColor: const Color.fromARGB(255, 97, 189, 215),
                 onPressed: () {
-                  ref.watch(registerFormProvider.notifier).onSubmit;
+                  ref.read(registerFormProvider.notifier).onSubmit();
                  },
               )),
           const Spacer(flex: 2),

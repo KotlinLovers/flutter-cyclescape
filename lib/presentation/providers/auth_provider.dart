@@ -69,11 +69,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> registerUser(String email, String password, String confirmPassword, String fullName) async {
+  Future<void> registerUser(String fullName, String email, String password, String confirmPassword) async {
     
     await Future.delayed(const Duration(milliseconds: 500));
     try {
-      final user = await authRepository.register(email, password, confirmPassword, fullName);
+      final user = await authRepository.register(fullName, email, password, confirmPassword);
       _setLoggedUsers(user);
     } on WrongCredentials {
       logOut('Credenciales ya existen');
@@ -118,17 +118,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       token: user.token,
     );
   }
-
-  /*void _setRegisterUser(UserResponse user) async {
-    await keyValueStorageService.setKeyValue('token', user.token);
-    await keyValueStorageService.setKeyValue('userId',user.userId);
-    state = state.copyWith(
-      user: user,
-      authStatus: AuthStatus.authenticated,
-      errorMessage: '',
-      token: user.token,
-    );
-  }*/
 }
 
 //! Proporcionar el Notificador de Estado

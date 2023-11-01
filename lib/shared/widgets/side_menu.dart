@@ -21,7 +21,6 @@ class SideMenuState extends ConsumerState<SideMenu> {
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     final textStyles = Theme.of(context).textTheme;
 
-
     return NavigationDrawer(
         elevation: 1,
         selectedIndex: navDrawerIndex,
@@ -40,16 +39,14 @@ class SideMenuState extends ConsumerState<SideMenu> {
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );
           widget.scaffoldKey.currentState?.closeDrawer();
-        },  
+        },
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(20, hasNotch ? 0 : 20, 16, 0),
-            child: Text('Saludos', style: textStyles.titleMedium),
+            padding: EdgeInsets.fromLTRB(20, hasNotch ? 10 : 30, 16, 10),
+            child: Image.asset('assets/images/logo.png',
+                height: 60), // Asume que tienes un logo en tus assets
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 16, 10),
-            child: Text('esclavo', style: textStyles.titleSmall),
-          ),
+          const SizedBox(height: 30),
           const NavigationDrawerDestination(
             icon: Icon(Icons.home_outlined),
             label: Text('Inicio'),
@@ -57,11 +54,27 @@ class SideMenuState extends ConsumerState<SideMenu> {
           const NavigationDrawerDestination(
             icon: Icon(Icons.person_outline),
             label: Text('Mi cuenta'),
-
           ),
           const NavigationDrawerDestination(
             icon: Icon(Icons.location_on_outlined),
             label: Text('Mapas'),
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
+            child: Divider(),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.favorite_border),
+            label: Text('Favoritos'),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons.add_circle_outline),
+            label: Text('Publicar'),
+          ),
+          const NavigationDrawerDestination(
+            icon: Icon(Icons
+                .calendar_today_outlined), // Icono que representa las reservas
+            label: Text('Administrar Reservas'),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
