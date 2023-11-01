@@ -46,7 +46,7 @@ class UpgradeProfileState extends ConsumerState{
                       width: 120,
                         height: 120,
                         child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),child: Image(image: AssetImage('assets/images/imagenfoto.PNG'),)),
+                            borderRadius: BorderRadius.circular(100),child: Image.network('${user?.imageData}',fit: BoxFit.cover)),
                       ),
                     Positioned(
                       bottom: 0,
