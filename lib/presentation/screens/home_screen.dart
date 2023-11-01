@@ -13,28 +13,26 @@ class HomeScreen extends StatelessWidget {
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      drawer: SideMenu( scaffoldKey: scaffoldKey ),
+      drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: (){}, 
-            icon: const Icon( Icons.search_rounded)
+            onPressed: () {}, 
+            icon: const Icon(Icons.search_rounded)
           )
         ],
       ),
-      body: 
-      Column(
-        children: [
-          //AdvertisementCards(),
-          BicyclesScreen(),
+      body: CustomScrollView(
+        slivers: [
+          // Aquí tendrías que convertir AdvertisementCards() a su versión Sliver también,
+          // si es una lista puedes usar SliverList, si es un widget único puedes usar SliverToBoxAdapter
+          // Ejemplo con SliverToBoxAdapter:
+          SliverToBoxAdapter(
+            child: AdvertisementCards(),
+          ),
+          const BicyclesScreen(),
         ],
       )
-      
-      /*floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Nuevo producto'),
-        icon: const Icon( Icons.add ),
-        onPressed: () {},
-      ),*/
     );
   }
 }

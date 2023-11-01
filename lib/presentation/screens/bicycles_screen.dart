@@ -19,26 +19,37 @@ class BicyclesScreenState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     final bicycleState = ref.watch(bicyclesProvider);
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          shrinkWrap: true,
-          itemCount: bicycleState.bicycles.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.7,
-          ),
-          itemBuilder: (context, index) {
+    return SliverPadding(
+      padding: const EdgeInsets.all(8.0),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.7,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
             final bicycle = bicycleState.bicycles[index];
             return GestureDetector(
               child: Card(
+                elevation: 4, // Añade sombra
+                shape: RoundedRectangleBorder(
+                  // Bordado redondeado
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Image.network(
-                        bicycle.imageData,
-                        fit: BoxFit.cover,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15),
+                        ),
+                        child: Image.network(
+                          bicycle.imageData,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Padding(
@@ -46,16 +57,19 @@ class BicyclesScreenState extends ConsumerState {
                       child: Text(
                         bicycle.bicycleName,
                         style: const TextStyle(
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
                         'S/. ${bicycle.bicyclePrice.toString()}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                          fontSize: 18,
                         ),
                       ),
                     ),
@@ -64,6 +78,7 @@ class BicyclesScreenState extends ConsumerState {
               ),
             );
           },
+          childCount: bicycleState.bicycles.length,
         ),
       ),
     );
