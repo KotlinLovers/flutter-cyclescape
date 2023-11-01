@@ -25,19 +25,26 @@ class _IntroPage3State extends State<IntroPage3>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.teal,
-      child: Center(
-        child: ScaleTransition(
-          scale: _animation,
-          child: Text(
-            'Prueba ya Cyclescape! Unete ahora!',
+      color: Color(0xFFF2F2F2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            '¡Únete ahora!',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
-        ),
+          SizedBox(height: 20),
+          Image.network(
+            'https://i.pinimg.com/originals/bd/6f/e5/bd6fe5fcaac110f39235829eb441ee33.gif',
+            height: 400, 
+            width: 400, 
+          ),
+        ],
       ),
     );
   }

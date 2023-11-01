@@ -1,5 +1,7 @@
 import 'package:cyclescape/domain/domain.dart';
 
+import '../infrastructure.dart';
+
 class UserMapper {
   static UserResponse userJsonToEntity(Map<String, dynamic> json) =>
       UserResponse(
@@ -14,13 +16,11 @@ class UserMapper {
         userEmail: json['userEmail'],
         userPhone: json['userPhone'],
         userBirthDate: json['userBirthDate'],
-        latitudeData: json['latitudeData'],
-        longitudeData: json['longitudeData'],
+        latitudeData: (json['latitudeData'] is num) ? json['latitudeData'].toDouble() : 0.0,
+        longitudeData: (json['longitudeData'] is num) ? json['longitudeData'].toDouble() : 0.0,
         imageData: json['imageData'],
-        bicycles: json['bicycles'],
-        cards: json['cards']
+        bicycles: List<Bicycle>.from(json['bicycles'].map((x) => BicycleMapper.jsonToEntity(x))),
+        cards: List<Card>.from(json['cards'].map((x) => CardMapper.jsonToEntity(x))),
       );
-
-
 }
 
