@@ -13,24 +13,28 @@ enum AuthStatus { checking, authenticated, notAunthenticated }
 class AuthState {
   final AuthStatus authStatus;
   final UserResponse? user;
+  //final User? registerUser;
   final String token;
   final String errorMessage;
 
   AuthState(
       {this.authStatus = AuthStatus.checking,
       this.user,
+      //this.registerUser,
       this.token = '',
       this.errorMessage = ''});
 
   AuthState copyWith({
     AuthStatus? authStatus,
     UserResponse? user,
+    //User? registerUser,
     String? errorMessage,
     String? token,
   }) =>
       AuthState(
         authStatus: authStatus ?? this.authStatus,
         user: user ?? this.user,
+        //registerUser: registerUser ?? this.registerUser,
         token: token ?? this.token,
         errorMessage: errorMessage ?? this.errorMessage,
       );
@@ -51,7 +55,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> loginUser(String email, String password) async {
-    await Future.delayed(const Duration(milliseconds: 5600));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     try {
       final user = await authRepository.login(email, password);
@@ -65,7 +69,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password, String fullName) async {}
+  Future<void> registerUser(String email, String password, String confirmPassword, String fullName) async {
+    
+    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      final user = await authRepository.register(email, password, confirmPassword, fullName);
+      _setLoggedUsers(user);
+    } on WrongCredentials {
+      logOut('Credenciales ya existen');
+    } on ConnectioTimeOut {
+      logOut('TimeOut');
+    } catch (e) {
+      logOut('Error no controlado');
+    }
+
+  }
 
   Future<void> logOut([String? errorMessage]) async {
     await keyValueStorageService.removeKey('token');
@@ -100,6 +118,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
       token: user.token,
     );
   }
+
+  /*void _setRegisterUser(UserResponse user) async {
+    await keyValueStorageService.setKeyValue('token', user.token);
+    await keyValueStorageService.setKeyValue('userId',user.userId);
+    state = state.copyWith(
+      user: user,
+      authStatus: AuthStatus.authenticated,
+      errorMessage: '',
+      token: user.token,
+    );
+  }*/
 }
 
 //! Proporcionar el Notificador de Estado

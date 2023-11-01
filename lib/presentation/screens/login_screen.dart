@@ -1,4 +1,3 @@
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -101,10 +100,7 @@ class _LoginForm extends ConsumerWidget {
               child: CustomFilledButton(
                 text: 'Ingresar',
                 buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                onPressed: loginForm.isPosting ? null
-                :() {
-                  ref.read(loginFormProvider.notifier).onFormSubmit();
-                },
+                onPressed: loginForm.isPosting ? null : ref.watch(loginFormProvider.notifier).onFormSubmit,
               )),
           const Spacer(flex: 2),
           Row(

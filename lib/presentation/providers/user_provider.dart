@@ -29,7 +29,6 @@ class UserNotifier extends StateNotifier<UserState>{
         final userId = await keyValueStorageService.getValue<int>('userId');
         final user = await userRepository.getUserById(userId!);
         state = state.copyWith(user: user,isLoading: false);
-
       }catch(e){
         state = state.copyWith(isLoading: false);
       }

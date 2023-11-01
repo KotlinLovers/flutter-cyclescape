@@ -8,7 +8,7 @@ import '../../presentation/screens/screens.dart';
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-      initialLocation: '/onboarding',
+      initialLocation: '/loading',
       refreshListenable: goRouterNotifier,
       routes: [
         ///* Auth Routes
@@ -46,22 +46,33 @@ final goRouterProvider = Provider((ref) {
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
         ),
+
+        GoRoute(
+          path: '/loading',
+          builder: (context, state) => const LoadingScreen(),
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
         final authStatus = goRouterNotifier.authStatus;
 
+        if (isGoingTo == '/loading' && authStatus == AuthStatus.checking) {
+          return '/onboarding';
+        }
+
         if (authStatus == AuthStatus.notAunthenticated) {
           if (isGoingTo == '/login' ||
               isGoingTo == '/register' ||
-              isGoingTo == '/onboarding') return null;
+              isGoingTo == '/onboarding' ||
+              isGoingTo == '/loading') return null;
           return '/login';
         }
 
         if (authStatus == AuthStatus.authenticated) {
           if (isGoingTo == '/login' ||
               isGoingTo == '/register' ||
-              isGoingTo == '/onboarding') {
+              isGoingTo == '/onboarding' ||
+              isGoingTo == '/loading') {
             return '/';
           }
         }
