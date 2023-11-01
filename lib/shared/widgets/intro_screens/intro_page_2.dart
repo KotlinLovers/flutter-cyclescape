@@ -11,33 +11,26 @@ class IntroPage2 extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 0),
           Text(
-            'CYCLESCAPE',
+            '¿Qué ofrecemos?',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-          SizedBox(height: 20),
-          Text(
-            '¿Qué ofrecemos?',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 20),
+          SizedBox(height: 0),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 _buildBenefitCard(
                     Icons.map, 'Mapa de bicicletas', 'Encuentra fácilmente bicicletas disponibles en tu área.'),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 _buildBenefitCard(
                     Icons.library_books, 'Catálogos', 'Explora una amplia variedad de bicicletas disponibles para alquilar.'),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 _buildBenefitCard(Icons.filter_alt, 'Filtros', 'Filtra tus opciones de alquiler según tus preferencias y necesidades.'),
               ],
             ),
@@ -54,16 +47,16 @@ class IntroPage2 extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Icon(icon, size: 50, color: Colors.cyan),
+            Icon(icon, size: 30, color: Colors.cyan),
             SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
               description,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ],
