@@ -29,7 +29,7 @@ final goRouterProvider = Provider((ref) {
 
         GoRoute(
           path: '/map',
-          builder: (context, state) => const MapSample(),
+          builder: (context, state) => const MapScreen(),
         ),
 
         GoRoute(
