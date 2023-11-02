@@ -26,7 +26,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   }
 
   @override
-  Future<Bicycle> getBicycleById(String id) async {
+  Future<Bicycle> getBicycleById(int id) async {
     try {
       final response = await dio.get('/bicycles/$id');
       return BicycleMapper.jsonToEntity(response.data);
