@@ -74,7 +74,7 @@ class _LoginForm extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
-        children: [ 
+        children: [
           const SizedBox(height: 50),
           Text('Iniciar Sesión', style: textStyles.titleMedium),
           const SizedBox(height: 90),
@@ -99,8 +99,10 @@ class _LoginForm extends ConsumerWidget {
               height: 60,
               child: CustomFilledButton(
                 text: 'Ingresar',
-                buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                onPressed: loginForm.isPosting ? null : ref.watch(loginFormProvider.notifier).onFormSubmit,
+                onPressed: loginForm.isPosting
+                    ? null
+                    : ref.read(loginFormProvider.notifier).onFormSubmit,
+                isPosting: loginForm.isPosting,
               )),
           const Spacer(flex: 2),
           Row(
