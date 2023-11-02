@@ -71,23 +71,23 @@ class UpgradeProfileState extends ConsumerState{
                 Form(child: Column(
                   children: [
                     TextFormField(
-                      decoration: const InputDecoration(label:Text("Nombres"),prefixIcon: Icon(Icons.person_2_sharp)),
+                      decoration: InputDecoration(label:Text('${user?.userFirstName}'),prefixIcon: Icon(Icons.person_2_sharp)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: const InputDecoration(label:Text("Apellidos"),prefixIcon: Icon(Icons.person_rounded)),
+                      decoration: InputDecoration(label:Text('${user?.userLastName}'),prefixIcon: Icon(Icons.person_rounded)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: const InputDecoration(label:Text("Correo"),prefixIcon: Icon(Icons.email)),
+                      decoration: InputDecoration(label:Text('${user?.userEmail}'),prefixIcon: Icon(Icons.email)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: const InputDecoration(label:Text("Teléfono móvil"),prefixIcon: Icon(Icons.phone)),
+                      decoration: InputDecoration(label:Text('${user?.userPhone}'),prefixIcon: Icon(Icons.phone)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: const InputDecoration(label:Text("Fecha de nacimiento (AAAA-MM-DD)"),prefixIcon: Icon(Icons.cake)),
+                      decoration:  InputDecoration(label:Text('${user?.userBirthDate}'),prefixIcon: Icon(Icons.cake)),
                     ),
                     const SizedBox(height: 40),
                     SizedBox(
