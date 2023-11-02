@@ -11,6 +11,7 @@ class UserMapper {
 
   static UserDto userDtoJsonToEntity(Map<String,dynamic>json) =>
       UserDto(
+        userId: json['userId'],
         userFirstName: json['userFirstName'],
         userLastName: json['userLastName'],
         userEmail: json['userEmail'],

@@ -1,6 +1,7 @@
 
 
 class Bicycle {
+  final int bicycleId;
   final String bicycleName;
   final String bicycleDescription;
   final double bicyclePrice;
@@ -9,7 +10,9 @@ class Bicycle {
   final String imageData;
 
   Bicycle(
-      {required this.bicycleName,
+      {
+      required this.bicycleId,
+      required this.bicycleName,
       required this.bicycleDescription,
       required this.bicyclePrice,
       required this.bicycleSize,

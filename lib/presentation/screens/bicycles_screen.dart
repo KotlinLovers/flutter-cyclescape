@@ -43,7 +43,7 @@ class BicyclesScreenState extends ConsumerState {
                   children: [
                     Expanded(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(15),
                         ),
                         child: Image.network(
