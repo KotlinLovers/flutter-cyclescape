@@ -50,9 +50,12 @@ class BicyclesScreenState extends ConsumerState {
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(15),
                         ),
-                        child: Image.network(
-                          bicycle.imageData,
-                          fit: BoxFit.cover,
+                        child: Hero(
+                          tag: bicycle.bicycleId,
+                          child: Image.network(
+                            bicycle.imageData,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

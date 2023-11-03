@@ -17,9 +17,9 @@ class AppTheme {
       titleLarge: GoogleFonts.montserratAlternates()
         .copyWith( fontSize: 40, fontWeight: FontWeight.bold ),
       titleMedium: GoogleFonts.openSans()
-        .copyWith( fontSize: 25, fontWeight: FontWeight.normal ),
-      titleSmall: GoogleFonts.montserratAlternates()
-        .copyWith( fontSize: 20, fontWeight: FontWeight.bold )
+        .copyWith( fontSize: 23, fontWeight: FontWeight.normal ),
+      titleSmall: GoogleFonts.openSans()
+        .copyWith( fontSize: 20, fontWeight: FontWeight.normal ),
     ),
 
     ///* Scaffold Background Color
