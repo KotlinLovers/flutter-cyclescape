@@ -2,7 +2,7 @@ import '../domain.dart';
 
 abstract class BicycleDatasource {
   Future<List<Bicycle>> getBicycles();
-  Future<Bicycle> getBicycleById(String id);
+  Future<Bicycle> getBicycleById(int id);
   Future<List<Bicycle>> searchBicycleByTerm(String term);
   Future<Bicycle> createBicycle(String id, Bicycle bicycle);
   Future<Bicycle> updateBicycle(String id, Bicycle bicycle);

@@ -1,6 +1,7 @@
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class BicyclesScreen extends ConsumerStatefulWidget {
   const BicyclesScreen({super.key});
@@ -32,6 +33,9 @@ class BicyclesScreenState extends ConsumerState {
           (context, index) {
             final bicycle = bicycleState.bicycles[index];
             return GestureDetector(
+              onTap: () {
+                context.go('/bicycle/${bicycle.bicycleId}');
+              },
               child: Card(
                 elevation: 4, // Añade sombra
                 shape: RoundedRectangleBorder(
@@ -46,9 +50,12 @@ class BicyclesScreenState extends ConsumerState {
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(15),
                         ),
-                        child: Image.network(
-                          bicycle.imageData,
-                          fit: BoxFit.cover,
+                        child: Hero(
+                          tag: bicycle.bicycleId,
+                          child: Image.network(
+                            bicycle.imageData,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

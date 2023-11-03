@@ -7,3 +7,4 @@ export 'home_screen.dart';
 export 'profileEdit_screen.dart';
 export 'bicycles_screen.dart';
 export 'loading_screen.dart';
+export 'bicycle_detail_screen.dart';

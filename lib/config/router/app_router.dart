@@ -51,6 +51,19 @@ final goRouterProvider = Provider((ref) {
           path: '/loading',
           builder: (context, state) => const LoadingScreen(),
         ),
+
+        GoRoute(
+          path: '/bicycle/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return BicycleDetailScreen(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
