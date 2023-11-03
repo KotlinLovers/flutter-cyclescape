@@ -22,12 +22,6 @@ class LoginScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 100),
-            // Icon Banner
-            //const Icon(
-            //  Icons.production_quantity_limits_rounded,
-            //  color: Colors.white,
-            //  size: 100,
-            //),
             const Image(
               image: AssetImage('assets/images/logo.png'),
               height: 80,
@@ -99,6 +93,7 @@ class _LoginForm extends ConsumerWidget {
               height: 60,
               child: CustomFilledButton(
                 text: 'Ingresar',
+                buttonColor: const Color.fromARGB(255, 97, 189, 215),
                 onPressed: loginForm.isPosting
                     ? null
                     : ref.read(loginFormProvider.notifier).onFormSubmit,

@@ -52,7 +52,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
           onPressed: () => context.go('/'),
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
-        title: Text('${bicycleDetail?.bicycleName ?? 'Loading...'}'),
+        title: Text('${bicycleDetail?.bicycleName ?? 'Cargando...'}'),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -80,26 +80,27 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: SizedBox(
                         width: double.infinity,
-                        child: Flexible(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: FilledButton(
-                                  onPressed: () {},
-                                  child: const Text('Comprar'),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: FilledButton(
+                                onPressed: () {},
+                                child: const Text('Comprar'),
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  LineAwesomeIcons.shopping_cart_arrow_down,
+                                  size: 30.0,
                                 ),
                               ),
-                              const SizedBox(width: 10.0),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(LineAwesomeIcons.shopping_cart_arrow_down, size: 30.0,),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     )
