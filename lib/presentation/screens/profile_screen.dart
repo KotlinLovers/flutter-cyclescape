@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-
+import '../../presentation/widgets/bicycle_operatios.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget{
   const ProfileScreen({super.key});
@@ -88,9 +88,22 @@ class ProfileScreenState extends ConsumerState{
               const SizedBox(height: 30),
               const Divider(),
               const SizedBox(height: 10),
-
+              ListTile(
+                leading: Icon(Icons.directions_bike),
+                title: Text('Publicar Bicicletas'),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () {
+                  // Navegar a BicycleOperation
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BicycleOperation()),
+                  );
+                },
+              ),
               ///Menu
+              ProfileMenuWidget(title: "Publicar biciletas",icon: LineAwesomeIcons.bicycle,onPress: (){}),
               ProfileMenuWidget(title: "Bicicletas publicadas",icon: LineAwesomeIcons.bicycle,onPress: (){}),
+
               ProfileMenuWidget(title: "Administración de cuenta",icon: LineAwesomeIcons.user_check,onPress: (){}),
               ProfileMenuWidget(title: "Detalles de pago",icon: LineAwesomeIcons.wallet,onPress: (){}),
               const Divider(),

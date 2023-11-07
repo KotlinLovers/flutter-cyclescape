@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../domain/entities/bicycle.dart';
-import '../services/bicycle_service.dart';
+import '../../domain/entities/bicycles.dart';
+import '../../shared/services/bicycle_service.dart';
 
 class BicycleOperation extends StatefulWidget {
   @override
