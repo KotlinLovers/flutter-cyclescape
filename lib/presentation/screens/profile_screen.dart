@@ -101,7 +101,6 @@ class ProfileScreenState extends ConsumerState{
                 },
               ),
               ///Menu
-              ProfileMenuWidget(title: "Publicar biciletas",icon: LineAwesomeIcons.bicycle,onPress: (){}),
               ProfileMenuWidget(title: "Bicicletas publicadas",icon: LineAwesomeIcons.bicycle,onPress: (){}),
 
               ProfileMenuWidget(title: "Administración de cuenta",icon: LineAwesomeIcons.user_check,onPress: (){}),

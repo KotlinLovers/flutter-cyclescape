@@ -53,11 +53,10 @@ class _BicycleOperationsState extends State<BicycleOperation> {
       _imageUrlController
     ];
 
-    bool areFieldsEmpty = controllers.any((controller) =>
-    controller.text.isEmpty);
-    bool isUrlValid = Uri
-        .tryParse(_imageUrlController.text)
-        ?.hasScheme ?? false;
+    bool areFieldsEmpty =
+        controllers.any((controller) => controller.text.isEmpty);
+    bool isUrlValid =
+        Uri.tryParse(_imageUrlController.text)?.hasScheme ?? false;
 
     if (areFieldsEmpty || !isUrlValid) {
       _showSnackBar('Todos los campos son obligatorios y deben ser válidos.');
@@ -68,8 +67,7 @@ class _BicycleOperationsState extends State<BicycleOperation> {
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.red)
-    );
+        SnackBar(content: Text(message), backgroundColor: Colors.red));
   }
 
   Bicycle _constructBicycleFromControllers(int id) {
@@ -118,11 +116,11 @@ class _BicycleOperationsState extends State<BicycleOperation> {
   void _updateBicycle() async {
     if (_validarCampos()) {
       if (editingIndex != null) {
-        Bicycle updatedBicycle = _constructBicycleFromControllers(
-            bicycles[editingIndex!].id);
+        Bicycle updatedBicycle =
+            _constructBicycleFromControllers(bicycles[editingIndex!].id);
         try {
-          Bicycle serverUpdatedBicycle = await ApiService().updateBicycle(
-              updatedBicycle.id, updatedBicycle);
+          Bicycle serverUpdatedBicycle = await ApiService()
+              .updateBicycle(updatedBicycle.id, updatedBicycle);
           setState(() {
             bicycles[editingIndex!] = serverUpdatedBicycle;
             editingIndex = null;
@@ -130,7 +128,7 @@ class _BicycleOperationsState extends State<BicycleOperation> {
           });
           _clearControllers();
         } catch (e) {
-          _showSnackBar('Error al actualizar el ítem: $e');
+          _showSnackBar('Error al actualizar el Bicycles: $e');
         }
       }
     }
@@ -145,110 +143,104 @@ class _BicycleOperationsState extends State<BicycleOperation> {
     _imageUrlController.clear();
   }
 
-
   void _confirmDelete(int index) {
     showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            backgroundColor: Colors.transparent,
-            // Hacer transparente el color de fondo de AlertDialog
-            content: Card(
-              color: Colors.white70, // Color de advertencia p
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        content: Card(
+          color: Colors.white70,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Confirmación",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(height: 20),
+                Text("¿Estás seguro de que deseas eliminar este Bicycle?"),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Confirmación", style: TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
-                    Text("¿Estás seguro de que deseas eliminar este ítem?"),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            int itemId = bicycles[index].id;
-                            try {
-                              bool isDeleted = await ApiService().deleteItem(
-                                  itemId);
-                              if (isDeleted) {
-                                setState(() {
-                                  bicycles.removeAt(index);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(
-                                          'Ítem eliminado con éxito.'),
-                                          backgroundColor: Colors.red)
-                                  );
-                                });
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(
-                                        'Error al eliminar el ítem del servidor.'),
-                                        backgroundColor: Colors.red)
-                                );
-                              }
-                            } catch (e) {
+                    ElevatedButton(
+                      onPressed: () async {
+                        int itemId = bicycles[index].id;
+                        try {
+                          bool isDeleted =
+                              await ApiService().deleteItem(itemId);
+                          if (isDeleted) {
+                            setState(() {
+                              bicycles.removeAt(index);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(
-                                      'Error al eliminar el ítem: $e'),
-                                      backgroundColor: Colors.red)
-                              );
-                            }
-                            Navigator.pop(context);
-                          },
-                          child: Text("Sí", textAlign: TextAlign.center),
-                          style: ElevatedButton.styleFrom(primary: Colors.red),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("No", textAlign: TextAlign.center),
-                        ),
-                      ],
+                                  SnackBar(
+                                      content:
+                                          Text('Bicycle eliminado con éxito.'),
+                                      backgroundColor: Colors.red));
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'Error al eliminar el Bicycle del servidor.'),
+                                backgroundColor: Colors.red));
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Error al eliminar el Bicycle: $e'),
+                              backgroundColor: Colors.red));
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: Text("Sí", textAlign: TextAlign.center),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("No", textAlign: TextAlign.center),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
+        ),
+      ),
     );
   }
-
 
   void _showDetails(int index) {
     showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Text(bicycles[index].bicycleName),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _customText(
-                    'Descripción: ', bicycles[index].bicycleDescription),
-                _customText(
-                    'Precio: ', bicycles[index].bicyclePrice.toString()),
-                _customText('Tamaño: ', bicycles[index].bicycleSize),
-                _customText('Modelo: ', bicycles[index].bicycleModel),
-                SizedBox(height: 12.0),
-                if (bicycles[index].imageData.isNotEmpty)
-                  Image.network(bicycles[index].imageData, height: 200,),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Cerrar"),
+      builder: (context) => AlertDialog(
+        title: Text(bicycles[index].bicycleName),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _customText('Descripción: ', bicycles[index].bicycleDescription),
+            _customText('Precio: ', bicycles[index].bicyclePrice.toString()),
+            _customText('Tamaño: ', bicycles[index].bicycleSize),
+            _customText('Modelo: ', bicycles[index].bicycleModel),
+            SizedBox(height: 12.0),
+            if (bicycles[index].imageData.isNotEmpty)
+              Image.network(
+                bicycles[index].imageData,
+                height: 200,
               ),
-            ],
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cerrar"),
           ),
+        ],
+      ),
     );
   }
 
@@ -272,7 +264,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
     );
   }
 
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -283,23 +274,20 @@ class _BicycleOperationsState extends State<BicycleOperation> {
           },
         ),
         title: Text('Julio Ramirez'),
-        actions: [ // Esto agrega elementos al lado derecho del AppBar
+        actions: [
+          // Esto agrega elementos al lado derecho del AppBar
           Icon(Icons.person),
         ],
       ),
       body: Column(
         children: [
-          if (showFields)
-            _buildBicycleForm(),
-          if (!showFields)
-            _buildAddNewBicycleButton(),
+          if (showFields) _buildBicycleForm(),
+          if (!showFields) _buildAddNewBicycleButton(),
           _buildBicyclesList(),
         ],
       ),
     );
   }
-
-
 
   Widget _buildBicycleForm() {
     return Card(
@@ -310,13 +298,16 @@ class _BicycleOperationsState extends State<BicycleOperation> {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            _buildTextField(controller: _nameController,
+            _buildTextField(
+                controller: _nameController,
                 labelText: 'Introduce el nombre de la bicicleta'),
             SizedBox(height: 12.0),
-            _buildTextField(controller: _descripcionController,
+            _buildTextField(
+                controller: _descripcionController,
                 labelText: 'Introduce una descripción'),
             SizedBox(height: 12.0),
-            _buildTextField(controller: _precioController,
+            _buildTextField(
+                controller: _precioController,
                 labelText: 'Introduce un precio'),
             SizedBox(height: 12.0),
             _buildTextField(
@@ -325,7 +316,8 @@ class _BicycleOperationsState extends State<BicycleOperation> {
             _buildTextField(
                 controller: _modelController, labelText: 'Introduce un modelo'),
             SizedBox(height: 12.0),
-            _buildTextField(controller: _imageUrlController,
+            _buildTextField(
+                controller: _imageUrlController,
                 labelText: 'Introduce una dirección de imagen'),
             SizedBox(height: 12.0),
             _buildActionButtons(),
@@ -334,7 +326,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
       ),
     );
   }
-
 
   Widget _buildActionButtons() {
     return Row(
