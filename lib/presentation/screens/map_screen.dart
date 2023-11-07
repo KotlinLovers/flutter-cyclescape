@@ -4,6 +4,7 @@ import 'package:cyclescape/shared/util/permissions/map.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -53,7 +54,7 @@ class MapScreenState extends State<MapScreen> {
                 }
                 context.go('/');
               },
-              icon: const Icon(Icons.keyboard_arrow_left_sharp,
+              icon: const Icon(LineAwesomeIcons.angle_left,
                   size: 30, color: Colors.black)),
         ),
         body: GoogleMap(

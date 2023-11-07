@@ -76,22 +76,14 @@ class SideMenuState extends ConsumerState<SideMenu> {
                 .calendar_today_outlined), // Icono que representa las reservas
             label: Text('Administrar Reservas'),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
-            child: Divider(),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
-            child: Text('Otras opciones'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CustomFilledButton(
-                onPressed: () {
-                  ref.read(authProvider.notifier).logOut();
-                },
-                text: 'Cerrar sesión'),
-          ),
+          //Padding(
+          //  padding: const EdgeInsets.symmetric(horizontal: 20),
+          //  child: CustomFilledButton(
+          //      onPressed: () {
+          //        ref.read(authProvider.notifier).logOut();
+          //      },
+          //      text: 'Cerrar sesión'),
+          //),
         ]);
   }
 }

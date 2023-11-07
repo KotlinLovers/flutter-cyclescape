@@ -52,12 +52,12 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
           onPressed: () => context.go('/'),
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
-        title: Text('${bicycleDetail?.bicycleName ?? 'Cargando...'}'),
+        title: Text(bicycleDetail?.bicycleName ?? 'Cargando...'),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : bicycleDetail == null
-              ? Center(child: Text('Bicycle not found'))
+              ? const Center(child: Text('Bicycle not found'))
               : ListView(
                   children: [
                     ImageSection(bicycleDetail: bicycleDetail!),

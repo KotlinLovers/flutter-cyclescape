@@ -56,7 +56,7 @@ class UpgradeProfileState extends ConsumerState{
                           height: 35,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
-                              color: Colors.deepOrange
+                              color: const Color.fromARGB(255, 97, 189, 215)
                           ),
                           child: const Icon(
                               LineAwesomeIcons.camera,
@@ -71,23 +71,23 @@ class UpgradeProfileState extends ConsumerState{
                 Form(child: Column(
                   children: [
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userFirstName}'),prefixIcon: Icon(Icons.person_2_sharp)),
+                      decoration: InputDecoration(label:Text('${user?.userFirstName}'),prefixIcon: const Icon(Icons.person_2_sharp)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userLastName}'),prefixIcon: Icon(Icons.person_rounded)),
+                      decoration: InputDecoration(label:Text('${user?.userLastName}'),prefixIcon: const Icon(Icons.person_rounded)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userEmail}'),prefixIcon: Icon(Icons.email)),
+                      decoration: InputDecoration(label:Text('${user?.userEmail}'),prefixIcon: const Icon(Icons.email)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userPhone}'),prefixIcon: Icon(Icons.phone)),
+                      decoration: InputDecoration(label:Text('${user?.userPhone}'),prefixIcon: const Icon(Icons.phone)),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration:  InputDecoration(label:Text('${user?.userBirthDate}'),prefixIcon: Icon(Icons.cake)),
+                      decoration:  InputDecoration(label:Text('${user?.userBirthDate}'),prefixIcon: const Icon(Icons.cake)),
                     ),
                     const SizedBox(height: 40),
                     SizedBox(
@@ -97,36 +97,25 @@ class UpgradeProfileState extends ConsumerState{
                           context.go('/profile');
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrange,side: BorderSide.none, shape: const StadiumBorder()),
+                          backgroundColor: const Color.fromARGB(255, 97, 189, 215)),
                         child: const Text("Editar",style: TextStyle(color:Colors.white)),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text.rich(
-                          TextSpan(
-                            text: 'Deshacer ',
-                            style: TextStyle(fontSize: 12),
-                            children: [
-                              TextSpan(text: 'cambios', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12))
-                            ],
-                          )
-                        ),
-                        ElevatedButton(
-                            onPressed: (){},
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent.withOpacity(0.1),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: (){},
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent.withOpacity(0.1),
                               elevation: 0,
                               foregroundColor: Colors.red,
                               shape: const StadiumBorder(),
                               side: BorderSide.none
                             ),
-                            child: const Text('Eliminar')
-
-                        )
-                      ],
+                        child: const Text("Deshacer Cambios", style: TextStyle(color: Colors.red),),
+                      ),
                     )
+                    
                   ]
                 ))
               ]
