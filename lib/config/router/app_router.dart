@@ -1,5 +1,6 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
+import 'package:cyclescape/presentation/screens/bicycle_map_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,6 +34,29 @@ final goRouterProvider = Provider((ref) {
         ),
 
         GoRoute(
+            path: '/map/:id/:latitude/:longitude',
+            builder: (context, state) {
+              final idString = state.pathParameters['id']!;
+              final id = double.tryParse(idString);
+              final latitudeString = state.pathParameters['latitude']!;
+              final latitude = double.tryParse(latitudeString);
+              final longitudeString = state.pathParameters['longitude']!;
+              final longitude = double.tryParse(longitudeString);
+
+              if (latitude != null) {
+                return BicycleMapScreen(
+                  data: {
+                    'id': id,
+                    'latitude': latitude,
+                    'longitude': longitude,
+                  },
+                );
+              } else {
+                throw Exception('Invalid bicycle latitude/longitude.');
+              }
+            }),
+
+        GoRoute(
           path: '/profile',
           builder: (context, state) => const ProfileScreen(),
         ),
@@ -50,6 +74,19 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/loading',
           builder: (context, state) => const LoadingScreen(),
+        ),
+
+        GoRoute(
+          path: '/bicycle/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return BicycleDetailScreen(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
         ),
       ],
       redirect: (context, state) {

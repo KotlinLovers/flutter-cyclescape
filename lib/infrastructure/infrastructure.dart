@@ -8,3 +8,4 @@ export 'repositories/auth_repository_impl.dart';
 export 'repositories/user_repository_impl.dart';
 export 'repositories/bicycle_repository_impl.dart';
 export 'errors/auth_errors.dart';
+export 'errors/bicycle_errors.dart';

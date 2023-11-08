@@ -31,20 +31,31 @@ class RegisterScreen extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         if (!context.canPop()) return;
-                        context.pop();
+                        Navigator.of(context).pop();
                       },
                       icon: const Icon(Icons.arrow_back_rounded,
                           size: 30, color: Colors.black)),
-                  const Spacer(flex: 1),
-                  //const Image(
-                  //  image: AssetImage('assets/images/logo.png'),
-                  //  height: 80,
-                  //),
-                  Text(
-                    'Cyclescape',
-                    style: textStyle.titleLarge,
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        const buttonWidth =
+                            48;
+                        final logoWidth = constraints.maxWidth - buttonWidth;
+                        return Center(
+                          child: Image(
+                            image: AssetImage('assets/images/logo.png'),
+                            height: 60,
+                            width: logoWidth,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  const Spacer(flex: 2),
+                  // Este SizedBox es el espacio en blanco para equilibrar el IconButton
+                  const SizedBox(
+                      width:
+                          48),
                 ],
               ),
               const SizedBox(height: 30),
@@ -130,9 +141,10 @@ class _RegisterForm extends ConsumerWidget {
               child: CustomFilledButton(
                 text: 'Crear',
                 buttonColor: const Color.fromARGB(255, 97, 189, 215),
-                onPressed: () {
-                  ref.read(registerFormProvider.notifier).onSubmit();
-                 },
+                onPressed: registerForm.isPosting
+                    ? null
+                    : ref.read(registerFormProvider.notifier).onSubmit,
+                isPosting: registerForm.isPosting,
               )),
           const Spacer(flex: 2),
           Row(
