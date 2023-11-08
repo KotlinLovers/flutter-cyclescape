@@ -1,7 +1,5 @@
 import 'package:cyclescape/domain/domain.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../infrastructure/infrastructure.dart';
 import 'bicycles_repository_provider.dart';
 
 final bicyclesProvider = StateNotifierProvider<BicyclesNotifier, BicycleState>(

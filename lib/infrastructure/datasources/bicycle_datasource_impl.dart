@@ -38,7 +38,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
 
   @override
   Future<List<Bicycle>> getBicycles() async {
-    final response = await dio.get<List>('/bicycles');
+    final response = await  dio.get<List>('/bicycles');
     final List<Bicycle> bicycles = [];
     for (final bicycle in response.data ?? []) {
       bicycles.add(BicycleMapper.jsonToEntity(bicycle));
