@@ -1,5 +1,6 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
+import 'package:cyclescape/presentation/screens/bicycle_map_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,6 +32,26 @@ final goRouterProvider = Provider((ref) {
           path: '/map',
           builder: (context, state) => const MapScreen(),
         ),
+
+        GoRoute(
+            path: '/map/bicycle/:latitude/:longitude',
+            builder: (context, state) {
+              final latitudeString = state.pathParameters['latitude']!;
+              final latitude = double.tryParse(latitudeString);
+              final longitudeString = state.pathParameters['longitude']!;
+              final longitude = double.tryParse(longitudeString);
+
+              if (latitude != null) {
+                return BicycleMapScreen(
+                  data: {
+                    'latitude': latitude,
+                    'longitude': longitude,
+                  },
+                );
+              } else {
+                throw Exception('Invalid bicycle latitude/longitude.');
+              }
+            }),
 
         GoRoute(
           path: '/profile',
