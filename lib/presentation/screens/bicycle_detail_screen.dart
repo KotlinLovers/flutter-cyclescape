@@ -86,13 +86,28 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                               flex: 2,
                               child: FilledButton(
                                 onPressed: () {},
-                                child: const Text('Comprar'),
+                                child: const Text('Rentar ahora'),
                               ),
                             ),
                             const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: IconButton(
+                                color: Colors.blue[700],
+                                onPressed: () {
+                                  // Navegar a la pantalla del mapa o abrir la ubicación en el mapa
+                                },
+                                icon: const Icon(
+                                  LineAwesomeIcons.map_marker,
+                                  size: 30.0,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                color: Colors.blue[700],
                                 onPressed: () {},
                                 icon: const Icon(
                                   LineAwesomeIcons.shopping_cart_arrow_down,
