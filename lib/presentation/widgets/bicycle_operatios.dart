@@ -13,8 +13,6 @@ class BicycleOperation extends StatefulWidget {
 class _BicycleOperationsState extends State<BicycleOperation> {
   late final BicycleService bicycleService; // Instancia de BicycleService
   List<Bicycle> bicycles = [];
-
-
   int counter = 0;
   bool showFields = false;
   int? editingIndex;
