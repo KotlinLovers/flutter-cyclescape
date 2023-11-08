@@ -1,5 +1,6 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
 import 'package:cyclescape/presentation/providers/bicycles_provider.dart';
+import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -46,13 +47,14 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
+    return isLoading ? LoadingScreen() :
+    Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => context.go('/'),
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
-        title: Text(bicycleDetail?.bicycleName ?? 'Cargando...'),
+        title: Text(bicycleDetail?.bicycleName ?? ''),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

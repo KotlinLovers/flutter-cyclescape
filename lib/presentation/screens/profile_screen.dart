@@ -1,5 +1,6 @@
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:cyclescape/presentation/providers/user_provider.dart';
+import 'package:cyclescape/presentation/screens/loading_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -70,7 +71,8 @@ class ProfileScreenState extends ConsumerState {
         backgroundColor: backgroundColor,
         elevation: 0, // Remove the shadow
       ),
-      body: SingleChildScrollView(
+      body: isLoading ? LoadingScreen() : 
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
           color: backgroundColor,
@@ -78,22 +80,16 @@ class ProfileScreenState extends ConsumerState {
             children: [
               CircleAvatar(
                 radius: 60,
-                backgroundImage: isLoading
-                    ? const AssetImage('assets/loaders/giphy.gif')
-                        as ImageProvider  
-                    : NetworkImage('${user?.imageData}'),
+                backgroundImage: NetworkImage('${user?.imageData}'),
               ),
               const SizedBox(height: 10),
-              Text(
-                  isLoading
-                      ? ''
-                      : '${user?.userFirstName} ${user?.userLastName}',
+              Text('${user?.userFirstName} ${user?.userLastName}',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
                       ?.copyWith(color: textColor)),
 
-              Text(isLoading ? "" : '${user?.userEmail}',
+              Text('${user?.userEmail}',
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium

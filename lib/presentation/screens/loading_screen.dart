@@ -7,7 +7,7 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(strokeWidth: 2,),
+        child: Image(image: AssetImage('assets/loaders/giphy.gif'),width: 100, height: 100,),
       ),
     );
   }
