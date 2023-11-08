@@ -9,14 +9,16 @@ class KeyValueStorageImpl extends KeyValueStorage {
   @override
   Future<T?> getValue<T>(String key) async {
     final prefs = await getSharedPrefs();
-    switch (T) {
-      case int:
-        return prefs.getInt(key) as T?;
-      case String:
-        return prefs.getString(key) as T?;
-      default:
-        throw UnimplementedError(
-            'Get not implemented for type ${T.runtimeType}');
+    if (T == int) {
+      return prefs.getInt(key) as T?;
+    } else if (T == String) {
+      return prefs.getString(key) as T?;
+    } else if (T == bool) {
+      return prefs.getBool(key) as T?;
+    }
+    // Puedes continuar para otros tipos si es necesario
+    else {
+      throw UnimplementedError('Get not implemented for type $T');
     }
   }
 
@@ -29,15 +31,16 @@ class KeyValueStorageImpl extends KeyValueStorage {
   @override
   Future<void> setKeyValue<T>(String key, T value) async {
     final prefs = await getSharedPrefs();
-    switch (T) {
-      case int:
-        prefs.setInt(key, value as int);
-        break;
-      case String:
-        prefs.setString(key, value as String);
-      default:
-        throw UnimplementedError(
-            'Set not implemented for type ${T.runtimeType}');
+    if (T == int) {
+      await prefs.setInt(key, value as int);
+    } else if (T == String) {
+      await prefs.setString(key, value as String);
+    } else if (T == bool) {
+      await prefs.setBool(key, value as bool);
+    }
+    // Puedes continuar para otros tipos si es necesario
+    else {
+      throw UnimplementedError('Set not implemented for type $T');
     }
   }
 }
