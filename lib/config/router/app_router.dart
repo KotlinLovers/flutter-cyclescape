@@ -34,8 +34,10 @@ final goRouterProvider = Provider((ref) {
         ),
 
         GoRoute(
-            path: '/map/bicycle/:latitude/:longitude',
+            path: '/map/:id/:latitude/:longitude',
             builder: (context, state) {
+              final idString = state.pathParameters['id']!;
+              final id = double.tryParse(idString);
               final latitudeString = state.pathParameters['latitude']!;
               final latitude = double.tryParse(latitudeString);
               final longitudeString = state.pathParameters['longitude']!;
@@ -44,6 +46,7 @@ final goRouterProvider = Provider((ref) {
               if (latitude != null) {
                 return BicycleMapScreen(
                   data: {
+                    'id': id,
                     'latitude': latitude,
                     'longitude': longitude,
                   },

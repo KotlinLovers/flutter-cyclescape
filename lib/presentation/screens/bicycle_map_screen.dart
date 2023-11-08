@@ -7,6 +7,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class BicycleMapScreen extends StatefulWidget {
   final Map<String, double?> data;
+
   //final double longitude;
   const BicycleMapScreen({Key? key, required this.data}) : super(key: key);
 
@@ -19,10 +20,13 @@ class BicycleMapScreenState extends State<BicycleMapScreen> {
   bool isLoading = true;
   double? latitude;
   double? longitude;
-
+  double? idData;
+  int? id;
   Future<void> loadLatitudeLongitude() async {
     try {
+      idData = widget.data['id'];
       if (mounted) {
+        id = idData!.toInt();
         latitude = widget.data['latitude'];
         longitude = widget.data['longitude'];
         setState(() {
@@ -62,13 +66,13 @@ class BicycleMapScreenState extends State<BicycleMapScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Mapa"),
+          title: const Text("Ubicación de la bicicleta"),
           leading: IconButton(
               onPressed: () {
                 if (context.canPop()) {
                   return context.pop();
                 }
-                context.go('/');
+                context.go('/bicycle/$id');
               },
               icon: const Icon(LineAwesomeIcons.angle_left,
                   size: 30, color: Colors.black)),

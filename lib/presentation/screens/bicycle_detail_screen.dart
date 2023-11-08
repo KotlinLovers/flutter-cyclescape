@@ -95,7 +95,8 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                               child: IconButton(
                                 color: Colors.blue[700],
                                 onPressed: () {
-                                  // Navegar a la pantalla del mapa o abrir la ubicación en el mapa
+                                  context.go(
+                                      '/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
                                 },
                                 icon: const Icon(
                                   LineAwesomeIcons.map_marker,
