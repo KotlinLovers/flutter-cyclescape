@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../presentation/screens/addcard_screen.dart';
+import '../../presentation/screens/paymentdetails_screen.dart';
 
 import '../../presentation/screens/screens.dart';
 
@@ -49,8 +50,8 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const OnBoardingScreen(),
         ),
         GoRoute(
-          path: '/add-card',
-          builder: (context, state) => AddCardScreen(),
+          path: '/payment-details',
+          builder: (context, state) => PaymentDetailsScreen(),
         ),
 
         GoRoute(

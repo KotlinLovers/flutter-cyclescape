@@ -128,18 +128,11 @@ class ProfileScreenState extends ConsumerState {
               ProfileMenuWidget(
                 title: "Detalles de pago",
                 icon: LineAwesomeIcons.wallet,
-                onPress: () {},
-                textColor: textColor,
-              ),
-              ProfileMenuWidget(
-                title: "Agregar tarjeta",
-                icon: LineAwesomeIcons.credit_card,
                 onPress: () {
-                  context.go('/add-card'); // Redirección a la pantalla AddCard
+                  context.go('/payment-details');
                 },
                 textColor: textColor,
               ),
-
               const Divider(),
               const SizedBox(height: 10),
               ProfileMenuWidget(
