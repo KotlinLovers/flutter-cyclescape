@@ -80,7 +80,7 @@ class ProfileScreenState extends ConsumerState {
                 radius: 60,
                 backgroundImage: isLoading
                     ? const AssetImage('assets/loaders/giphy.gif')
-                        as ImageProvider  
+                        as ImageProvider
                     : NetworkImage('${user?.imageData}'),
               ),
               const SizedBox(height: 10),
@@ -131,6 +131,15 @@ class ProfileScreenState extends ConsumerState {
                 onPress: () {},
                 textColor: textColor,
               ),
+              ProfileMenuWidget(
+                title: "Agregar tarjeta",
+                icon: LineAwesomeIcons.credit_card,
+                onPress: () {
+                  context.go('/add-card'); // Redirección a la pantalla AddCard
+                },
+                textColor: textColor,
+              ),
+
               const Divider(),
               const SizedBox(height: 10),
               ProfileMenuWidget(

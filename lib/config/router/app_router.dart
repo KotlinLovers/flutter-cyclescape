@@ -3,6 +3,8 @@ import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../presentation/screens/addcard_screen.dart';
+
 import '../../presentation/screens/screens.dart';
 
 final goRouterProvider = Provider((ref) {
@@ -45,6 +47,10 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
+        ),
+        GoRoute(
+          path: '/add-card',
+          builder: (context, state) => AddCardScreen(),
         ),
 
         GoRoute(
