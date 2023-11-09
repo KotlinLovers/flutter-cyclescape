@@ -60,7 +60,7 @@ class ProfileScreenState extends ConsumerState {
               context.go('/');
             },
             icon: const Icon(LineAwesomeIcons.angle_left)),
-        title: const Text('Mi perfil'),
+        title: const Text('Mi cuenta'),
         actions: [
           IconButton(
               onPressed: () {},

@@ -20,8 +20,7 @@ class AppTheme {
         .copyWith( fontSize: 23, fontWeight: FontWeight.normal ),
       titleSmall: GoogleFonts.openSans()
         .copyWith( fontSize: 20, fontWeight: FontWeight.normal ),
-      bodyLarge: GoogleFonts.openSans()
-        .copyWith( fontSize: 16, fontWeight: FontWeight.normal ),
+
     ),
 
     ///* Scaffold Background Color
