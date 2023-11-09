@@ -80,7 +80,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                             value: bicycleDetail!.bicycleSize,
                             icon: LineAwesomeIcons.text_height,
                           ),
-                          UbicationSection(),
+                          UbicationSection(bicycleDetail: bicycleDetail!),
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: SizedBox(
@@ -240,13 +240,14 @@ class InformationSection extends StatelessWidget {
 }
 
 class UbicationSection extends StatelessWidget {
-  const UbicationSection({Key? key}) : super(key: key);
+  final Bicycle? bicycleDetail;
+  const UbicationSection({Key? key, required this.bicycleDetail}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('');
+        context.go('/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
       },
       child: ListTile(
         leading: const Icon(LineAwesomeIcons.map_marker),
