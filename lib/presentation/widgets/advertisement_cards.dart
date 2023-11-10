@@ -5,11 +5,11 @@ class AdvertisementCards extends StatelessWidget {
   AdvertisementCards({super.key});
 
   final List<String> imagePaths = [
-    'assets/images/advertisement/image1.jpg',
-    'assets/images/advertisement/image2.jpg',
-    'assets/images/advertisement/image3.jpg',
-    'assets/images/advertisement/image4.jpg',
-    'assets/images/advertisement/image5.jpg',
+    'assets/images/advertisement/image1.png',
+    'assets/images/advertisement/image2.png',
+    'assets/images/advertisement/image3.png',
+    'assets/images/advertisement/image4.png',
+    'assets/images/advertisement/image5.png',
   ];
 
   @override

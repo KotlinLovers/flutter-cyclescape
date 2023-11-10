@@ -69,16 +69,17 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
         isValid: Formz.validate([newPassword, state.email]));
   }
 
-  onFormSubmit() {
+  Future<void> onFormSubmit() async {
     _touchEveryField();
     if (!state.isValid) return;
-    state = state.copyWith(
-      isPosting: true,
-    );
-    loginUserCallback(state.email.value, state.password.value);
-    state = state.copyWith(
-      isPosting: false,
-    );
+    state = state.copyWith(isPosting: true);
+    try {
+      await loginUserCallback(state.email.value, state.password.value);
+    } catch (e) {
+      print("Error durante la autenticación: $e");
+    } finally {
+      state = state.copyWith(isPosting: false);
+    }
   }
 
   _touchEveryField() {

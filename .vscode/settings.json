@@ -1,0 +1,5 @@
+{
+    "cmake.configureOnOpen": false,
+    "dotnet.defaultSolution": "disable",
+    "cmake.sourceDirectory": "C:/Users/arnol/Documents/cyclescape-v3/flutter-cyclescape/build/windows/_deps/nuget-subbuild"
+}
