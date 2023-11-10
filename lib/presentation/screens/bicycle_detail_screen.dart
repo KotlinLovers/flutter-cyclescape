@@ -96,9 +96,14 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                     ),
                                     SizedBox(
                                       width: double.infinity,
-                                      child: OutlinedButton(
+                                      child: FilledButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    const Color.fromARGB(
+                                                        255, 97, 189, 215))),
                                         onPressed: () {},
-                                        child: const Text('Agregar al carrito'),
+                                        child: const Text('Agregar al carrito', style: TextStyle(color: Colors.black)),
                                       ),
                                     )
                                   ],
@@ -241,13 +246,15 @@ class InformationSection extends StatelessWidget {
 
 class UbicationSection extends StatelessWidget {
   final Bicycle? bicycleDetail;
-  const UbicationSection({Key? key, required this.bicycleDetail}) : super(key: key);
+  const UbicationSection({Key? key, required this.bicycleDetail})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
+        context.go(
+            '/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
       },
       child: ListTile(
         leading: const Icon(LineAwesomeIcons.map_marker),
