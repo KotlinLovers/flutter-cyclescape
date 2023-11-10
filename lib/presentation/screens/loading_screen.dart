@@ -7,7 +7,7 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.network('https://i.pinimg.com/originals/c7/e1/b7/c7e1b7b5753737039e1bdbda578132b8.gif', width: 200, height: 200),
+        child: Image.network('https://www.flashimportados.com.py/assets/img/loading-small.gif', width: 100, height: 100),
       )
     );
   }
