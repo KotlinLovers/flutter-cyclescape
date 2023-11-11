@@ -97,7 +97,12 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/favorite',
           builder: (context, state) => const FavoriteScreen(),
-        )
+        ),
+
+        GoRoute(
+          path: '/shopping-cart',
+          builder: (context, state) => const ShoppingCartScreen(),
+        ),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;

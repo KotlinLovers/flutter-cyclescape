@@ -1,8 +1,9 @@
 import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:cyclescape/presentation/widgets/widgets.dart';
-import 'package:cyclescape/shared/util/permissions/map.dart';
+import 'package:cyclescape/shared/util/shared_entities/map.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../shared/widgets/widgets.dart';
@@ -23,8 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (status.isGranted) {
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
-          .then((Position position) =>
-              {setState(() => currentPosition = position)})
+          .then((Position position) => {currentPosition = position})
           .catchError((e) {
         debugPrint(e);
       });
@@ -47,7 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: SideMenu(scaffoldKey: scaffoldKey),
         appBar: AppBar(
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
+            IconButton(
+                onPressed: () {}, icon: const Icon(Icons.search_rounded)),
+            IconButton(
+                onPressed: () {
+                  context.go('/shopping-cart');
+                },
+                icon: const Icon(Icons.shopping_cart)),
           ],
         ),
         body: CustomScrollView(

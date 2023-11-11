@@ -1,6 +1,7 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/presentation/screens/screens.dart';
+import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -98,8 +99,20 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                     SizedBox(
                                       width: double.infinity,
                                       child: OutlinedButton(
-                                        onPressed: () {},
-                                        child: const Text('Agregar al carrito', style: TextStyle(color: Colors.black)),
+                                        onPressed: () {
+                                          const snackBar = SnackBar(
+                                            content: Text(
+                                                '¡Bicicleta añadida al carrito!'),
+                                          );
+                                          bicycles!.add(bicycleDetail!);
+                                          updateTotalPrice(
+                                              bicycleDetail!.bicyclePrice);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        },
+                                        child: const Text('Agregar al carrito',
+                                            style:
+                                                TextStyle(color: Colors.black)),
                                       ),
                                     )
                                   ],
@@ -135,19 +148,18 @@ class ImageSection extends StatelessWidget {
   }
 }
 
-
-
-final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int bicycleId) {
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int bicycleId) {
   final localStorageRepository = ref.watch(localStorageRepositoryProvider);
   return localStorageRepository.isFavorite(bicycleId);
 });
 
 class ExtraSection extends ConsumerWidget {
   final Bicycle bicycle;
-  const ExtraSection({required this.bicycle,super.key});
+  const ExtraSection({required this.bicycle, super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref  ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isFavoriteFuture = ref.watch(isFavoriteProvider(bicycle.bicycleId));
     return Padding(
         padding: const EdgeInsets.all(10.0),
@@ -159,14 +171,19 @@ class ExtraSection extends ConsumerWidget {
               child: IconButton(
                 icon: isFavoriteFuture.when(
                   data: (isFavorite) => isFavorite
-                      ? const Icon(Icons.favorite_rounded, color: Colors.red,)
-                      : const Icon(Icons.favorite_border), 
-                  error: (_,__) => throw UnimplementedError(), 
-                  loading: () => const CircularProgressIndicator(strokeWidth: 2),
+                      ? const Icon(
+                          Icons.favorite_rounded,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_border),
+                  error: (_, __) => throw UnimplementedError(),
+                  loading: () =>
+                      const CircularProgressIndicator(strokeWidth: 2),
                 ),
                 onPressed: () {
-                  ref.watch(localStorageRepositoryProvider)
-                  .toggleFavorite(bicycle.toDto());
+                  ref
+                      .watch(localStorageRepositoryProvider)
+                      .toggleFavorite(bicycle.toDto());
 
                   ref.invalidate(isFavoriteProvider(bicycle.bicycleId));
                 },
