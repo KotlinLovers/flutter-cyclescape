@@ -1,3 +1,4 @@
+import 'package:cyclescape/presentation/providers/editUser_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,10 +15,35 @@ class UpgradeProfileScreen extends ConsumerStatefulWidget{
 }
 
 class UpgradeProfileState extends ConsumerState{
+  bool isLoading = true;
+
   @override
   void initState(){
     super.initState();
     ref.read(userProvider.notifier).getUserById();
+    loadUser();
+  }
+  Future<void> loadUser() async {
+    try {
+      await ref.read(userProvider.notifier).getUserById();
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Color _baseColor(BuildContext context) {
+    return MediaQuery.of(context).platformBrightness == Brightness.dark
+        ? Colors.blueGrey[900]!
+        : Colors.white;
   }
 
   @override
@@ -25,6 +51,10 @@ class UpgradeProfileState extends ConsumerState{
 
     final userState = ref.watch(userProvider);
     final user = userState.user;
+    final editUserForm = ref.watch(editUserFormProvider);
+
+    var backgroundColor = _baseColor(context);
+    var textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
         appBar: AppBar(
@@ -71,31 +101,51 @@ class UpgradeProfileState extends ConsumerState{
                 Form(child: Column(
                   children: [
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userFirstName}'),prefixIcon: const Icon(Icons.person_2_sharp)),
+                      decoration: InputDecoration(
+                          label:Text('${user?.userFirstName}'),
+                          prefixIcon: const Icon(Icons.person_2_sharp),
+                      ),
+                      onChanged: ref.read(editUserFormProvider.notifier).onFirstNameChange
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userLastName}'),prefixIcon: const Icon(Icons.person_rounded)),
+                      decoration: InputDecoration(
+                          label:Text('${user?.userLastName}'),
+                          prefixIcon: const Icon(Icons.person_rounded)
+                      ),
+                      onChanged: ref.read(editUserFormProvider.notifier).onLastNameChange
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userEmail}'),prefixIcon: const Icon(Icons.email)),
+                      decoration: InputDecoration(
+                          label:Text('${user?.userEmail}'),
+                          prefixIcon: const Icon(Icons.email)
+                      ),
+                        onChanged: ref.read(editUserFormProvider.notifier).onEmailChange
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration: InputDecoration(label:Text('${user?.userPhone}'),prefixIcon: const Icon(Icons.phone)),
+                      decoration: InputDecoration(
+                          label:Text('${user?.userPhone}'),
+                          prefixIcon: const Icon(Icons.phone)
+                      ),
+                      onChanged: ref.read(editUserFormProvider.notifier).onPhoneChange
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      decoration:  InputDecoration(label:Text('${user?.userBirthDate}'),prefixIcon: const Icon(Icons.cake)),
+                      decoration:  InputDecoration(
+                          label:Text('${user?.userBirthDate}'),
+                          prefixIcon: const Icon(Icons.cake)
+                      ),
+                      onChanged: ref.read(editUserFormProvider.notifier).onBirthDateChange
                     ),
                     const SizedBox(height: 40),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: (){
-                          context.go('/profile');
-                        },
+                        onPressed: editUserForm.isPosting
+                            ? null
+                            : ref.read(editUserFormProvider.notifier).update,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 97, 189, 215)),
                         child: const Text("Editar",style: TextStyle(color:Colors.white)),
