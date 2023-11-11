@@ -27,8 +27,8 @@ class AuthDataSourceImpl extends AuthDataSource {
   }
 
   @override
-  Future<UserResponse> register(String email, String password,
-      String confirmPassword, String fullName) async {
+  Future<UserResponse> register(String fullName, String email,
+      String password, String confirmPassword) async {
     try {
       final names = fullName.split(' ');
       final firstName = names.first;

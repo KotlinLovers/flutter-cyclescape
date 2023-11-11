@@ -96,7 +96,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
             Formz.validate([state.email, state.password, newConfirmPassword]));
   }
 
-  onSubmit() {
+  Future<void> onSubmit() async{
     _touchEveryField();
     if (state.isValid) {
       if (state.password.value != state.confirmPassword.value) {
@@ -104,7 +104,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
         throw Exception('Las contraseñas no coinciden');
       } else {
         state = state.copyWith(isPosting: true);
-        registerUserCallback(
+        await registerUserCallback(
             state.fullName, state.email.value, state.password.value, state.confirmPassword.value
         );
         state = state.copyWith(isFormPosted: true, isPosting: false);

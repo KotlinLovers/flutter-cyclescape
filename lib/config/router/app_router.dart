@@ -1,7 +1,10 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth_provider.dart';
+import 'package:cyclescape/presentation/screens/bicycle_map_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../presentation/screens/favorite_screen.dart';
+import '../../presentation/screens/paymentdetails_screen.dart';
 
 import '../../presentation/screens/screens.dart';
 
@@ -29,8 +32,31 @@ final goRouterProvider = Provider((ref) {
 
         GoRoute(
           path: '/map',
-          builder: (context, state) => const MapSample(),
+          builder: (context, state) => const MapScreen(),
         ),
+
+        GoRoute(
+            path: '/map/:id/:latitude/:longitude',
+            builder: (context, state) {
+              final idString = state.pathParameters['id']!;
+              final id = double.tryParse(idString);
+              final latitudeString = state.pathParameters['latitude']!;
+              final latitude = double.tryParse(latitudeString);
+              final longitudeString = state.pathParameters['longitude']!;
+              final longitude = double.tryParse(longitudeString);
+
+              if (latitude != null) {
+                return BicycleMapScreen(
+                  data: {
+                    'id': id,
+                    'latitude': latitude,
+                    'longitude': longitude,
+                  },
+                );
+              } else {
+                throw Exception('Invalid bicycle latitude/longitude.');
+              }
+            }),
 
         GoRoute(
           path: '/profile',
@@ -46,10 +72,36 @@ final goRouterProvider = Provider((ref) {
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
         ),
+        GoRoute(
+          path: '/payment-details',
+          builder: (context, state) => PaymentDetailsScreen(),
+        ),
 
         GoRoute(
           path: '/loading',
           builder: (context, state) => const LoadingScreen(),
+        ),
+
+        GoRoute(
+          path: '/bicycle/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return BicycleDetailScreen(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+        GoRoute(
+          path: '/favorite',
+          builder: (context, state) => const FavoriteScreen(),
+        ),
+
+        GoRoute(
+          path: '/shopping-cart',
+          builder: (context, state) => const ShoppingCartScreen(),
         ),
       ],
       redirect: (context, state) {

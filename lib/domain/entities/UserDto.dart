@@ -2,6 +2,7 @@ import 'bicycle.dart';
 import 'card.dart';
 
 class UserDto{
+  final int userId;
   final String userFirstName;
   final String userLastName;
   final String userEmail;
@@ -14,6 +15,7 @@ class UserDto{
   final List<Card> cards;
 
   UserDto({
+    required this.userId,
     required this.userFirstName,
     required this.userLastName,
     required this.userEmail,

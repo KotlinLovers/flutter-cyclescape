@@ -1,119 +1,160 @@
-
+import 'package:cyclescape/presentation/providers/auth_provider.dart';
 import 'package:cyclescape/presentation/providers/user_provider.dart';
+import 'package:cyclescape/presentation/screens/loading_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
-
-class ProfileScreen extends ConsumerStatefulWidget{
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  ProfileScreenState createState() =>ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class ProfileScreenState extends ConsumerState{
+class ProfileScreenState extends ConsumerState {
+  bool isLoading = true;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     ref.read(userProvider.notifier).getUserById();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    try {
+      await ref.read(userProvider.notifier).getUserById();
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Color _baseColor(BuildContext context) {
+    return MediaQuery.of(context).platformBrightness == Brightness.dark
+        ? Colors.blueGrey[900]!
+        : Colors.white;
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final userState = ref.watch(userProvider);
     final user = userState.user;
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var iconColor = isDark ? Colors.deepOrange: Colors.blueAccent;
+    var backgroundColor = _baseColor(context);
+    var textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
-      //drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-          context.go('/');
-        },icon: const Icon(LineAwesomeIcons.angle_left)),
-        title: const Text('Mi perfil'),
+        leading: IconButton(
+            onPressed: () {
+              context.go('/');
+            },
+            icon: const Icon(LineAwesomeIcons.angle_left)),
+        title: const Text('Mi cuenta'),
         actions: [
-          IconButton(onPressed: (){},icon: Icon(isDark? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Theme.of(context).brightness == Brightness.dark
+                  ? LineAwesomeIcons.sun
+                  : LineAwesomeIcons.moon))
         ],
+        backgroundColor: backgroundColor,
+        elevation: 0, // Remove the shadow
       ),
-      body: SingleChildScrollView(
+      body: isLoading ? LoadingScreen() : 
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
+          color: backgroundColor,
           child: Column(
             children: [
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),child:  Image.network('${user?.imageData}',fit: BoxFit.cover)),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.deepOrange
-                        ),
-                        child: const Icon(
-                            LineAwesomeIcons.alternate_pencil,
-                            size: 20 ,
-                            color: Colors.black)),
-                  ),
-                ],
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: NetworkImage('${user?.imageData}'),
               ),
               const SizedBox(height: 10),
-              Text('${user?.userFirstName} ${user?.userLastName}',style: Theme.of(context).textTheme.bodyLarge),
-              Text('${user?.userEmail}',style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height:20),
-              SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: (){
-                      context.go('/profile-edit');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,side: BorderSide.none, shape:const StadiumBorder()),
-                    child: const Text('Editar perfil', style: TextStyle(color: Colors.white))
-                  )
+              Text('${user?.userFirstName} ${user?.userLastName}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(color: textColor)),
+
+              Text('${user?.userEmail}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: textColor)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/profile-edit');
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                ),
+                child: const Text('Editar perfil'),
               ),
               const SizedBox(height: 30),
               const Divider(),
               const SizedBox(height: 10),
 
               ///Menu
-              ProfileMenuWidget(title: "Bicicletas publicadas",icon: LineAwesomeIcons.bicycle,onPress: (){}),
-              ProfileMenuWidget(title: "Administración de cuenta",icon: LineAwesomeIcons.user_check,onPress: (){}),
-              ProfileMenuWidget(title: "Detalles de pago",icon: LineAwesomeIcons.wallet,onPress: (){}),
+              ProfileMenuWidget(
+                title: "Bicicletas publicadas",
+                icon: LineAwesomeIcons.bicycle,
+                onPress: () {},
+                textColor: textColor,
+              ),
+              ProfileMenuWidget(
+                title: "Administración de cuenta",
+                icon: LineAwesomeIcons.user_check,
+                onPress: () {},
+                textColor: textColor,
+              ),
+              ProfileMenuWidget(
+                title: "Detalles de pago",
+                icon: LineAwesomeIcons.wallet,
+                onPress: () {
+                  context.go('/payment-details');
+                },
+                textColor: textColor,
+              ),
               const Divider(),
               const SizedBox(height: 10),
-              ProfileMenuWidget(title: "Cerrar sesión",icon: LineAwesomeIcons.alternate_sign_out,textColor: Colors.red,endIcon: false, onPress: (){}),
+              ProfileMenuWidget(
+                title: "Cerrar sesión",
+                icon: LineAwesomeIcons.alternate_sign_out,
+                textColor: Colors.red,
+                endIcon: false,
+                onPress: () {
+                  ref.read(authProvider.notifier).logOut();
+                },
+              ),
             ],
           ),
         ),
       ),
     );
-
   }
 }
 
-class ProfileMenuWidget extends StatelessWidget {
+class ProfileMenuWidget extends ConsumerStatefulWidget {
   const ProfileMenuWidget({
-
     required this.title,
     required this.icon,
     required this.onPress,
     this.endIcon = true,
     this.textColor,
-
     super.key,
   });
 
@@ -124,28 +165,28 @@ class ProfileMenuWidget extends StatelessWidget {
   final Color? textColor;
 
   @override
+  ConsumerState<ProfileMenuWidget> createState() => _ProfileMenuWidgetState();
+}
+
+class _ProfileMenuWidgetState extends ConsumerState<ProfileMenuWidget> {
+  @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: onPress,
-      leading: Container(
-        width: 40, height: 40,
-        decoration:
-          BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Colors.tealAccent.withOpacity(0.1)
-          ),
-        child: Icon(icon, color: Colors.blueAccent),
+      onTap: widget.onPress,
+      leading: CircleAvatar(
+        backgroundColor: Colors.tealAccent.withOpacity(0.1),
+        child: Icon(widget.icon, color: Colors.blueAccent),
       ),
-      title: Text(title,style: Theme.of(context).textTheme.bodyMedium?.apply(color:textColor)),
-      trailing: endIcon? Container(
-        width: 30, height: 30,
-        decoration:
-        BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: Colors.grey.withOpacity(0.1)
-        ),
-        child: Icon(LineAwesomeIcons.angle_right,size: 18.0 ,color: Colors.grey)): null,
+      title: Text(
+        widget.title,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText1
+            ?.copyWith(color: widget.textColor),
+      ),
+      trailing: widget.endIcon
+          ? const Icon(LineAwesomeIcons.angle_right, color: Colors.grey)
+          : null,
     );
   }
 }
-

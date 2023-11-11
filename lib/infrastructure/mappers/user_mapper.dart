@@ -11,6 +11,7 @@ class UserMapper {
 
   static UserDto userDtoJsonToEntity(Map<String,dynamic>json) =>
       UserDto(
+        userId: json['id'],
         userFirstName: json['userFirstName'],
         userLastName: json['userLastName'],
         userEmail: json['userEmail'],
@@ -21,6 +22,19 @@ class UserMapper {
         imageData: json['imageData'],
         bicycles: List<Bicycle>.from(json['bicycles'].map((x) => BicycleMapper.jsonToEntity(x))),
         cards: List<Card>.from(json['cards'].map((x) => CardMapper.jsonToEntity(x))),
+      );
+
+  static User userInfoJsonToEntity(Map<String, dynamic>json) =>
+      User(
+        id: json['id'],
+        firstName: json['userFirstName'],
+        lastName: json['userLastName'],
+        email: json['userEmail'],
+        phone: json['userPhone'],
+        birthDate: json['userBirthDate'],
+        latitude: (json['latitudeData'] is num) ? json['latitudeData'].toDouble() : 0.0,
+        longitude: (json['longitudeData'] is num) ? json['longitudeData'].toDouble() : 0.0,
+        imageData: json['imageData'],
       );
 }
 

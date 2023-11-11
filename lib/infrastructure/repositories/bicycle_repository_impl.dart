@@ -16,12 +16,12 @@ class BicycleRepositoryImpl extends BicycleRepository {
   }
 
   @override
-  Future<Bicycle> getBicycleById(String id) {
+  Future<Bicycle> getBicycleById(int id) {
     return datasource.getBicycleById(id);
   }
 
   @override
-  Future<List<Bicycle>> getBicycles() {
+  Future<List<BicycleDto>> getBicycles() {
     return datasource.getBicycles();
   }
 

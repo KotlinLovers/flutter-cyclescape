@@ -14,7 +14,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<User> updateUser(int userId, User user) {
-    return dataSource.updateUser(userId, user);
+  Future<UserDto> updateUser(int userId, String firstName, String lastName,
+      String email,String phone, String birthDate) {
+    return dataSource.updateUser(userId, firstName, lastName,email,
+    phone,birthDate);
   }
 }

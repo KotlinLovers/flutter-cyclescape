@@ -1,12 +1,10 @@
 class User {
-  final String id;
-  final String email;
+  final int id;
   final String firstName;
   final String lastName;
-  final String password;
-  final String token;
+  final String email;
   final String phone;
-  final String bithDate;
+  final String birthDate;
   final double latitude;
   final double longitude;
   final String imageData;
@@ -16,12 +14,9 @@ class User {
       required this.email,
       required this.firstName,
       required this.lastName,
-      required this.password,
-      required this.token,
       required this.phone,
-      required this.bithDate,
+      required this.birthDate,
       required this.latitude,
       required this.longitude,
       required this.imageData});
-
 }
