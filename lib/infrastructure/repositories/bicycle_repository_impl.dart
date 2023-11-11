@@ -21,7 +21,7 @@ class BicycleRepositoryImpl extends BicycleRepository {
   }
 
   @override
-  Future<List<Bicycle>> getBicycles() {
+  Future<List<BicycleDto>> getBicycles() {
     return datasource.getBicycles();
   }
 

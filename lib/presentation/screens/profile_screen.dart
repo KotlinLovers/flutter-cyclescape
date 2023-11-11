@@ -185,7 +185,7 @@ class _ProfileMenuWidgetState extends ConsumerState<ProfileMenuWidget> {
             ?.copyWith(color: widget.textColor),
       ),
       trailing: widget.endIcon
-          ? Icon(LineAwesomeIcons.angle_right, color: Colors.grey)
+          ? const Icon(LineAwesomeIcons.angle_right, color: Colors.grey)
           : null,
     );
   }

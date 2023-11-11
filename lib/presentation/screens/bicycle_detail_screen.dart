@@ -1,9 +1,10 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
-import 'package:cyclescape/presentation/providers/bicycles_provider.dart';
+import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar/isar.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class BicycleDetailScreen extends ConsumerStatefulWidget {
@@ -64,7 +65,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                     : ListView(
                         children: [
                           ImageSection(bicycleDetail: bicycleDetail!),
-                          ExtraSection(),
+                          ExtraSection(bicycle: bicycleDetail!),
                           DescriptionSection(
                             textTheme: textTheme,
                             description: bicycleDetail!.bicycleDescription,
@@ -96,12 +97,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                     ),
                                     SizedBox(
                                       width: double.infinity,
-                                      child: FilledButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    const Color.fromARGB(
-                                                        255, 97, 189, 215))),
+                                      child: OutlinedButton(
                                         onPressed: () {},
                                         child: const Text('Agregar al carrito', style: TextStyle(color: Colors.black)),
                                       ),
@@ -139,11 +135,20 @@ class ImageSection extends StatelessWidget {
   }
 }
 
-class ExtraSection extends StatelessWidget {
-  const ExtraSection({super.key});
+
+
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int bicycleId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isFavorite(bicycleId);
+});
+
+class ExtraSection extends ConsumerWidget {
+  final Bicycle bicycle;
+  const ExtraSection({required this.bicycle,super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref  ) {
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(bicycle.bicycleId));
     return Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -152,9 +157,19 @@ class ExtraSection extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: IconButton(
-                icon: const Icon(LineAwesomeIcons.heart),
-                color: Colors.red,
-                onPressed: () {},
+                icon: isFavoriteFuture.when(
+                  data: (isFavorite) => isFavorite
+                      ? const Icon(Icons.favorite_rounded, color: Colors.red,)
+                      : const Icon(Icons.favorite_border), 
+                  error: (_,__) => throw UnimplementedError(), 
+                  loading: () => const CircularProgressIndicator(strokeWidth: 2),
+                ),
+                onPressed: () {
+                  ref.watch(localStorageRepositoryProvider)
+                  .toggleFavorite(bicycle.toDto());
+
+                  ref.invalidate(isFavoriteProvider(bicycle.bicycleId));
+                },
               ),
             ),
             Padding(

@@ -14,4 +14,15 @@ class BicycleMapper {
         longitudeData: double.parse(json['longitude'].toString()),
         user: UserMapper.userInfoJsonToEntity(json['userDtoResponse']),
       );
+  static BicycleDto dtoJsonToEntity(Map<String, dynamic> json) => BicycleDto(
+        bicycleId: json['id'],
+        bicycleName: json['bicycleName'],
+        bicycleDescription: json['bicycleDescription'],
+        bicyclePrice: double.parse(json['bicyclePrice'].toString()),
+        bicycleSize: json['bicycleSize'],
+        bicycleModel: json['bicycleModel'],
+        imageData: json['imageData'],
+        latitudeData: double.parse(json['latitude'].toString()),
+        longitudeData: double.parse(json['longitude'].toString()),
+      );
 }

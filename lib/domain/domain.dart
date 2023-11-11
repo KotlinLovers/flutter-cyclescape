@@ -6,6 +6,8 @@ export 'entities/user_response.dart';
 export 'entities/UserDto.dart';
 export 'entities/bicycle.dart';
 export 'entities/card.dart';
+export 'entities/bicycleDto.dart';
 export 'repositories/auth_repository.dart';
 export 'repositories/user_repository.dart';
 export 'repositories/bicycle_repository.dart';
+export 'repositories/local_storage_repository.dart';

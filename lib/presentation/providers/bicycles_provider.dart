@@ -24,7 +24,7 @@ class BicyclesNotifier extends StateNotifier<BicycleState> {
 }
 
 class BicycleState {
-  final List<Bicycle> bicycles;
+  final List<BicycleDto> bicycles;
 
   BicycleState({this.bicycles = const []});
 
@@ -34,7 +34,7 @@ class BicycleState {
   }
 
   BicycleState copyWith({
-    List<Bicycle>? bicycles,
+    List<BicycleDto>? bicycles,
   }) {
     return BicycleState(
       bicycles: bicycles ?? this.bicycles,
