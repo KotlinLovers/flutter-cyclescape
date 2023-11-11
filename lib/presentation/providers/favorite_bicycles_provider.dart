@@ -18,19 +18,19 @@ class StorageBicyclesNotifier extends StateNotifier<Map<int, BicycleDto>> {
   StorageBicyclesNotifier({required this.localStorageRepository}) : super({});
 
   Future<List<BicycleDto>> loadNextPage() async {
-    final movies = await localStorageRepository.loadBicycles(
+    final bicycles = await localStorageRepository.loadBicycles(
       offset: page * 10,
     );
     page++;
 
     final tempBicyclesMap = <int, BicycleDto>{};
 
-    for (final bicycle in movies) {
+    for (final bicycle in bicycles) {
       tempBicyclesMap[bicycle.bicycleId] = bicycle;
     }
 
     state = {...state, ...tempBicyclesMap};
 
-    return movies;
+    return bicycles;
   }
 }
