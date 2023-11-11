@@ -35,6 +35,8 @@ class SideMenuState extends ConsumerState<SideMenu> {
             router.go('/profile');
           } else if (value == 2) {
             router.go('/map');
+          } else if (value == 3) {
+            router.go('/favorite');
           }
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );

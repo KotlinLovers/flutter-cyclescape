@@ -1,8 +1,11 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
-import 'package:cyclescape/presentation/providers/bicycles_provider.dart';
+import 'package:cyclescape/presentation/providers/providers.dart';
+import 'package:cyclescape/presentation/screens/screens.dart';
+import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar/isar.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class BicycleDetailScreen extends ConsumerStatefulWidget {
@@ -46,67 +49,78 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.go('/'),
-          icon: const Icon(LineAwesomeIcons.angle_left),
-        ),
-        title: Text(bicycleDetail?.bicycleName ?? 'Cargando...'),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : bicycleDetail == null
-              ? const Center(child: Text('Bicycle not found'))
-              : ListView(
-                  children: [
-                    ImageSection(bicycleDetail: bicycleDetail!),
-                    DescriptionSection(
-                      textTheme: textTheme,
-                      description: bicycleDetail!.bicycleDescription,
-                    ),
-                    PriceSection(price: bicycleDetail!.bicyclePrice),
-                    InformationSection(
-                      label: 'Model',
-                      value: bicycleDetail!.bicycleModel,
-                      icon: LineAwesomeIcons.bicycle,
-                    ),
-                    InformationSection(
-                      label: 'Size',
-                      value: bicycleDetail!.bicycleSize,
-                      icon: LineAwesomeIcons.text_height,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: FilledButton(
-                                onPressed: () {},
-                                child: const Text('Comprar'),
-                              ),
-                            ),
-                            const SizedBox(width: 10.0),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  LineAwesomeIcons.shopping_cart_arrow_down,
-                                  size: 30.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+    return isLoading
+        ? const LoadingScreen()
+        : Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () => context.go('/'),
+                icon: const Icon(LineAwesomeIcons.angle_left),
+              ),
+              title: Text(bicycleDetail?.bicycleName ?? ''),
+            ),
+            body: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : bicycleDetail == null
+                    ? const Center(child: Text('Bicycle not found'))
+                    : ListView(
+                        children: [
+                          ImageSection(bicycleDetail: bicycleDetail!),
+                          ExtraSection(bicycle: bicycleDetail!),
+                          DescriptionSection(
+                            textTheme: textTheme,
+                            description: bicycleDetail!.bicycleDescription,
+                          ),
+                          PriceSection(price: bicycleDetail!.bicyclePrice),
+                          InformationSection(
+                            label: 'Model',
+                            value: bicycleDetail!.bicycleModel,
+                            icon: LineAwesomeIcons.bicycle,
+                          ),
+                          InformationSection(
+                            label: 'Size',
+                            value: bicycleDetail!.bicycleSize,
+                            icon: LineAwesomeIcons.text_height,
+                          ),
+                          UbicationSection(bicycleDetail: bicycleDetail!),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: FilledButton(
+                                        onPressed: () {},
+                                        child: const Text('Rentar ahora'),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          const snackBar = SnackBar(
+                                            content: Text(
+                                                '¡Bicicleta añadida al carrito!'),
+                                          );
+                                          bicycles!.add(bicycleDetail!);
+                                          updateTotalPrice(
+                                              bicycleDetail!.bicyclePrice);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        },
+                                        child: const Text('Agregar al carrito',
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-    );
+          );
   }
 }
 
@@ -117,16 +131,81 @@ class ImageSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Hero(
         tag: bicycleDetail.bicycleId,
-        child: Image.network(
-          bicycleDetail.imageData,
-          fit: BoxFit.cover,
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Image.network(
+            bicycleDetail.imageData,
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
+  }
+}
+
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int bicycleId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isFavorite(bicycleId);
+});
+
+class ExtraSection extends ConsumerWidget {
+  final Bicycle bicycle;
+  const ExtraSection({required this.bicycle, super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(bicycle.bicycleId));
+    return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                icon: isFavoriteFuture.when(
+                  data: (isFavorite) => isFavorite
+                      ? const Icon(
+                          Icons.favorite_rounded,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_border),
+                  error: (_, __) => throw UnimplementedError(),
+                  loading: () =>
+                      const CircularProgressIndicator(strokeWidth: 2),
+                ),
+                onPressed: () {
+                  ref
+                      .watch(localStorageRepositoryProvider)
+                      .toggleFavorite(bicycle.toDto());
+
+                  ref.invalidate(isFavoriteProvider(bicycle.bicycleId));
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                icon: const Icon(Icons.share),
+                color: Colors.blue,
+                onPressed: () {},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                icon: const Icon(LineAwesomeIcons.comment),
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -142,11 +221,12 @@ class DescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double textScale = MediaQuery.of(context).textScaleFactor;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(
         description,
-        style: textTheme.titleMedium,
+        style: textTheme.bodyLarge?.copyWith(fontSize: 16 * textScale),
       ),
     );
   }
@@ -192,6 +272,31 @@ class InformationSection extends StatelessWidget {
       leading: Icon(icon),
       title: Text(label),
       subtitle: Text(value),
+    );
+  }
+}
+
+class UbicationSection extends StatelessWidget {
+  final Bicycle? bicycleDetail;
+  const UbicationSection({Key? key, required this.bicycleDetail})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.go(
+            '/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
+      },
+      child: ListTile(
+        leading: const Icon(LineAwesomeIcons.map_marker),
+        title: const Text('Ubicación'),
+        subtitle: Text(
+          'Ir a la ubicación',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+      ),
     );
   }
 }

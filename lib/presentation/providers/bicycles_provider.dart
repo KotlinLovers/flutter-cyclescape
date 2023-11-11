@@ -1,7 +1,5 @@
 import 'package:cyclescape/domain/domain.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../infrastructure/infrastructure.dart';
 import 'bicycles_repository_provider.dart';
 
 final bicyclesProvider = StateNotifierProvider<BicyclesNotifier, BicycleState>(
@@ -26,7 +24,7 @@ class BicyclesNotifier extends StateNotifier<BicycleState> {
 }
 
 class BicycleState {
-  final List<Bicycle> bicycles;
+  final List<BicycleDto> bicycles;
 
   BicycleState({this.bicycles = const []});
 
@@ -36,7 +34,7 @@ class BicycleState {
   }
 
   BicycleState copyWith({
-    List<Bicycle>? bicycles,
+    List<BicycleDto>? bicycles,
   }) {
     return BicycleState(
       bicycles: bicycles ?? this.bicycles,

@@ -5,10 +5,10 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(strokeWidth: 2,),
-      ),
+        child: Image.network('https://www.flashimportados.com.py/assets/img/loading-small.gif', width: 100, height: 100),
+      )
     );
   }
 }

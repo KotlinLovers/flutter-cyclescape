@@ -1,8 +1,11 @@
-import 'package:cyclescape/domain/domain.dart';
+import 'package:isar/isar.dart';
 
+part 'bicycleDto.g.dart';
 
+@collection
+class BicycleDto {
+  Id? isarId;
 
-class Bicycle {
   final int bicycleId;
   final String bicycleName;
   final String bicycleDescription;
@@ -12,9 +15,9 @@ class Bicycle {
   final String imageData;
   final double latitudeData;
   final double longitudeData;
-  final User user;
 
-  Bicycle({
+
+  BicycleDto({
     required this.bicycleId,
     required this.bicycleName,
     required this.bicycleDescription,
@@ -24,20 +27,6 @@ class Bicycle {
     required this.imageData,
     required this.latitudeData,
     required this.longitudeData,
-    required this.user,
-  });
 
-  BicycleDto toDto() {
-    return BicycleDto(
-      bicycleId: bicycleId,
-      bicycleName: bicycleName,
-      bicycleDescription: bicycleDescription,
-      bicyclePrice: bicyclePrice,
-      bicycleSize: bicycleSize,
-      bicycleModel: bicycleModel,
-      imageData: imageData,
-      latitudeData: latitudeData,
-      longitudeData: longitudeData,
-    );
-  }
+  });
 }

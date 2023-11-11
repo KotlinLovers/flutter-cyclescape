@@ -31,9 +31,30 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<User> updateUser(int userId, User user) {
-    // TODO: implement UpdateUser
-    throw UnimplementedError();
+  Future<UserDto> updateUser(int userId, String firstName, String lastName,
+      String email,String phone, String birthDate)async {
+    try{
+      
+      final userFirstName = firstName;
+      final userLastName = lastName;
+      final userEmail = email;
+      final userPhone = phone;
+      final userBirthDate = birthDate;
+      
+      final response = await dio.put('/users/$userId', data: {
+      'userFirstName': userFirstName ,
+      'userLastName': userLastName,
+      'userEmail': userEmail,
+      'userPhone': userPhone ,
+      'userBirthDate': userBirthDate});
+
+      final userDto = UserMapper.userDtoJsonToEntity(response.data);
+      return userDto;
+
+    }
+    catch(e){
+      throw Exception();
+    }
   }
 }
 

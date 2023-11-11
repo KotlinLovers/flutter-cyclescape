@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cyclescape/shared/util/permissions/map.dart';
+import 'package:cyclescape/shared/util/shared_entities/map.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

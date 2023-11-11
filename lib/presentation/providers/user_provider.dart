@@ -24,6 +24,7 @@ class UserNotifier extends StateNotifier<UserState>{
   }
 
 
+
   Future<void> getUserById()async{
       try{
         final userId = await keyValueStorageService.getValue<int>('userId');
@@ -34,6 +35,20 @@ class UserNotifier extends StateNotifier<UserState>{
       }
   }
 
+  Future<void> updateUser(String firstName, String lastName,String email,
+      String phone, String birthDate) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    try{
+      final userId = await keyValueStorageService.getValue<int>('userId');
+      final user = await userRepository.updateUser(
+          userId!, firstName, lastName, email, phone, birthDate);
+
+    }
+
+    catch (e){
+      state = state.copyWith(isLoading: false);
+    }
+  }
 
 }
 
