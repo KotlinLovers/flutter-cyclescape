@@ -35,7 +35,7 @@ class BicyclesScreenState extends ConsumerState {
             final bicycle = bicycleState.bicycles[index];
             return GestureDetector(
               onTap: () {
-                context.go('/bicycle/${bicycle.bicycleId}');
+                context.push('/bicycle/${bicycle.bicycleId}');
               },
               child: Card(
                 elevation: 1,

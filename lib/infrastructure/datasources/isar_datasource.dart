@@ -50,4 +50,5 @@ class IsarDatasource extends LocalStorageDatasource {
     isar.writeTxnSync(() => isar.bicycleDtos.putSync(bicycle));
   }
   
+  
 }

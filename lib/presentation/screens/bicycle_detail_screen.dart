@@ -180,11 +180,10 @@ class ExtraSection extends ConsumerWidget {
                   loading: () =>
                       const CircularProgressIndicator(strokeWidth: 2),
                 ),
-                onPressed: () {
-                  ref
-                      .watch(localStorageRepositoryProvider)
+                onPressed: () async {
+                  await ref
+                      .read(localStorageRepositoryProvider)
                       .toggleFavorite(bicycle.toDto());
-
                   ref.invalidate(isFavoriteProvider(bicycle.bicycleId));
                 },
               ),
