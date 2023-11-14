@@ -6,7 +6,6 @@ const colorSeed = Color(0xff424CB8);
 const scaffoldBackgroundColor = Color(0xFFFFFFFF);
 
 class AppTheme {
-
   ThemeData getTheme() => ThemeData(
     ///* General
     useMaterial3: true,
@@ -40,7 +39,7 @@ class AppTheme {
     ///* AppBar
     appBarTheme: AppBarTheme(
       color: scaffoldBackgroundColor,
-      titleTextStyle: GoogleFonts.montserratAlternates()
+      titleTextStyle: GoogleFonts.raleway()
         .copyWith( fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black ),
     )
   );

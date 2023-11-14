@@ -77,6 +77,9 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
               } else {
                 bicycles!.add(bicycle);
                 updateTotalPrice(bicycle.bicyclePrice);
+                await ref
+                    .read(localStorageRepositoryProvider)
+                    .removeFromFavorites(bicycle);
               }
             },
             child: Card(

@@ -4,6 +4,7 @@ import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar/isar.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -72,6 +73,8 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                         children: [
                           ImageSection(bicycleDetail: bicycleDetail!),
                           ExtraSection(bicycle: bicycleDetail!),
+                          UserSection(
+                              bicycle: bicycleDetail!, textTheme: textTheme),
                           DescriptionSection(
                             textTheme: textTheme,
                             description: bicycleDetail!.bicycleDescription,
@@ -210,6 +213,38 @@ class ExtraSection extends ConsumerWidget {
             ),
           ],
         ));
+  }
+}
+
+class UserSection extends StatelessWidget {
+  final TextTheme textTheme;
+  final Bicycle bicycle;
+  const UserSection(
+      {required this.textTheme, required this.bicycle, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double textScale = MediaQuery.of(context).textScaleFactor;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+      child: RichText(
+        text: TextSpan(
+          text: 'Publicado por ',
+          style: textTheme.bodyLarge?.copyWith(fontSize: 16 * textScale),
+          children: <TextSpan>[
+            TextSpan(
+              text: '${bicycle.user.firstName} ${bicycle.user.lastName}',
+              style: textTheme.bodyLarge?.copyWith(
+                fontSize: 16 * textScale,
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
