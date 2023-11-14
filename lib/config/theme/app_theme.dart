@@ -13,8 +13,8 @@ class AppTheme {
 
     ///* Texts
     textTheme: TextTheme(
-      titleLarge: GoogleFonts.montserratAlternates()
-        .copyWith( fontSize: 40, fontWeight: FontWeight.bold ),
+      titleLarge: GoogleFonts.raleway()
+        .copyWith( fontSize: 20, fontWeight: FontWeight.normal ),
       titleMedium: GoogleFonts.openSans()
         .copyWith( fontSize: 23, fontWeight: FontWeight.normal ),
       titleSmall: GoogleFonts.openSans()

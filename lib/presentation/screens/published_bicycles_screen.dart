@@ -21,6 +21,12 @@ class PublishedBicyclesScreenState extends ConsumerState<PublishedBicyclesScreen
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bicicletas publicadas'),
+        actions: [
+          IconButton(
+            onPressed: () {
+            },
+            icon: const Icon(Icons.upload),
+          ),],
         leading: IconButton(
             onPressed: () => context.pop(),
             icon: const Icon(LineAwesomeIcons.angle_left)),

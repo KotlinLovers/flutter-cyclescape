@@ -20,8 +20,6 @@ class StorageBicyclesNotifier extends StateNotifier<Map<int, BicycleDto>> {
 
   Future<List<BicycleDto>> loadNextPage() async {
     final bicycles = await localStorageRepository.loadBicycles(
-      offset: page * 10,
-      limit: 20,
     );
     page++;
 

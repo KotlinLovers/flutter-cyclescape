@@ -45,7 +45,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   pinned: true,
                   title: Row(
                     children: [
-                      Text("Total: $totalPrice"),
+                      Text("Total: $totalPrice", style: TextStyle(fontSize: 20)),
                       Spacer(),
                       ElevatedButton(
                         onPressed: () {},

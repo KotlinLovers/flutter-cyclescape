@@ -15,7 +15,7 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
   }
   
   @override
-  Future<List<BicycleDto>> loadBicycles({int limit = 10,offset = 0}) {
+  Future<List<BicycleDto>> loadBicycles() {
     return datasource.loadBicycles();
   }
 
