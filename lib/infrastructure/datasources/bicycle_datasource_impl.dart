@@ -20,7 +20,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   }
 
   @override
-  Future<Bicycle> deleteBicycle(String id, Bicycle bicycle) {
+  Future<Bicycle> deleteBicycle(int id) {
     // TODO: implement deleteBicycle
     throw UnimplementedError();
   }

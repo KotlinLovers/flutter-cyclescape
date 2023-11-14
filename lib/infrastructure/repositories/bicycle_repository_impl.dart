@@ -11,8 +11,8 @@ class BicycleRepositoryImpl extends BicycleRepository {
   }
 
   @override
-  Future<Bicycle> deleteBicycle(String id, Bicycle bicycle) {
-    return datasource.deleteBicycle(id, bicycle);
+  Future<Bicycle> deleteBicycle(int id) {
+    return datasource.deleteBicycle(id);
   }
 
   @override
