@@ -1,6 +1,7 @@
 import 'package:cyclescape/domain/entities/bicycleDto.dart';
 import 'package:cyclescape/presentation/providers/favorite_bicycles_provider.dart';
 import 'package:cyclescape/presentation/providers/local_storage_provider.dart';
+import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -73,7 +74,10 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                 setState(() {
                   bicycleDetail?.removeAt(index);
                 });
-              } else {}
+              } else {
+                bicycles!.add(bicycle);
+                updateTotalPrice(bicycle.bicyclePrice);
+              }
             },
             child: Card(
               elevation: 0,

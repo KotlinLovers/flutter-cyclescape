@@ -109,7 +109,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                             content: Text(
                                                 '¡Bicicleta añadida al carrito!'),
                                           );
-                                          bicycles!.add(bicycleDetail!);
+                                          bicycles!.add(bicycleDetail!.toDto());
                                           updateTotalPrice(
                                               bicycleDetail!.bicyclePrice);
                                           ScaffoldMessenger.of(context)
