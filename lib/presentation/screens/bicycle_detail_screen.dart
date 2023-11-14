@@ -1,4 +1,5 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
+import 'package:cyclescape/domain/entities/bicycleDto.dart';
 import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
@@ -105,15 +106,42 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                       width: double.infinity,
                                       child: OutlinedButton(
                                         onPressed: () {
-                                          const snackBar = SnackBar(
+                                          const snackBarSuccess = SnackBar(
                                             content: Text(
                                                 '¡Bicicleta añadida al carrito!'),
                                           );
-                                          bicycles!.add(bicycleDetail!.toDto());
-                                          updateTotalPrice(
-                                              bicycleDetail!.bicyclePrice);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
+                                          const snackBarFailed = SnackBar(
+                                            content: Text(
+                                                '¡Ya está añadida en el carrito!'),
+                                          );
+                                          bool isInShoppingCart = false;
+                                          if (bicycles!.isNotEmpty) {
+                                            for (final bicycle in bicycles!) {
+                                              if (bicycle.bicycleId ==
+                                                  bicycleDetail!.bicycleId) {
+                                                isInShoppingCart = true;
+                                              }
+                                            }
+                                            if (isInShoppingCart) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBarFailed);
+                                            } else {
+                                              bicycles!
+                                                  .add(bicycleDetail!.toDto());
+                                              updateTotalPrice(
+                                                  bicycleDetail!.bicyclePrice);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                      snackBarSuccess);
+                                            }
+                                          } else {
+                                            bicycles!
+                                                .add(bicycleDetail!.toDto());
+                                            updateTotalPrice(
+                                                bicycleDetail!.bicyclePrice);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBarSuccess);
+                                          }
                                         },
                                         child: const Text('Agregar al carrito',
                                             style:
