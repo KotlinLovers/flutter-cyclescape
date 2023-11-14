@@ -20,7 +20,7 @@ class UserMapper {
         latitudeData: (json['latitudeData'] is num) ? json['latitudeData'].toDouble() : 0.0,
         longitudeData: (json['longitudeData'] is num) ? json['longitudeData'].toDouble() : 0.0,
         imageData: json['imageData'],
-        bicycles: List<Bicycle>.from(json['bicycles'].map((x) => BicycleMapper.jsonToEntity(x))),
+        bicycles: List<BicycleDto>.from(json['bicycles'].map((x) => BicycleMapper.dtoJsonToEntity(x))),
         cards: List<Card>.from(json['cards'].map((x) => CardMapper.jsonToEntity(x))),
       );
 

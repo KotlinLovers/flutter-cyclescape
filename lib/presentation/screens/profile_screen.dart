@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'screens.dart';
+
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
@@ -112,7 +114,9 @@ class ProfileScreenState extends ConsumerState {
               ProfileMenuWidget(
                 title: "Bicicletas publicadas",
                 icon: LineAwesomeIcons.bicycle,
-                onPress: () {},
+                onPress: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PublishedBicyclesScreen(user: user!)));
+                },
                 textColor: textColor,
               ),
               ProfileMenuWidget(

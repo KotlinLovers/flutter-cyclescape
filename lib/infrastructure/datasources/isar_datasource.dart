@@ -50,4 +50,16 @@ class IsarDatasource extends LocalStorageDatasource {
     isar.writeTxnSync(() => isar.bicycleDtos.putSync(bicycle));
   }
   
+  
+  Future<void> removeFromFavorites(BicycleDto bicycle) async {
+  final isar = await db;
+  final favoriteBicycle = await isar.bicycleDtos
+      .filter()
+      .bicycleIdEqualTo(bicycle.bicycleId)
+      .findFirst();
+  if (favoriteBicycle != null) {
+    isar.writeTxnSync(() => isar.bicycleDtos.deleteSync(favoriteBicycle.isarId!));
+  }
+}
+  
 }

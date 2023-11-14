@@ -30,13 +30,13 @@ class SideMenuState extends ConsumerState<SideMenu> {
           });
           final router = GoRouter.of(context);
           if (value == 0) {
-            router.go('/');
+            router.push('/');
           } else if (value == 1) {
-            router.go('/profile');
+            router.push('/profile');
           } else if (value == 2) {
-            router.go('/map');
+            router.push('/map');
           } else if (value == 3) {
-            router.go('/favorite');
+            router.push('/favorite');
           }
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );
