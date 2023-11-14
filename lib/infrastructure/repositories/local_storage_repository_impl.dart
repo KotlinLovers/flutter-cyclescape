@@ -24,4 +24,8 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
     return datasource.toggleFavorite(bicycle);
   }
 
+  Future<void> removeFromFavorites(BicycleDto bicycle) {
+    return datasource.removeFromFavorites(bicycle);
+  }
+
 }

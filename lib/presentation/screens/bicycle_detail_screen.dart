@@ -54,7 +54,12 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
         : Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                onPressed: () => context.go('/'),
+                onPressed: () {
+                  if (context.canPop()) {
+                    return context.pop();
+                  }
+                  context.go('/');
+                },
                 icon: const Icon(LineAwesomeIcons.angle_left),
               ),
               title: Text(bicycleDetail?.bicycleName ?? ''),
@@ -284,7 +289,7 @@ class UbicationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go(
+        context.push(
             '/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
       },
       child: ListTile(

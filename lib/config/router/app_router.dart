@@ -103,6 +103,11 @@ final goRouterProvider = Provider((ref) {
           path: '/shopping-cart',
           builder: (context, state) => const ShoppingCartScreen(),
         ),
+
+        //GoRoute(
+        //  path: '/published-bicycles',
+        //  builder: (context, state) => const PublishedBicyclesScreen(),
+        //),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;

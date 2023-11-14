@@ -13,11 +13,6 @@ class FavoriteScreen extends ConsumerStatefulWidget {
   FavoriteScreenState createState() => FavoriteScreenState();
 }
 
-final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int bicycleId) {
-  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
-  return localStorageRepository.isFavorite(bicycleId);
-});
-
 class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   List<BicycleDto>? bicycleDetail;
 
@@ -28,13 +23,20 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   }
 
   Future<void> loadFavoriteBicycle() async {
-    final bicycle = await ref.read(storageBicyclesProvider.notifier).loadNextPage();
+    final bicycle =
+        await ref.read(storageBicyclesProvider.notifier).loadNextPage();
     if (mounted) {
       setState(() {
         bicycleDetail = bicycle;
       });
     }
   }
+
+  final isFavoriteProvider =
+      FutureProvider.family.autoDispose((ref, int bicycleId) {
+    final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+    return localStorageRepository.isFavorite(bicycleId);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
         itemBuilder: (context, index) {
           final bicycle = bicycleDetail?[index];
           return Dismissible(
-            key: Key(bicycle!.bicycleId.toString()), // Asegúrate de tener una clave única para cada elemento
+            key: Key(bicycle!.bicycleId.toString()),
             background: Container(
               color: Colors.red,
               alignment: Alignment.centerLeft,
@@ -63,28 +65,36 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
-            onDismissed: (direction) {
+            onDismissed: (direction) async {
               if (direction == DismissDirection.startToEnd) {
-                // Añadir al carrito
-              } else {
-                
+                await ref
+                    .read(localStorageRepositoryProvider)
+                    .removeFromFavorites(bicycle);
                 setState(() {
                   bicycleDetail?.removeAt(index);
                 });
-                // Aquí agregar lógica para eliminar el elemento de la base de datos o del estado de la aplicación
-              }
+              } else {}
             },
             child: Card(
               elevation: 0,
               color: Colors.white,
               margin: const EdgeInsets.all(8),
               child: ListTile(
-                leading: Image.network(bicycle.imageData, width: 100, fit: BoxFit.cover),
+                leading: Hero(
+                  tag: bicycle.bicycleId,
+                  child: Image.network(
+                    bicycle.imageData,
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
                 title: Text(bicycle.bicycleName),
                 subtitle: Text(bicycle.bicycleDescription),
                 onTap: () {
-                  // Acción al seleccionar la tarjeta
+                  context.push('/bicycle/${bicycle.bicycleId}');
                 },
+                trailing: const Icon(LineAwesomeIcons.angle_right),
               ),
             ),
           );
