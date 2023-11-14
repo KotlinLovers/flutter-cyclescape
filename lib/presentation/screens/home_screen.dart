@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Position? currentPosition;
-
+  final TextEditingController _searchController = TextEditingController();
   Future<void> _checkLocationPermission() async {
     PermissionStatus status = await Permission.location.request();
 
@@ -42,13 +42,46 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
+    bool searching = false;
 
     return Scaffold(
         drawer: SideMenu(scaffoldKey: scaffoldKey),
         appBar: AppBar(
+          //centerTitle: true,
+          /*title: searching
+              ? Container(
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (context) {},
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(15, 50, 0, 0),
+                        hintStyle: TextStyle(color: Colors.black54),
+                        border: InputBorder.none,
+                        hintText: 'Busca una bicicleta...'),
+                  ),
+                )
+              : const Text('this is the title'),*/
           actions: [
             IconButton(
-                onPressed: () {}, icon: const Icon(Icons.search_rounded)),
+                onPressed: () {
+                  /*setState(
+                    () {
+                      searching = !searching;
+                      if (!searching) {
+                        _searchController.clear();
+                      }
+                    },
+                  );*/
+                  showSearch(
+                      context: context, delegate: BicycleSearchDelegate());
+                },
+                icon: Icon(Icons.search_rounded)),
             IconButton(
                 onPressed: () {
                   context.push('/shopping-cart');
