@@ -1,4 +1,5 @@
 import 'package:cyclescape/presentation/providers/providers.dart';
+import 'package:cyclescape/shared/util/shared_entities/bicycles_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +22,7 @@ class BicyclesScreenState extends ConsumerState {
   Widget build(BuildContext context) {
     final bicycleState = ref.watch(bicyclesProvider);
     final textStyle = Theme.of(context).textTheme;
+    bicyclesLoaded = bicycleState.bicycles;
     return SliverPadding(
       padding: const EdgeInsets.all(20.0),
       sliver: SliverGrid(

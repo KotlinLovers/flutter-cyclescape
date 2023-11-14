@@ -10,3 +10,4 @@ export 'loading_screen.dart';
 export 'bicycle_detail_screen.dart';
 export 'shopping_cart_screen.dart';
 export 'published_bicycles_screen.dart';
+export 'search_screen.dart';
