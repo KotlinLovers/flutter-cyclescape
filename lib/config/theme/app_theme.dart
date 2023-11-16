@@ -15,7 +15,7 @@ class AppTheme {
     ///* Texts
     textTheme: TextTheme(
       titleLarge: GoogleFonts.montserratAlternates()
-        .copyWith( fontSize: 40, fontWeight: FontWeight.bold ),
+        .copyWith( fontSize: 20, fontWeight: FontWeight.normal ),
       titleMedium: GoogleFonts.montserratAlternates()
         .copyWith( fontSize: 30, fontWeight: FontWeight.bold ),
       titleSmall: GoogleFonts.montserratAlternates()
@@ -39,8 +39,8 @@ class AppTheme {
     ///* AppBar
     appBarTheme: AppBarTheme(
       color: scaffoldBackgroundColor,
-      titleTextStyle: GoogleFonts.montserratAlternates()
-        .copyWith( fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black ),
+      titleTextStyle: GoogleFonts.raleway()
+        .copyWith( fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black ),
     )
   );
 

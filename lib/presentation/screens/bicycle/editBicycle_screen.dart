@@ -92,7 +92,7 @@ class _ProductInformation extends ConsumerWidget {
           ),
           CustomBicycleField(
             isBottomField: false,
-            label: 'Precio',
+            label: 'Precio - Soles',
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             initialValue: bicycle.bicyclePrice.toString(),
           ),

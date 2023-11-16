@@ -52,7 +52,8 @@ class BicyclesScreenState extends ConsumerState {
                       .toggleFavorite(bicycle);
                 },
                 child: Card(
-                  elevation: 1,
+                  elevation: 0,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
