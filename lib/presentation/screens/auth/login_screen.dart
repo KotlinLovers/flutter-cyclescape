@@ -69,7 +69,7 @@ class _LoginForm extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           Text('Iniciar Sesión', style: textStyles.titleMedium),
           const SizedBox(height: 90),
           CustomTextFormField(
