@@ -1,9 +1,9 @@
 
 import 'package:cyclescape/domain/domain.dart';
-import 'package:cyclescape/presentation/providers/user_repository_provider.dart';
+import 'package:cyclescape/presentation/providers/user/user_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../shared/services/key_value_storage_service.dart';
-import '../../shared/services/key_value_storage_service_impl.dart';
+import '../../../shared/services/key_value_storage_service.dart';
+import '../../../shared/services/key_value_storage_service_impl.dart';
 
 final userProvider = StateNotifierProvider<UserNotifier,UserState>((ref){
   final keyValueStorageService = KeyValueStorageImpl();

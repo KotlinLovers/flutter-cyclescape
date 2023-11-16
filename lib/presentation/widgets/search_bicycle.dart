@@ -14,7 +14,7 @@ class BicycleSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: const Icon(Icons.clear)),
+          icon: const Icon(Icons.clear), color: Colors.black,),
     ];
   }
 
@@ -24,7 +24,7 @@ class BicycleSearchDelegate extends SearchDelegate {
         onPressed: () {
           close(context, null);
         },
-        icon: const Icon(Icons.arrow_back_ios));
+        icon: const Icon(Icons.arrow_back_ios), color: Colors.black,);
   }
 
   @override

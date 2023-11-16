@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../shared/widgets/widgets.dart';
+import '../../../shared/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.search_rounded)),
             IconButton(
                 onPressed: () {
-                  context.go('/shopping-cart');
+                  context.push('/shopping-cart');
                 },
                 icon: const Icon(Icons.shopping_cart)),
           ],

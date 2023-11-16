@@ -1,10 +1,10 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
-import 'package:cyclescape/presentation/screens/bicycle_map_screen.dart';
+import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
+import 'package:cyclescape/presentation/screens/map/bicycle_map_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../presentation/screens/favorite_screen.dart';
-import '../../presentation/screens/paymentdetails_screen.dart';
+import '../../presentation/screens/local/favorite_screen.dart';
+import '../../presentation/screens/payment/paymentdetails_screen.dart';
 
 import '../../presentation/screens/screens.dart';
 

@@ -1,12 +1,12 @@
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
-import 'package:cyclescape/presentation/providers/user_provider.dart';
-import 'package:cyclescape/presentation/screens/loading_screen.dart';
+import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
+import 'package:cyclescape/presentation/providers/user/user_provider.dart';
+import 'package:cyclescape/shared/widgets/loading_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'screens.dart';
+import '../screens.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -42,18 +42,10 @@ class ProfileScreenState extends ConsumerState {
     }
   }
 
-  Color _baseColor(BuildContext context) {
-    return MediaQuery.of(context).platformBrightness == Brightness.dark
-        ? Colors.blueGrey[900]!
-        : Colors.white;
-  }
-
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userProvider);
     final user = userState.user;
-    var backgroundColor = _baseColor(context);
-    var textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
       appBar: AppBar(
@@ -70,14 +62,12 @@ class ProfileScreenState extends ConsumerState {
                   ? LineAwesomeIcons.sun
                   : LineAwesomeIcons.moon))
         ],
-        backgroundColor: backgroundColor,
         elevation: 0, // Remove the shadow
       ),
       body: isLoading ? LoadingScreen() : 
       SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
-          color: backgroundColor,
           child: Column(
             children: [
               CircleAvatar(
@@ -88,14 +78,12 @@ class ProfileScreenState extends ConsumerState {
               Text('${user?.userFirstName} ${user?.userLastName}',
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium
-                      ?.copyWith(color: textColor)),
+                      .titleMedium),
 
               Text('${user?.userEmail}',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: textColor)),
+                      .bodyMedium),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -117,13 +105,11 @@ class ProfileScreenState extends ConsumerState {
                 onPress: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PublishedBicyclesScreen(user: user!)));
                 },
-                textColor: textColor,
               ),
               ProfileMenuWidget(
                 title: "Administración de cuenta",
                 icon: LineAwesomeIcons.user_check,
                 onPress: () {},
-                textColor: textColor,
               ),
               ProfileMenuWidget(
                 title: "Detalles de pago",
@@ -131,7 +117,6 @@ class ProfileScreenState extends ConsumerState {
                 onPress: () {
                   context.go('/payment-details');
                 },
-                textColor: textColor,
               ),
               const Divider(),
               const SizedBox(height: 10),

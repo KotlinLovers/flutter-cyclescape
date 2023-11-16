@@ -18,7 +18,6 @@ class BicyclesNotifier extends StateNotifier<BicycleState> {
   }
 
   Future<Bicycle> getBicycleById(int id) async {
-    // This function now only fetches and returns a bicycle, not affecting the state
     return await bicycleRepository.getBicycleById(id);
   }
 }

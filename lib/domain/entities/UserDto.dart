@@ -1,6 +1,4 @@
 import 'package:cyclescape/domain/domain.dart';
-
-import 'bicycle.dart';
 import 'card.dart';
 
 class UserDto{
@@ -14,7 +12,7 @@ class UserDto{
   final double longitudeData;
   final String imageData;
   final List<BicycleDto> bicycles;
-  final List<Card> cards;
+  final List<CardPayment> cards;
 
   UserDto({
     required this.userId,

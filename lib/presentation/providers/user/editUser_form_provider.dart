@@ -1,9 +1,9 @@
-import 'package:cyclescape/presentation/providers/user_provider.dart';
+import 'package:cyclescape/presentation/providers/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
-import '../../shared/util/util.dart';
-import 'providers.dart';
+import '../../../shared/util/util.dart';
+import '../providers.dart';
 
 class EditUserFormState {
   final bool isFormPosted;

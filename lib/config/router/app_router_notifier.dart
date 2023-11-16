@@ -1,4 +1,4 @@
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
+import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

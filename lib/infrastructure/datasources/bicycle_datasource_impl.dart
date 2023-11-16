@@ -20,7 +20,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   }
 
   @override
-  Future<Bicycle> deleteBicycle(String id, Bicycle bicycle) {
+  Future<Bicycle> deleteBicycle(int id) {
     // TODO: implement deleteBicycle
     throw UnimplementedError();
   }
@@ -28,7 +28,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   @override
   Future<Bicycle> getBicycleById(int id) async {
     try {
-      final response = await dio.get('/bicycles/$id');
+      final response = await dio.get('/bicycles/bike/$id');
       return BicycleMapper.jsonToEntity(response.data);
     } on DioException catch (e) {
       if (e.response!.statusCode == 404) throw BicycleNotFound();
