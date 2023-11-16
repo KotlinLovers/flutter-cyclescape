@@ -1,6 +1,7 @@
 import 'package:cyclescape/domain/entities/bicycle.dart';
 import 'package:cyclescape/presentation/providers/bicycles_provider.dart';
 import 'package:cyclescape/presentation/screens/screens.dart';
+import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -97,7 +98,17 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                     SizedBox(
                                       width: double.infinity,
                                       child: OutlinedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          const snackBar = SnackBar(
+                                            content: Text(
+                                                '¡Bicicleta añadida al carrito!'),
+                                          );
+                                          bicycles!.add(bicycleDetail!);
+                                          updateTotalPrice(
+                                              bicycleDetail!.bicyclePrice);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        },
                                         child: const Text('Agregar al carrito'),
                                       ),
                                     )
@@ -241,13 +252,15 @@ class InformationSection extends StatelessWidget {
 
 class UbicationSection extends StatelessWidget {
   final Bicycle? bicycleDetail;
-  const UbicationSection({Key? key, required this.bicycleDetail}) : super(key: key);
+  const UbicationSection({Key? key, required this.bicycleDetail})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
+        context.go(
+            '/map/${bicycleDetail!.bicycleId}/${bicycleDetail!.latitudeData}/${bicycleDetail!.longitudeData}');
       },
       child: ListTile(
         leading: const Icon(LineAwesomeIcons.map_marker),

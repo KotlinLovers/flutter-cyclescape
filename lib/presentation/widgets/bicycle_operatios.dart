@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/bicycles.dart';
 import '../../shared/services/bicycle_service.dart';
-import '../../shared/services/key_value_storage_service_impl.dart';
-import 'package:http/http.dart' as http;
-
 
 class BicycleOperation extends StatefulWidget {
   @override
@@ -11,15 +8,16 @@ class BicycleOperation extends StatefulWidget {
 }
 
 class _BicycleOperationsState extends State<BicycleOperation> {
-  late final BicycleService bicycleService; // Instancia de BicycleService
+  final apiService = ApiService();
   List<Bicycle> bicycles = [];
+
   int counter = 0;
   bool showFields = false;
   int? editingIndex;
 
   final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _priceController = TextEditingController();
+  final _descripcionController = TextEditingController();
+  final _precioController = TextEditingController();
   final _sizeController = TextEditingController();
   final _modelController = TextEditingController();
   final _imageUrlController = TextEditingController();
@@ -27,55 +25,39 @@ class _BicycleOperationsState extends State<BicycleOperation> {
   @override
   void initState() {
     super.initState();
-    // Crear la instancia de BicycleService aquí dentro de initState
-    bicycleService = BicycleService(
-      httpClient: http.Client(),
-      keyValueStorage: KeyValueStorageImpl(), // Asegúrate de que esta clase esté definida y la ruta de importación sea correcta
-    );
-    // Luego, puedes llamar a métodos de BicycleService como getAllBicycles
-    _loadBicycles();
-  }
-
-  void _loadBicycles() {
-    bicycleService.getAllBicycles().then((fetchedItems) {
+    apiService.fetchItems().then((fetchedItems) {
       setState(() {
         bicycles = fetchedItems;
       });
-    }).catchError((error) {
-      _showSnackBar('Error al obtener bicicletas: $error');
     });
   }
-
-
 
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
-    _priceController.dispose();
+    _descripcionController.dispose();
+    _precioController.dispose();
     _sizeController.dispose();
     _modelController.dispose();
     _imageUrlController.dispose();
-    bicycleService.httpClient.close(); // Cerrar el cliente HTTP
     super.dispose();
   }
-
-
 
   bool _validarCampos() {
     List<TextEditingController> controllers = [
       _nameController,
-      _descriptionController,
-      _priceController,
+      _descripcionController,
+      _precioController,
       _sizeController,
       _modelController,
       _imageUrlController
     ];
 
-    bool areFieldsEmpty =
-    controllers.any((controller) => controller.text.isEmpty);
-    bool isUrlValid =
-        Uri.tryParse(_imageUrlController.text)?.hasScheme ?? false;
+    bool areFieldsEmpty = controllers.any((controller) =>
+    controller.text.isEmpty);
+    bool isUrlValid = Uri
+        .tryParse(_imageUrlController.text)
+        ?.hasScheme ?? false;
 
     if (areFieldsEmpty || !isUrlValid) {
       _showSnackBar('Todos los campos son obligatorios y deben ser válidos.');
@@ -86,44 +68,38 @@ class _BicycleOperationsState extends State<BicycleOperation> {
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.red));
+        SnackBar(content: Text(message), backgroundColor: Colors.red)
+    );
   }
 
-
+  Bicycle _constructBicycleFromControllers(int id) {
+    return Bicycle(
+      id,
+      _nameController.text,
+      _descripcionController.text,
+      double.parse(_precioController.text),
+      _sizeController.text,
+      _modelController.text,
+      _imageUrlController.text,
+    );
+  }
 
   void _addBicycle() async {
     if (_validarCampos()) {
-      // Para nuevas bicicletas, no debes proporcionar un ID,
-      // el servidor debería encargarse de generar uno.
-      Bicycle newBicycle = _constructBicycleFromControllers();
+      Bicycle newBicycle = _constructBicycleFromControllers(counter);
       try {
-        Bicycle createdBicycle = await bicycleService.addBicycle(newBicycle);
+        Bicycle createdBicycle = await ApiService().createItem(newBicycle);
         setState(() {
           bicycles.add(createdBicycle);
-          counter++; // Actualizar el contador si estás usando IDs locales.
+          counter++;
           showFields = false;
         });
         _clearControllers();
       } catch (e) {
-        _showSnackBar('Error al agregar bicicleta: $e');
+        _showSnackBar('Error: $e');
       }
     }
   }
-
-  Bicycle _constructBicycleFromControllers([int? id]) {
-    // El ID es opcional y solo se debe usar cuando estás actualizando una bicicleta
-    return Bicycle(
-      id: id, // Pasa el ID si está disponible
-      bicycleName: _nameController.text,
-      bicycleDescription: _descriptionController.text,
-      bicyclePrice: double.tryParse(_priceController.text) ?? 0,
-      bicycleSize: _sizeController.text,
-      bicycleModel: _modelController.text,
-      imageData: _imageUrlController.text,
-    );
-  }
-
-
 
   void _editBicycle(int index) {
     setState(() {
@@ -132,8 +108,8 @@ class _BicycleOperationsState extends State<BicycleOperation> {
     });
 
     _nameController.text = bicycles[index].bicycleName;
-    _descriptionController.text = bicycles[index].bicycleDescription;
-    _priceController.text = bicycles[index].bicyclePrice.toString();
+    _descripcionController.text = bicycles[index].bicycleDescription;
+    _precioController.text = bicycles[index].bicyclePrice.toString();
     _sizeController.text = bicycles[index].bicycleSize;
     _modelController.text = bicycles[index].bicycleModel;
     _imageUrlController.text = bicycles[index].imageData;
@@ -142,10 +118,11 @@ class _BicycleOperationsState extends State<BicycleOperation> {
   void _updateBicycle() async {
     if (_validarCampos()) {
       if (editingIndex != null) {
-        // Cuando actualizamos, sí usamos el ID de la bicicleta existente.
-        Bicycle updatedBicycle = _constructBicycleFromControllers(bicycles[editingIndex!].id);
+        Bicycle updatedBicycle = _constructBicycleFromControllers(
+            bicycles[editingIndex!].id);
         try {
-          Bicycle serverUpdatedBicycle = await bicycleService.updateBicycle(updatedBicycle);
+          Bicycle serverUpdatedBicycle = await ApiService().updateBicycle(
+              updatedBicycle.id, updatedBicycle);
           setState(() {
             bicycles[editingIndex!] = serverUpdatedBicycle;
             editingIndex = null;
@@ -153,81 +130,91 @@ class _BicycleOperationsState extends State<BicycleOperation> {
           });
           _clearControllers();
         } catch (e) {
-          _showSnackBar('Error al actualizar la bicicleta: $e');
+          _showSnackBar('Error al actualizar el ítem: $e');
         }
       }
     }
   }
 
-
-
-
-
   void _clearControllers() {
     _nameController.clear();
-    _descriptionController.clear();
-    _priceController.clear();
+    _descripcionController.clear();
+    _precioController.clear();
     _sizeController.clear();
     _modelController.clear();
     _imageUrlController.clear();
   }
 
+
   void _confirmDelete(int index) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirmación",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        content: Text("¿Estás seguro de que deseas eliminar esta bicicleta?"),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () async {
-              // Verifica si el ID no es nulo antes de intentar eliminar la bicicleta
-              final int? itemId = bicycles[index].id;
-              if (itemId == null) {
-                // Manejo de error si el ID es nulo
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('No se puede eliminar la bicicleta: ID no disponible.'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-                Navigator.of(context).pop(); // Cerrar el diálogo
-                return;
-              }
-
-              try {
-                await bicycleService.deleteBicycle(itemId);
-                setState(() {
-                  bicycles.removeAt(index);
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Bicicleta eliminada con éxito.'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Error al eliminar la bicicleta: $e'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
-              Navigator.of(context).pop(); // Cerrar el diálogo
-            },
-            child: Text("Sí"),
-            style: TextButton.styleFrom(primary: Colors.red),
+      builder: (context) =>
+          AlertDialog(
+            backgroundColor: Colors.transparent,
+            // Hacer transparente el color de fondo de AlertDialog
+            content: Card(
+              color: Colors.white70, // Color de advertencia p
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Confirmación", style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    Text("¿Estás seguro de que deseas eliminar este ítem?"),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            int itemId = bicycles[index].id;
+                            try {
+                              bool isDeleted = await ApiService().deleteItem(
+                                  itemId);
+                              if (isDeleted) {
+                                setState(() {
+                                  bicycles.removeAt(index);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(
+                                          'Ítem eliminado con éxito.'),
+                                          backgroundColor: Colors.red)
+                                  );
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(
+                                        'Error al eliminar el ítem del servidor.'),
+                                        backgroundColor: Colors.red)
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(
+                                      'Error al eliminar el ítem: $e'),
+                                      backgroundColor: Colors.red)
+                              );
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Text("Sí", textAlign: TextAlign.center),
+                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("No", textAlign: TextAlign.center),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Cerrar el diálogo
-            },
-            child: Text("No"),
-          ),
-        ],
-      ),
     );
   }
 
@@ -235,33 +222,33 @@ class _BicycleOperationsState extends State<BicycleOperation> {
   void _showDetails(int index) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(bicycles[index].bicycleName),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _customText('Descripción: ', bicycles[index].bicycleDescription),
-            _customText('Precio: ', bicycles[index].bicyclePrice.toString()),
-            _customText('Tamaño: ', bicycles[index].bicycleSize),
-            _customText('Modelo: ', bicycles[index].bicycleModel),
-            SizedBox(height: 12.0),
-            if (bicycles[index].imageData.isNotEmpty)
-              Image.network(
-                bicycles[index].imageData,
-                height: 200,
+      builder: (context) =>
+          AlertDialog(
+            title: Text(bicycles[index].bicycleName),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _customText(
+                    'Descripción: ', bicycles[index].bicycleDescription),
+                _customText(
+                    'Precio: ', bicycles[index].bicyclePrice.toString()),
+                _customText('Tamaño: ', bicycles[index].bicycleSize),
+                _customText('Modelo: ', bicycles[index].bicycleModel),
+                SizedBox(height: 12.0),
+                if (bicycles[index].imageData.isNotEmpty)
+                  Image.network(bicycles[index].imageData, height: 200,),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cerrar"),
               ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Cerrar"),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -286,8 +273,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
   }
 
 
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -298,15 +283,16 @@ class _BicycleOperationsState extends State<BicycleOperation> {
           },
         ),
         title: Text('Julio Ramirez'),
-        actions: [
-          // Esto agrega elementos al lado derecho del AppBar
+        actions: [ // Esto agrega elementos al lado derecho del AppBar
           Icon(Icons.person),
         ],
       ),
       body: Column(
         children: [
-          if (showFields) _buildBicycleForm(),
-          if (!showFields) _buildAddNewBicycleButton(),
+          if (showFields)
+            _buildBicycleForm(),
+          if (!showFields)
+            _buildAddNewBicycleButton(),
           _buildBicyclesList(),
         ],
       ),
@@ -324,16 +310,13 @@ class _BicycleOperationsState extends State<BicycleOperation> {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            _buildTextField(
-                controller: _nameController,
+            _buildTextField(controller: _nameController,
                 labelText: 'Introduce el nombre de la bicicleta'),
             SizedBox(height: 12.0),
-            _buildTextField(
-                controller: _descriptionController,
+            _buildTextField(controller: _descripcionController,
                 labelText: 'Introduce una descripción'),
             SizedBox(height: 12.0),
-            _buildTextField(
-                controller: _priceController,
+            _buildTextField(controller: _precioController,
                 labelText: 'Introduce un precio'),
             SizedBox(height: 12.0),
             _buildTextField(
@@ -342,8 +325,7 @@ class _BicycleOperationsState extends State<BicycleOperation> {
             _buildTextField(
                 controller: _modelController, labelText: 'Introduce un modelo'),
             SizedBox(height: 12.0),
-            _buildTextField(
-                controller: _imageUrlController,
+            _buildTextField(controller: _imageUrlController,
                 labelText: 'Introduce una dirección de imagen'),
             SizedBox(height: 12.0),
             _buildActionButtons(),
@@ -352,11 +334,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
       ),
     );
   }
-
-
-
-
-
 
 
   Widget _buildActionButtons() {
@@ -410,10 +387,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
       child: ListView.builder(
         itemCount: bicycles.length,
         itemBuilder: (context, index) {
-          // Obtener la URL de la imagen, si es 'null' como texto o realmente nula, usar una imagen de reserva.
-          String? imageUrl = bicycles[index].imageData;
-          bool isValidUrl = imageUrl != null && imageUrl.isNotEmpty && imageUrl != "null";
-
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
             child: Card(
@@ -421,16 +394,9 @@ class _BicycleOperationsState extends State<BicycleOperation> {
               child: ListTile(
                 title: Text(bicycles[index].bicycleName),
                 subtitle: Text(bicycles[index].bicycleDescription),
-                leading: isValidUrl
-                    ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    // Si hay un error al cargar la imagen, se muestra una imagen de reserva.
-                    return Image.asset('images/default_image.png', fit: BoxFit.cover);
-                  },
-                )
-                    : Image.asset('images/default_image.png', fit: BoxFit.cover), // Imagen de reserva si la URL es nula o 'null'.
+                leading: bicycles[index].imageData.isNotEmpty
+                    ? Image.network(bicycles[index].imageData)
+                    : null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -455,8 +421,6 @@ class _BicycleOperationsState extends State<BicycleOperation> {
       ),
     );
   }
-
-
 
   Widget _buildTextField(
       {required TextEditingController controller, required String labelText}) {

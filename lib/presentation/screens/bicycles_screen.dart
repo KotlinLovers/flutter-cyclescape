@@ -61,17 +61,13 @@ class BicyclesScreenState extends ConsumerState {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        bicycle.bicycleName,
-                        style: textStyle.bodyMedium
-                      ),
+                      child: Text(bicycle.bicycleName,
+                          style: textStyle.bodyMedium),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 0,1.0),
-                      child: Text(
-                        bicycle.bicycleDescription,
-                        style: textStyle.bodySmall
-                      ),
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 1.0),
+                      child: Text(bicycle.bicycleDescription,
+                          style: textStyle.bodySmall),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
