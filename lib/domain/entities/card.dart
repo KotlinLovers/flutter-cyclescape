@@ -1,4 +1,4 @@
-class Card{
+class CardPayment{
   final int id;
   final String cardNumber;
   final String cardType;
@@ -8,7 +8,7 @@ class Card{
   final String cardHolder;
   final bool cardMain;
 
-  Card({
+  CardPayment({
     required this.id,
     required this.cardNumber,
     required this.cardType,

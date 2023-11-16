@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
-import '../../shared/util/util.dart';
-import 'providers.dart';
+import '../../../shared/util/util.dart';
+import '../providers.dart';
 
 class RegisterFormState {
   final bool isFormPosted;

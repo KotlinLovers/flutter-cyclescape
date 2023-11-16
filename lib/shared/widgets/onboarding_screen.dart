@@ -1,9 +1,9 @@
-import 'package:cyclescape/presentation/screens/login_screen.dart';
+import 'package:cyclescape/presentation/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../shared/widgets/intro_screens/intro_page_1.dart';
-import '../../shared/widgets/intro_screens/intro_page_2.dart';
-import '../../shared/widgets/intro_screens/intro_page_3.dart';
+import 'intro_screens/intro_page_1.dart';
+import 'intro_screens/intro_page_2.dart';
+import 'intro_screens/intro_page_3.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);

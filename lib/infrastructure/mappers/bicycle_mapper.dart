@@ -1,5 +1,6 @@
 import 'package:cyclescape/domain/domain.dart';
 import 'package:cyclescape/infrastructure/infrastructure.dart';
+import 'package:flutter/widgets.dart';
 
 class BicycleMapper {
   static Bicycle jsonToEntity(Map<String, dynamic> json) => Bicycle(
@@ -9,9 +10,14 @@ class BicycleMapper {
         bicyclePrice: double.parse(json['bicyclePrice'].toString()),
         bicycleSize: json['bicycleSize'],
         bicycleModel: json['bicycleModel'],
-        imageData: json['imageData'],
-        latitudeData: double.parse(json['latitudeData'].toString()),
-        longitudeData: double.parse(json['longitudeData'].toString()),
+        imageData:
+            json['imageData'] ?? Image.asset('assets/images/no-image.jpg'),
+        latitudeData: json['latitudeData'] != null
+            ? double.parse(json['latitudeData'].toString())
+            : 0.0,
+        longitudeData: json['longitudeData'] != null
+            ? double.parse(json['longitudeData'].toString())
+            : 0.0,
         user: UserMapper.userInfoJsonToEntity(json['userDtoResponse']),
       );
   static BicycleDto dtoJsonToEntity(Map<String, dynamic> json) => BicycleDto(
@@ -21,8 +27,13 @@ class BicycleMapper {
         bicyclePrice: double.parse(json['bicyclePrice'].toString()),
         bicycleSize: json['bicycleSize'],
         bicycleModel: json['bicycleModel'],
-        imageData: json['imageData'],
-        latitudeData: double.parse(json['latitudeData'].toString()),
-        longitudeData: double.parse(json['longitudeData'].toString()),
+        imageData:
+            json['imageData'] ?? Image.asset('assets/images/no-image.jpg'),
+        latitudeData: json['latitudeData'] != null
+            ? double.parse(json['latitudeData'].toString())
+            : 0.0,
+        longitudeData: json['longitudeData'] != null
+            ? double.parse(json['longitudeData'].toString())
+            : 0.0,
       );
 }

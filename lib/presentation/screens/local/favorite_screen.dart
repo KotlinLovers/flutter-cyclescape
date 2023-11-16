@@ -1,6 +1,6 @@
 import 'package:cyclescape/domain/entities/bicycleDto.dart';
-import 'package:cyclescape/presentation/providers/favorite_bicycles_provider.dart';
-import 'package:cyclescape/presentation/providers/local_storage_provider.dart';
+import 'package:cyclescape/presentation/providers/local/favorite_bicycles_provider.dart';
+import 'package:cyclescape/presentation/providers/local/local_storage_provider.dart';
 import 'package:cyclescape/shared/util/shared_entities/bicycle_shopping_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -104,14 +104,11 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                     color: Colors.white,
                     margin: const EdgeInsets.all(8),
                     child: ListTile(
-                      leading: Hero(
-                        tag: bicycle.bicycleId,
-                        child: Image.network(
-                          bicycle.imageData,
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
-                        ),
+                      leading: Image.network(
+                        bicycle.imageData,
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
                       ),
                       title: Text(bicycle.bicycleName),
                       subtitle: Text(bicycle.bicycleDescription),

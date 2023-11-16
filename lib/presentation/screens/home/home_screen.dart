@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../shared/widgets/widgets.dart';
+import '../../../shared/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:cyclescape/shared/services/key_value_storage_service.dart';
 import 'package:cyclescape/shared/services/key_value_storage_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/domain.dart';
+import '../../../domain/domain.dart';
 
 //! 1 - Inicializamos el state
 //Creas una clase para representar el estado de tu aplicación.

@@ -1,8 +1,8 @@
 import '../../domain/domain.dart';
 
 class CardMapper {
-  static Card jsonToEntity(Map<String, dynamic> json) {
-    return Card(
+  static CardPayment jsonToEntity(Map<String, dynamic> json) {
+    return CardPayment(
         id: json['id'],
         cardNumber: json['cardNumber'],
         cardType: json['cardType'],
