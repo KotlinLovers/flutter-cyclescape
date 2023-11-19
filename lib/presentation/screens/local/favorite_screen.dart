@@ -103,19 +103,25 @@ class FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                     elevation: 0,
                     color: Colors.white,
                     margin: const EdgeInsets.all(8),
-                    child: ListTile(
-                      leading: Image.network(
-                        bicycle.imageData,
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      title: Text(bicycle.bicycleName),
-                      subtitle: Text(bicycle.bicycleDescription),
-                      onTap: () {
-                        context.push('/bicycle/${bicycle.bicycleId}');
-                      },
-                      trailing: const Icon(LineAwesomeIcons.angle_right),
+                      child: ListTile(
+                        leading: Image.network(
+                          bicycle.imageData,
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                        ),
+                        title: Text(bicycle.bicycleName),
+                        subtitle: Text(bicycle.bicycleDescription),
+                        onTap: () {
+                          context.push('/bicycle/${bicycle.bicycleId}');
+                        },
+                        trailing: const Icon(LineAwesomeIcons.angle_right),
+                      ),
                     ),
                   ),
                 );

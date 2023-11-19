@@ -14,9 +14,14 @@ class BicycleDatasourceImpl extends BicycleDatasource {
             headers: {'Authorization': 'Bearer $accessToken'}));
 
   @override
-  Future<Bicycle> createBicycle(String id, Bicycle bicycle) {
-    // TODO: implement createBicycle
-    throw UnimplementedError();
+  Future<Bicycle> createBicycle(Map<String, dynamic> bicycleLike) async{
+    try {
+      final response = await dio.post('/bicycles', data: bicycleLike);
+      final bicycle = BicycleMapper.jsonToEntity(response.data);
+      return bicycle;
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
@@ -38,7 +43,7 @@ class BicycleDatasourceImpl extends BicycleDatasource {
 
   @override
   Future<List<BicycleDto>> getBicycles() async {
-    final response = await  dio.get<List>('/bicycles');
+    final response = await dio.get<List>('/bicycles');
     final List<BicycleDto> bicycles = [];
     for (final bicycle in response.data ?? []) {
       bicycles.add(BicycleMapper.dtoJsonToEntity(bicycle));
@@ -53,8 +58,17 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   }
 
   @override
-  Future<Bicycle> updateBicycle(String id, Bicycle bicycle) {
-    // TODO: implement updateBicycle
-    throw UnimplementedError();
+  Future<Bicycle> updateBicycle(Map<String, dynamic> bicycleLike) async {
+    try {
+      final response = await dio.request(
+        '/bicycles/${bicycleLike['id']}',
+        data: bicycleLike,
+        options: Options(method: 'PUT'),
+      );
+      final bicycle = BicycleMapper.jsonToEntity(response.data);
+      return bicycle;
+    } catch (e) {
+      throw Exception();
+    }
   }
 }

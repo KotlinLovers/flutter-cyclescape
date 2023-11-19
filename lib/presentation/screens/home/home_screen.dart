@@ -1,21 +1,23 @@
+import 'package:cyclescape/presentation/providers/providers.dart';
 import 'package:cyclescape/presentation/screens/screens.dart';
 import 'package:cyclescape/presentation/widgets/widgets.dart';
 import 'package:cyclescape/shared/util/shared_entities/map.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shared/widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends ConsumerState<HomeScreen> {
   Position? currentPosition;
   final TextEditingController _searchController = TextEditingController();
   Future<void> _checkLocationPermission() async {
@@ -47,37 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         drawer: SideMenu(scaffoldKey: scaffoldKey),
         appBar: AppBar(
-          //centerTitle: true,
-          /*title: searching
-              ? Container(
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(),
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (context) {},
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(15, 50, 0, 0),
-                        hintStyle: TextStyle(color: Colors.black54),
-                        border: InputBorder.none,
-                        hintText: 'Busca una bicicleta...'),
-                  ),
-                )
-              : const Text('this is the title'),*/
           actions: [
             IconButton(
                 onPressed: () {
-                  /*setState(
-                    () {
-                      searching = !searching;
-                      if (!searching) {
-                        _searchController.clear();
-                      }
-                    },
-                  );*/
                   showSearch(
                       context: context, delegate: BicycleSearchDelegate());
                 },
@@ -89,13 +63,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.shopping_cart)),
           ],
         ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: AdvertisementCards(),
-            ),
-            const BicyclesScreen(),
-          ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(bicyclesProvider.notifier).getBicycles();
+          },
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: AdvertisementCards(),
+              ),
+              const BicyclesScreen(),
+            ],
+          ),
         ));
   }
 }

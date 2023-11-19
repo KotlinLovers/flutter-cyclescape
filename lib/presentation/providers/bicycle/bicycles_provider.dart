@@ -8,8 +8,26 @@ final bicyclesProvider = StateNotifierProvider<BicyclesNotifier, BicycleState>(
 
 class BicyclesNotifier extends StateNotifier<BicycleState> {
   final BicycleRepository bicycleRepository;
-  BicyclesNotifier({required this.bicycleRepository}) : super(BicycleState.initial()) {
+  BicyclesNotifier({
+    required this.bicycleRepository
+    }) : super(BicycleState()) {
     getBicycles();
+  }
+
+  Future<bool> updateBicycle(Map<String, dynamic> bicycleLike) async {
+    try {
+      final bicycle = await bicycleRepository.updateBicycle(bicycleLike);
+      final bicycles = state.bicycles.map((b) {
+        if (b.bicycleId == bicycle.bicycleId) {
+          return bicycle.toDto();
+        }
+        return b;
+      }).toList();
+      state = state.copyWith(bicycles: bicycles);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> getBicycles() async {

@@ -94,6 +94,20 @@ final goRouterProvider = Provider((ref) {
             }
           },
         ),
+
+        GoRoute(
+          path: '/bicycle-edit/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return EditBicycleScreen(bicycleId: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+
         GoRoute(
           path: '/favorite',
           builder: (context, state) => const FavoriteScreen(),

@@ -103,7 +103,7 @@ class ProfileScreenState extends ConsumerState {
                 title: "Bicicletas publicadas",
                 icon: LineAwesomeIcons.bicycle,
                 onPress: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PublishedBicyclesScreen(user: user!)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const PublishedBicyclesScreen()));
                 },
               ),
               ProfileMenuWidget(

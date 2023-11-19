@@ -6,8 +6,8 @@ class BicycleRepositoryImpl extends BicycleRepository {
   BicycleRepositoryImpl(this.datasource);
 
   @override
-  Future<Bicycle> createBicycle(String id, Bicycle bicycle) {
-    return createBicycle(id, bicycle);
+  Future<Bicycle> createBicycle(Map<String, dynamic> bicycleLike) {
+    return datasource.createBicycle(bicycleLike);
   }
 
   @override
@@ -31,7 +31,7 @@ class BicycleRepositoryImpl extends BicycleRepository {
   }
 
   @override
-  Future<Bicycle> updateBicycle(String id, Bicycle bicycle) {
-    return datasource.updateBicycle(id, bicycle);
+  Future<Bicycle> updateBicycle(Map<String, dynamic> bicycleLike) {
+    return datasource.updateBicycle(bicycleLike);
   }
 }

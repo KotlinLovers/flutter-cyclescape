@@ -21,7 +21,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: const Text("Carrito de compras"),
         leading: IconButton(
             onPressed: () {
@@ -30,8 +29,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               }
               context.go('/');
             },
-            icon: const Icon(LineAwesomeIcons.angle_left,
-                size: 30, color: Colors.black)),
+            icon: const Icon(LineAwesomeIcons.angle_left,)),
       ),
       body: bicycles!.isEmpty
           ? const Center(
@@ -51,8 +49,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             padding:
                                 const EdgeInsets.fromLTRB(12.0, 5, 12.0, 5),
                             child: Container(
-                              decoration:
-                                  BoxDecoration(color: Colors.grey.shade100),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(8)),
                               child: ListTile(
                                 onTap: () {
                                   context.push('/bicycle/${bicycle.bicycleId}');
@@ -68,7 +68,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(bicycle.bicycleName),
-                                    Text('${bicycle.bicyclePrice}'),
+                                    Text('S/ ${bicycle.bicyclePrice}'),
                                   ],
                                 ),
                                 trailing: GestureDetector(
@@ -100,9 +100,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           children: [
                             Row(
                               children: [
-                                Text("Total:"),
+                                Text("Total:", style: TextStyle(fontSize: 20)),
                                 Spacer(),
-                                Text("$totalPrice")
+                                Text("S/ $totalPrice", style: TextStyle(fontSize: 17)),
                               ],
                             ),
                             const SizedBox(height: 20),

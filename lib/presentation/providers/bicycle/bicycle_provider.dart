@@ -17,12 +17,29 @@ class BicycleNotifier extends StateNotifier<BicycleState> {
   BicycleNotifier({
     required this.bicycleRepository,
     required int bicycleId,
-  }) : super(BicycleState(id: bicycleId)){
+  }) : super(BicycleState(id: bicycleId)) {
     loadBicycle();
   }
 
+  BicycleDto newEmptyBicycle() {
+    return BicycleDto(
+      bicycleId: -1,
+      bicycleName: '',
+      bicycleDescription: '',
+      bicyclePrice: 0,
+      bicycleSize: '',
+      bicycleModel: '',
+      imageData: '',
+      latitudeData: 0,
+      longitudeData: 0,
+    );
+  }
   Future<void> loadBicycle() async {
     try {
+      if (state.id == -1) {
+        return;
+      }
+
       state = state.copyWith(isLoading: true);
       final bicycle = await bicycleRepository.getBicycleById(state.id);
       state = state.copyWith(bicycle: bicycle.toDto(), isLoading: false);

@@ -45,7 +45,6 @@ class MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: const Text("Mapa"),
           leading: IconButton(
               onPressed: () {

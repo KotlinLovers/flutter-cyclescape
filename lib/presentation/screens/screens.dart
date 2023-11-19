@@ -11,3 +11,4 @@ export 'bicycle/bicycle_detail_screen.dart';
 export 'payment/shopping_cart_screen.dart';
 export 'bicycle/published_bicycles_screen.dart';
 export '../widgets/search_bicycle.dart';
+export '../screens/bicycle/editBicycle_screen.dart';

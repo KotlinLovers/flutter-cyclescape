@@ -1,4 +1,5 @@
 import 'package:cyclescape/domain/domain.dart';
+import 'package:cyclescape/presentation/providers/user/user_provider.dart';
 import 'package:cyclescape/presentation/screens/bicycle/editBicycle_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class PublishedBicyclesScreen extends ConsumerStatefulWidget {
-  final UserDto user;
-  const PublishedBicyclesScreen({required this.user, super.key});
+  const PublishedBicyclesScreen({ super.key});
 
   @override
   PublishedBicyclesScreenState createState() => PublishedBicyclesScreenState();
@@ -15,11 +15,37 @@ class PublishedBicyclesScreen extends ConsumerStatefulWidget {
 
 class PublishedBicyclesScreenState
     extends ConsumerState<PublishedBicyclesScreen> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(userProvider.notifier).getUserById();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    try {
+      await ref.read(userProvider.notifier).getUserById();
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bicycleState = ref.watch(userProvider);
     double screenWidth = MediaQuery.of(context).size.width;
     double rowWidth = screenWidth * 0.25;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bicicletas publicadas'),
@@ -34,9 +60,9 @@ class PublishedBicyclesScreenState
             icon: const Icon(LineAwesomeIcons.angle_left)),
       ),
       body: ListView.builder(
-        itemCount: widget.user.bicycles.length,
+        itemCount: bicycleState.user?.bicycles.length,
         itemBuilder: (context, index) {
-          final bicycle = widget.user.bicycles[index];
+          final bicycle = bicycleState.user?.bicycles[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
@@ -45,7 +71,7 @@ class PublishedBicyclesScreenState
                   context.push('/bicycle/${bicycle.bicycleId}');
                 },
                 leading: Hero(
-                  tag: bicycle.bicycleId,
+                  tag: bicycle!.bicycleId,
                   child: Image.network(
                     bicycle.imageData,
                     fit: BoxFit.cover,
@@ -62,19 +88,41 @@ class PublishedBicyclesScreenState
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditBicycleScreen(
-                                      bicycleId: bicycle.bicycleId)));
+                          context.push('/bicycle-edit/${bicycle.bicycleId}');
                         },
                         icon: const Icon(Icons.edit_outlined),
                       ),
                       IconButton(
                         onPressed: () {
-                          // Lógica para borrar
+                          //context.read(bicycleProvider(bicycle.bicycleId)).delete();
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text(
+                                '¿Estás seguro de eliminar esta bicicleta?',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              content: const Text(
+                                  'Al eliminarlo, este ya no estará disponible para los usuarios'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancel'),
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text('Confirmar'),
+                                ),
+                              ],
+                            ),
+                          );
                         },
-                        icon: const Icon(Icons.delete_outline, color: Colors.red,),
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: Colors.red,
+                        ),
                       ),
                     ],
                   ),
