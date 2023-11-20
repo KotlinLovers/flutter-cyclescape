@@ -29,7 +29,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               }
               context.go('/');
             },
-            icon: const Icon(LineAwesomeIcons.angle_left,)),
+            icon: const Icon(
+              LineAwesomeIcons.angle_left,
+            )),
       ),
       body: bicycles!.isEmpty
           ? const Center(
@@ -45,6 +47,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         itemCount: bicycles!.length,
                         itemBuilder: (context, index) {
                           final bicycle = bicycles![index];
+                          final quantity = quantityBicycles![index];
                           return Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(12.0, 5, 12.0, 5),
@@ -69,14 +72,17 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   children: [
                                     Text(bicycle.bicycleName),
                                     Text('S/ ${bicycle.bicyclePrice}'),
+                                    Text('Cantidad de días: $quantity')
                                   ],
                                 ),
                                 trailing: GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       bicycles!.remove(bicycle);
-                                      updateTotalPrice(
-                                          bicycle.bicyclePrice * -1.0);
+                                      quantityBicycles!.removeAt(index);
+                                      updateTotalPrice(bicycle.bicyclePrice *
+                                          -1.0 *
+                                          quantity);
                                     });
                                   },
                                   child: const Icon(Icons.cancel,
@@ -102,7 +108,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                               children: [
                                 Text("Total:", style: TextStyle(fontSize: 20)),
                                 Spacer(),
-                                Text("S/ $totalPrice", style: TextStyle(fontSize: 17)),
+                                Text("S/ $totalPrice",
+                                    style: TextStyle(fontSize: 17)),
                               ],
                             ),
                             const SizedBox(height: 20),

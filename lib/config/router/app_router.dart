@@ -1,6 +1,8 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
 import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
 import 'package:cyclescape/presentation/screens/map/bicycle_map_screen.dart';
+import 'package:cyclescape/presentation/screens/payment/select_days_rent_now.dart';
+import 'package:cyclescape/presentation/screens/payment/select_days_shopping_cart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/local/favorite_screen.dart';
@@ -66,6 +68,32 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/profile-edit',
           builder: (context, state) => const UpgradeProfileScreen(),
+        ),
+
+        GoRoute(
+          path: '/select-days-rent/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return SelectDatesRent(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+
+        GoRoute(
+          path: '/select-days-shopping/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return SelectDatesShopping(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
         ),
 
         GoRoute(

@@ -101,18 +101,7 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                     SizedBox(
                                       width: double.infinity,
                                       child: FilledButton(
-                                        onPressed: () {},
-                                        child: const Text('Rentar ahora'),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: OutlinedButton(
                                         onPressed: () {
-                                          const snackBarSuccess = SnackBar(
-                                            content: Text(
-                                                '¡Bicicleta añadida al carrito!'),
-                                          );
                                           const snackBarFailed = SnackBar(
                                             content: Text(
                                                 '¡Ya está añadida en el carrito!'),
@@ -131,19 +120,49 @@ class _BicycleDetailScreenState extends ConsumerState<BicycleDetailScreen> {
                                             } else {
                                               bicycles!
                                                   .add(bicycleDetail!.toDto());
-                                              updateTotalPrice(
-                                                  bicycleDetail!.bicyclePrice);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                      snackBarSuccess);
+                                              context.push(
+                                                  '/select-days-rent/${bicycleDetail!.bicycleId}');
                                             }
                                           } else {
                                             bicycles!
                                                 .add(bicycleDetail!.toDto());
-                                            updateTotalPrice(
-                                                bicycleDetail!.bicyclePrice);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBarSuccess);
+                                            context.push(
+                                                '/select-days-rent/${bicycleDetail!.bicycleId}');
+                                          }
+                                        },
+                                        child: const Text('Rentar ahora'),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          const snackBarFailed = SnackBar(
+                                            content: Text(
+                                                '¡Ya está añadida en el carrito!'),
+                                          );
+                                          bool isInShoppingCart = false;
+                                          if (bicycles!.isNotEmpty) {
+                                            for (final bicycle in bicycles!) {
+                                              if (bicycle.bicycleId ==
+                                                  bicycleDetail!.bicycleId) {
+                                                isInShoppingCart = true;
+                                              }
+                                            }
+                                            if (isInShoppingCart) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBarFailed);
+                                            } else {
+                                              bicycles!
+                                                  .add(bicycleDetail!.toDto());
+                                              context.push(
+                                                  '/select-days-shopping/${bicycleDetail!.bicycleId}');
+                                            }
+                                          } else {
+                                            bicycles!
+                                                .add(bicycleDetail!.toDto());
+                                            context.push(
+                                                '/select-days-shopping/${bicycleDetail!.bicycleId}');
                                           }
                                         },
                                         child: const Text('Agregar al carrito',
