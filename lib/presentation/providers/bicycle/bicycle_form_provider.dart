@@ -6,7 +6,7 @@ import 'package:formz/formz.dart';
 
 final bicycleFormProvider = StateNotifierProvider.autoDispose
     .family<BicycleNotifier, BicycleFormState, BicycleDto>((ref, bicycle) {
-      final updateCallback = ref.watch(bicyclesRepositoryProvider).updateBicycle;
+      final updateCallback = ref.watch(bicyclesRepositoryProvider).updateOrCreateBicycle;
       return BicycleNotifier(bicycle: bicycle, onSubmitCallback: updateCallback);
 });
 
@@ -35,7 +35,7 @@ class BicycleNotifier extends StateNotifier<BicycleFormState> {
     }
 
     final productLike = {
-      'id': state.id,
+      'id': (state.id == -1) ? null : state.id,
       'bicycleName': state.title.value,
       'bicycleDescription': state.description,
       'bicyclePrice': state.price.value,
@@ -61,6 +61,10 @@ class BicycleNotifier extends StateNotifier<BicycleFormState> {
       Price.dirty(state.price.value),
       Model.dirty(state.model.value)
     ]));
+  }
+
+  void onImageChanged(String path) {
+    state = state.copyWith(imageData: path);
   }
 
   void onTitleChanged(String value) {

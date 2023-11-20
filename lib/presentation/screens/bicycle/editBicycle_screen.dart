@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cyclescape/domain/domain.dart';
 import 'package:cyclescape/presentation/providers/bicycle/bicycle_form_provider.dart';
 import 'package:cyclescape/presentation/providers/bicycle/bicycle_provider.dart';
@@ -19,53 +21,73 @@ class EditBicycleScreen extends ConsumerWidget {
   void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 3)
-      ),
+      SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bicycleState = ref.watch(bicycleProvider(bicycleId));
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar bicicleta'),
-        leading: IconButton(
-          onPressed: () async {
-            context.pop(context);
-          },
-          icon: const Icon(LineAwesomeIcons.angle_left),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.camera_alt_outlined),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Editar bicicleta'),
+          leading: IconButton(
+            onPressed: () async {
+              context.pop(context);
+            },
+            icon: const Icon(LineAwesomeIcons.angle_left),
           ),
-        ],
-      ),
-      body: bicycleState.isLoading
-          ? const LoadingScreen()
-          : _ProductView(bicycle: bicycleState.bicycle!),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (bicycleState.bicycle == null) return;
-          await ref
-              .read(
-                bicycleFormProvider(bicycleState.bicycle!).notifier,
-              )
-              .onFormSubmit().then((value) {
-                if (!value) {
-                  showSnackBar(context, 'Bicicleta actualizada');
-                } else {
-                  showSnackBar(context, 'Error al actualizar bicicleta');
-                }
-              });
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  final photoPath =
+                      await CameraGalleryServiceImpl().selectPhoto();
+                  if (photoPath == null) return;
+                  ref
+                      .read(bicycleFormProvider(bicycleState.bicycle!).notifier)
+                      .onImageChanged(photoPath);
+                  photoPath;
+                },
+                icon: const Icon(Icons.photo_library_outlined)),
+            IconButton(
+              onPressed: () async {
+                final photoPath = await CameraGalleryServiceImpl().takePhoto();
+                if (photoPath == null) return;
+                ref
+                    .read(bicycleFormProvider(bicycleState.bicycle!).notifier)
+                    .onImageChanged(photoPath);
+                photoPath;
+              },
+              icon: const Icon(Icons.camera_alt_outlined),
+            ),
+          ],
+        ),
+        body: bicycleState.isLoading
+            ? const LoadingScreen()
+            : _ProductView(bicycle: bicycleState.bicycle!),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            FocusScope.of(context).unfocus();
+            if (bicycleState.bicycle == null) return;
+            await ref
+                .read(
+                  bicycleFormProvider(bicycleState.bicycle!).notifier,
+                )
+                .onFormSubmit()
+                .then((value) {
+              if (!value) {
+                showSnackBar(context, 'Bicicleta actualizada');
+              } else {
+                showSnackBar(context, 'Error al actualizar bicicleta');
+              }
+            });
 
-          await ref.read(userProvider.notifier).getUserById();
-        },
-        child: const Icon(Icons.save_as_outlined),
+            await ref.read(userProvider.notifier).getUserById();
+          },
+          child: const Icon(Icons.save_as_outlined),
+        ),
       ),
     );
   }
@@ -80,12 +102,25 @@ class _ProductView extends ConsumerWidget {
     final bicycleForm = ref.watch(bicycleFormProvider(bicycle));
     final textStyles = Theme.of(context).textTheme;
 
+    late ImageProvider imageProvider;
+    
+    if (bicycleForm.imageData.startsWith('http')) {
+      imageProvider = NetworkImage(bicycleForm.imageData);
+    } else if (bicycleForm.imageData.isNotEmpty){
+      imageProvider = FileImage(File(bicycleForm.imageData));
+    } else {
+      imageProvider = const AssetImage('assets/images/no-image.jpg');
+    }
     return ListView(
       children: [
         SizedBox(
             height: 250,
             width: 600,
-            child: Image.network(bicycleForm.imageData)),
+            child: Image(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            ),  
+          ),
         const SizedBox(height: 10),
         Center(
             child: Text(bicycleForm.title.value, style: textStyles.titleSmall)),

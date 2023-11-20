@@ -1,5 +1,6 @@
 import 'package:cyclescape/domain/domain.dart';
 import 'package:cyclescape/presentation/providers/providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //autodispose->limpia cuando no se usa
@@ -37,6 +38,7 @@ class BicycleNotifier extends StateNotifier<BicycleState> {
   Future<void> loadBicycle() async {
     try {
       if (state.id == -1) {
+        state = state.copyWith(bicycle: newEmptyBicycle(), isLoading: false);
         return;
       }
 
