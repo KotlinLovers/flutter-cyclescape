@@ -13,30 +13,30 @@ enum AuthStatus { checking, authenticated, notAunthenticated }
 class AuthState {
   final AuthStatus authStatus;
   final UserResponse? user;
-  //final User? registerUser;
   final String token;
   final String errorMessage;
+  final int userId;
 
   AuthState(
       {this.authStatus = AuthStatus.checking,
       this.user,
-      //this.registerUser,
       this.token = '',
-      this.errorMessage = ''});
+      this.errorMessage = '',
+      this.userId = -1});
 
   AuthState copyWith({
     AuthStatus? authStatus,
     UserResponse? user,
-    //User? registerUser,
     String? errorMessage,
     String? token,
+    int? userId,
   }) =>
       AuthState(
         authStatus: authStatus ?? this.authStatus,
         user: user ?? this.user,
-        //registerUser: registerUser ?? this.registerUser,
         token: token ?? this.token,
         errorMessage: errorMessage ?? this.errorMessage,
+        userId: userId ?? this.userId,
       );
 }
 
@@ -98,6 +98,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   void checkToken() async {
     final token = await keyValueStorageService.getValue<String>('token');
+    final userId = await keyValueStorageService.getValue<int>('userId');
 
     if (token == null) {
       return logOut();
@@ -105,6 +106,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(
         authStatus: AuthStatus.authenticated,
         token: token,
+        userId: userId,
       );
     }
   }
@@ -117,6 +119,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       authStatus: AuthStatus.authenticated,
       errorMessage: '',
       token: user.token,
+      userId: user.userId,
     );
   }
 }

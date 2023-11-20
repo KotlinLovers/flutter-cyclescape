@@ -1,13 +1,11 @@
-import 'package:cyclescape/domain/domain.dart';
 import 'package:cyclescape/presentation/providers/user/user_provider.dart';
-import 'package:cyclescape/presentation/screens/bicycle/editBicycle_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class PublishedBicyclesScreen extends ConsumerStatefulWidget {
-  const PublishedBicyclesScreen({ super.key});
+  const PublishedBicyclesScreen({super.key});
 
   @override
   PublishedBicyclesScreenState createState() => PublishedBicyclesScreenState();
@@ -51,7 +49,9 @@ class PublishedBicyclesScreenState
         title: const Text('Bicicletas publicadas'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push('/bicycle-edit/-1');
+            },
             icon: const Icon(LineAwesomeIcons.plus_circle, size: 30),
           ),
         ],
