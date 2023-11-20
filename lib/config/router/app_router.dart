@@ -3,6 +3,7 @@ import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
 import 'package:cyclescape/presentation/screens/map/bicycle_map_screen.dart';
 import 'package:cyclescape/presentation/screens/payment/select_days_rent_now.dart';
 import 'package:cyclescape/presentation/screens/payment/select_days_shopping_cart.dart';
+import 'package:cyclescape/presentation/screens/payment/addcard_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/local/favorite_screen.dart';
@@ -102,9 +103,12 @@ final goRouterProvider = Provider((ref) {
         ),
         GoRoute(
           path: '/payment-details',
-          builder: (context, state) => PaymentDetailsScreen(),
+          builder: (context, state) => const PaymentDetailsScreen(),
         ),
-
+        GoRoute(
+          path: '/payment-details/addCard',
+          builder: (context, state) => const AddCardScreen(),
+        ),
         GoRoute(
           path: '/loading',
           builder: (context, state) => const LoadingScreen(),
