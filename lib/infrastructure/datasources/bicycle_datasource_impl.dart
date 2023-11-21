@@ -74,7 +74,8 @@ class BicycleDatasourceImpl extends BicycleDatasource {
   Future<Bicycle> updateOrCreateBicycle(
       Map<String, dynamic> bicycleLike) async {
     try {
-      if (bicycleLike['imageData'] != null) {
+      if (bicycleLike['imageData'] != null &&
+          bicycleLike['imageData'] is XFile) {
         XFile imageFile = XFile(bicycleLike['imageData']);
         String imageUrl = await uploadFile(imageFile);
         bicycleLike['imageData'] = imageUrl;

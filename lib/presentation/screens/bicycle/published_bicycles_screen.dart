@@ -7,6 +7,12 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class PublishedBicyclesScreen extends ConsumerStatefulWidget {
   const PublishedBicyclesScreen({super.key});
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
+    );
+  }
 
   @override
   PublishedBicyclesScreenState createState() => PublishedBicyclesScreenState();
@@ -112,10 +118,16 @@ class PublishedBicyclesScreenState
                                   child: const Text('Cancelar'),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    ref
+                                  onPressed: () async {
+                                    await ref
                                         .read(bicyclesProvider.notifier)
                                         .deleteBicycle(bicycle.bicycleId);
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pop(context, 'OK');
+
+                                    // ignore: use_build_context_synchronously
+                                    widget.showSnackBar(
+                                        context, 'Bicicleta eliminada');
                                   },
                                   child: const Text('Confirmar'),
                                 ),
