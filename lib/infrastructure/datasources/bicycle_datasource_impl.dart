@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:cyclescape/config/config.dart';
 import 'package:cyclescape/infrastructure/infrastructure.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 
 import '../../domain/domain.dart';
 
@@ -14,10 +17,17 @@ class BicycleDatasourceImpl extends BicycleDatasource {
             baseUrl: Environment.apiUrl,
             headers: {'Authorization': 'Bearer $accessToken'}));
 
+  final cloudinary = CloudinaryPublic('dpsyfhahx', 'cyclescape', cache: false);
+
   @override
   Future<Bicycle> deleteBicycle(int id) {
-    // TODO: implement deleteBicycle
-    throw UnimplementedError();
+    try {
+      return dio.delete('/bicycles/$id').then((response) {
+        return BicycleMapper.jsonToEntity(response.data);
+      });
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
@@ -47,28 +57,49 @@ class BicycleDatasourceImpl extends BicycleDatasource {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Bicycle> updateOrCreateBicycle(Map<String, dynamic> bicycleLike) async {
+  Future<String> uploadFile(XFile file) async {
     try {
+      File fileToUpload = File(file.path);
+      CloudinaryResponse response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(fileToUpload.path,
+            resourceType: CloudinaryResourceType.Image),
+      );
+      return response.secureUrl;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<Bicycle> updateOrCreateBicycle(
+      Map<String, dynamic> bicycleLike) async {
+    try {
+      if (bicycleLike['imageData'] != null) {
+        XFile imageFile = XFile(bicycleLike['imageData']);
+        String imageUrl = await uploadFile(imageFile);
+        bicycleLike['imageData'] = imageUrl;
+      }
+
       Response response;
       if (bicycleLike.containsKey('id') && bicycleLike['id'] != null) {
-        response = await dio.request( 
+        response = await dio.put(
           '/bicycles/${bicycleLike['id']}',
           data: bicycleLike,
-          options: Options(method: 'PUT'),
         );
       } else {
-        bicycleLike.remove('id');
-        if (userId == null) {
+        if (userId == null)
           throw ArgumentError('userId is required for creating a new bicycle');
-        }
+        bicycleLike
+            .remove('id'); // Asegúrate de no enviar 'id' si es un objeto nuevo
         response = await dio.post('/bicycles/user/$userId', data: bicycleLike);
       }
 
       final bicycle = BicycleMapper.jsonToEntity(response.data);
       return bicycle;
     } catch (e) {
-      throw Exception();
+      // Captura y maneja la excepción específica
+      print(e);
+      throw Exception('Failed to update or create bicycle');
     }
   }
 }

@@ -54,6 +54,8 @@ class BicycleNotifier extends StateNotifier<BicycleFormState> {
     }
   }
 
+
+
   void _touchedEverything() {
     state = state.copyWith(
         isFormValid: Formz.validate([

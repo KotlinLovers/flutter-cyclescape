@@ -30,6 +30,17 @@ class BicyclesNotifier extends StateNotifier<BicycleState> {
     }
   }
 
+  Future<bool> deleteBicycle(int id) async {
+    try {
+      await bicycleRepository.deleteBicycle(id);
+      final bicycles = state.bicycles.where((b) => b.bicycleId != id).toList();
+      state = state.copyWith(bicycles: bicycles);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> getBicycles() async {
     final bicycles = await bicycleRepository.getBicycles();
     state = state.copyWith(bicycles: bicycles);

@@ -1,3 +1,4 @@
+import 'package:cyclescape/presentation/providers/bicycle/bicycles_provider.dart';
 import 'package:cyclescape/presentation/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,7 +95,6 @@ class PublishedBicyclesScreenState
                       ),
                       IconButton(
                         onPressed: () {
-                          //context.read(bicycleProvider(bicycle.bicycleId)).delete();
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -112,7 +112,11 @@ class PublishedBicyclesScreenState
                                   child: const Text('Cancelar'),
                                 ),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    ref
+                                        .read(bicyclesProvider.notifier)
+                                        .deleteBicycle(bicycle.bicycleId);
+                                  },
                                   child: const Text('Confirmar'),
                                 ),
                               ],
