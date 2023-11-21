@@ -8,20 +8,18 @@ import 'package:flutter/src/material/card.dart';
 
 import '../../domain/entities/card.dart';
 
-class CardDatasourceImpl extends CardDatasource{
+class CardDatasourceImpl extends CardDatasource {
   late final Dio dio;
   final String accessToken;
 
   CardDatasourceImpl({required this.accessToken})
       : dio = Dio(BaseOptions(
-    baseUrl: Environment.apiUrl,
-    headers: {'Authorization': 'Bearer $accessToken'}
-  ));
-
+            baseUrl: Environment.apiUrl,
+            headers: {'Authorization': 'Bearer $accessToken'}));
 
   @override
-  Future<CardPayment> createCard(int userId, CardPayment card) async{
-    try{
+  Future<CardPayment> createCard(int userId, CardPayment card) async {
+    try {
       // Eliminar guiones ("-") del número de tarjeta
       final sanitizedCardNumber = removeDashes(card.cardNumber);
 
@@ -30,20 +28,23 @@ class CardDatasourceImpl extends CardDatasource{
       final month = parts[1];
 
       final formattedDate = "$year-$month-01";
+      final cardType = card.cardType;
+      final cardCvv = card.cardCvv;
+      final cardAmount = card.cardAmount;
+      final cardHolder = card.cardHolder;
 
-
-      final response = await dio.post('/cards/$userId',data:{
+      final response = await dio.post('/cards/$userId', data: {
         "cardNumber": sanitizedCardNumber,
-        "cardType":card.cardType ,
-        "cardCvv":card.cardCvv,
-        "cardExpirationDate":formattedDate,
-        "cardAmount":card.cardAmount,
-        "cardHolder":card.cardHolder
+        "cardType": cardType,
+        "cardCvv": cardCvv,
+        "cardExpirationDate": formattedDate,
+        "cardAmount": cardAmount,
+        "cardHolder": cardHolder
       });
 
       final cardResponse = CardMapper.jsonToEntity(response.data);
       return cardResponse;
-    }catch(e){
+    } catch (e) {
       throw Exception();
     }
   }
@@ -55,19 +56,18 @@ class CardDatasourceImpl extends CardDatasource{
   }
 
   @override
-  Future<CardPayment>getCardById(int cardId) async{
-    try{
+  Future<CardPayment> getCardById(int cardId) async {
+    try {
       final response = await dio.get('/cards/$cardId');
       return CardMapper.jsonToEntity(response.data);
-
-    } on DioException catch(e){
-      if(e.response!.statusCode == 404) throw CardPaymentNotFound();
-        throw Exception();
+    } on DioException catch (e) {
+      if (e.response!.statusCode == 404) throw CardPaymentNotFound();
+      throw Exception();
     }
   }
 
   @override
-  Future<List<CardPayment>> getCardByUserId(int userId)async {
+  Future<List<CardPayment>> getCardByUserId(int userId) async {
     final response = await dio.get<List>('/cards/user/$userId');
     final List<CardPayment> cards = [];
 
@@ -96,18 +96,20 @@ class CardDatasourceImpl extends CardDatasource{
     }
 
     // Obtiene los dos primeros y dos últimos dígitos
-    final visibleDigits = '${cardNumber.substring(0, 2)}** **** **** **${cardNumber.substring(cardNumber.length - 2)}';
+    final visibleDigits =
+        '${cardNumber.substring(0, 2)}** **** **** **${cardNumber.substring(cardNumber.length - 2)}';
 
     // Agrega un espacio cada 4 dígitos
-    final maskedNumber = visibleDigits.replaceAllMapped(RegExp(r"(\d{4})"), (match) => '${match[0]} ');
+    final maskedNumber = visibleDigits.replaceAllMapped(
+        RegExp(r"(\d{4})"), (match) => '${match[0]} ');
 
     return maskedNumber;
   }
+
   String removeDashes(String cardNumber) {
     // Eliminar guiones ("-") del número de tarjeta
     return cardNumber.replaceAll('-', '');
   }
-
 
   @override
   Future<CardPayment> updateCard(int cardId, CardPayment card) {

@@ -39,6 +39,7 @@ class _SelectDatesRentState extends State<SelectDatesRent> {
           child: Center(
         child: Column(
           children: [
+            const SizedBox(height: 175),
             const Text("Seleccione la fecha de inicio de la renta"),
             CupertinoButton(
               child: Text(
