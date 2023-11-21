@@ -4,7 +4,6 @@ abstract class BicycleDatasource {
   Future<List<BicycleDto>> getBicycles();
   Future<Bicycle> getBicycleById(int id);
   Future<List<Bicycle>> searchBicycleByTerm(String term);
-  Future<Bicycle> createBicycle(String id, Bicycle bicycle);
-  Future<Bicycle> updateBicycle(String id, Bicycle bicycle);
-  Future<Bicycle> deleteBicycle(String id, Bicycle bicycle);
+  Future<Bicycle> updateOrCreateBicycle(Map<String, dynamic> bicycleLike);
+  Future<Bicycle> deleteBicycle(int id);
 }

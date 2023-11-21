@@ -6,13 +6,13 @@ class BicycleRepositoryImpl extends BicycleRepository {
   BicycleRepositoryImpl(this.datasource);
 
   @override
-  Future<Bicycle> createBicycle(String id, Bicycle bicycle) {
-    return createBicycle(id, bicycle);
+  Future<Bicycle> updateOrCreateBicycle(Map<String, dynamic> bicycleLike) {
+    return datasource.updateOrCreateBicycle(bicycleLike);
   }
 
   @override
-  Future<Bicycle> deleteBicycle(String id, Bicycle bicycle) {
-    return datasource.deleteBicycle(id, bicycle);
+  Future<Bicycle> deleteBicycle(int id) {
+    return datasource.deleteBicycle(id);
   }
 
   @override
@@ -30,8 +30,4 @@ class BicycleRepositoryImpl extends BicycleRepository {
     return datasource.searchBicycleByTerm(term);
   }
 
-  @override
-  Future<Bicycle> updateBicycle(String id, Bicycle bicycle) {
-    return datasource.updateBicycle(id, bicycle);
-  }
 }

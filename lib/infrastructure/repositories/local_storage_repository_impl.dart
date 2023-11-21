@@ -15,13 +15,17 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
   }
   
   @override
-  Future<List<BicycleDto>> loadBicycles({int limit = 10,offset = 0}) {
+  Future<List<BicycleDto>> loadBicycles() {
     return datasource.loadBicycles();
   }
 
   @override
   Future<void> toggleFavorite(BicycleDto bicycle) {
     return datasource.toggleFavorite(bicycle);
+  }
+
+  Future<void> removeFromFavorites(BicycleDto bicycle) {
+    return datasource.removeFromFavorites(bicycle);
   }
 
 }

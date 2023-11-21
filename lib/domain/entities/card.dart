@@ -1,4 +1,6 @@
-class Card{
+import 'package:cyclescape/domain/entities/user.dart';
+
+class CardPayment{
   final int id;
   final String cardNumber;
   final String cardType;
@@ -8,7 +10,8 @@ class Card{
   final String cardHolder;
   final bool cardMain;
 
-  Card({
+
+  CardPayment({
     required this.id,
     required this.cardNumber,
     required this.cardType,
@@ -16,7 +19,10 @@ class Card{
     required this.cardExpirationDate,
     required this.cardAmount,
     required this.cardHolder,
-    required this.cardMain
+    required this.cardMain,
+
   });
+
+
 
 }

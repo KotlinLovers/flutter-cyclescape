@@ -1,4 +1,4 @@
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
+import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cyclescape/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,13 +30,13 @@ class SideMenuState extends ConsumerState<SideMenu> {
           });
           final router = GoRouter.of(context);
           if (value == 0) {
-            router.go('/');
+            router.push('/');
           } else if (value == 1) {
-            router.go('/profile');
+            router.push('/profile');
           } else if (value == 2) {
-            router.go('/map');
+            router.push('/map');
           } else if (value == 3) {
-            router.go('/favorite');
+            router.push('/favorite');
           }
           // final menuItem = appMenuItems[value];
           // context.push( menuItem.link );

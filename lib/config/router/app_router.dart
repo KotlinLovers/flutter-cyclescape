@@ -1,10 +1,13 @@
 import 'package:cyclescape/config/router/app_router_notifier.dart';
-import 'package:cyclescape/presentation/providers/auth_provider.dart';
-import 'package:cyclescape/presentation/screens/bicycle_map_screen.dart';
+import 'package:cyclescape/presentation/providers/auth/auth_provider.dart';
+import 'package:cyclescape/presentation/screens/map/bicycle_map_screen.dart';
+import 'package:cyclescape/presentation/screens/payment/select_days_rent_now.dart';
+import 'package:cyclescape/presentation/screens/payment/select_days_shopping_cart.dart';
+import 'package:cyclescape/presentation/screens/payment/addcard_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../presentation/screens/favorite_screen.dart';
-import '../../presentation/screens/paymentdetails_screen.dart';
+import '../../presentation/screens/local/favorite_screen.dart';
+import '../../presentation/screens/payment/paymentdetails_screen.dart';
 
 import '../../presentation/screens/screens.dart';
 
@@ -69,14 +72,43 @@ final goRouterProvider = Provider((ref) {
         ),
 
         GoRoute(
+          path: '/select-days-rent/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return SelectDatesRent(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+
+        GoRoute(
+          path: '/select-days-shopping/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return SelectDatesShopping(id: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+
+        GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnBoardingScreen(),
         ),
         GoRoute(
           path: '/payment-details',
-          builder: (context, state) => PaymentDetailsScreen(),
+          builder: (context, state) => const PaymentDetailsScreen(),
         ),
-
+        GoRoute(
+          path: '/payment-details/addCard',
+          builder: (context, state) => const AddCardScreen(),
+        ),
         GoRoute(
           path: '/loading',
           builder: (context, state) => const LoadingScreen(),
@@ -94,6 +126,20 @@ final goRouterProvider = Provider((ref) {
             }
           },
         ),
+
+        GoRoute(
+          path: '/bicycle-edit/:id',
+          builder: (context, state) {
+            final idString = state.pathParameters['id']!;
+            final id = int.tryParse(idString);
+            if (id != null) {
+              return EditBicycleScreen(bicycleId: id);
+            } else {
+              throw Exception('Invalid bicycle ID.');
+            }
+          },
+        ),
+
         GoRoute(
           path: '/favorite',
           builder: (context, state) => const FavoriteScreen(),
@@ -103,6 +149,11 @@ final goRouterProvider = Provider((ref) {
           path: '/shopping-cart',
           builder: (context, state) => const ShoppingCartScreen(),
         ),
+
+        //GoRoute(
+        //  path: '/published-bicycles',
+        //  builder: (context, state) => const PublishedBicyclesScreen(),
+        //),
       ],
       redirect: (context, state) {
         final isGoingTo = state.fullPath;
